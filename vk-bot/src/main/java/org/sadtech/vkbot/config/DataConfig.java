@@ -1,9 +1,11 @@
 package org.sadtech.vkbot.config;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -17,23 +19,26 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan("org.sadtech.vkbot")
 @EnableJpaRepositories("org.sadtech.vkbot.repo")
+@PropertySource("classpath:app.properties")
 public class DataConfig {
 
-    private static final String PROPERTY_NAME_DATABASE_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String PROPERTY_NAME_DATABASE_URL = "jdbc:mysql://localhost:3306/testbd"+
-            "?verifyServerCertificate=false"+
-            "&useSSL=false"+
-            "&requireSSL=false"+
-            "&useLegacyDatetimeCode=false"+
-            "&amp"+
-            "&serverTimezone=UTC";
-    private static final String PROPERTY_NAME_DATABASE_USERNAME = "root";
-    private static final String PROPERTY_NAME_DATABASE_PASSWORD = "121314185398MAmaPApa";
+    @Value("${db.driver}")
+    private String PROPERTY_NAME_DATABASE_DRIVER;
+    @Value("${db.url}")
+    private String PROPERTY_NAME_DATABASE_URL;
+    @Value("${db.username}")
+    private String PROPERTY_NAME_DATABASE_USERNAME;
+    @Value("${db.password}")
+    private String PROPERTY_NAME_DATABASE_PASSWORD;
 
-    private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "org.hibernate.dialect.MySQL5Dialect";
-    private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "true";
-    private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "org.sadtech.vkbot";
-    private static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "create-drop";
+    @Value("${db.hibernate.dialect}")
+    private String PROPERTY_NAME_HIBERNATE_DIALECT;
+    @Value("${db.hibernate.show_sql}")
+    private String PROPERTY_NAME_HIBERNATE_SHOW_SQL;
+    @Value("${db.entitymanager.packages.to.scan}")
+    private String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN;
+    @Value("${db.hibernate.hbm2ddl.auto}")
+    private String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {

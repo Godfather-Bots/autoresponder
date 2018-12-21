@@ -4,8 +4,10 @@ import org.sadtech.vkbot.dao.User;
 import org.sadtech.vkbot.repo.UserRepository;
 import org.sadtech.vkbot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
