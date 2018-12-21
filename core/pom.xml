@@ -11,5 +11,23 @@
 
     <artifactId>consultant-core</artifactId>
 
+    <properties>
+        <persistence.ver>1.0.2</persistence.ver>
+        <lombok.ver>1.18.4</lombok.ver>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>${persistence.ver}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.ver}</version>
+        </dependency>
+    </dependencies>
 
 </project>

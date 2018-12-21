@@ -8,15 +8,20 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.groups.responses.GetLongPollServerResponse;
 import org.sadtech.vkbot.ResponseData;
-import org.sadtech.consultant.controller.Test;
 import org.sadtech.vkbot.TestLogic;
+import org.sadtech.vkbot.controller.Test;
+import org.sadtech.vkbot.service.UserService;
+import org.sadtech.vkbot.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @PropertySource("classpath:config.properties")
+@ComponentScan("org.sadtech.vkbot")
 public class SpringConfig {
 
     @Value("${vk.groupID}")
@@ -73,6 +78,11 @@ public class SpringConfig {
     @Bean(initMethod = "start")
     public Test test() {
         return new Test();
+    }
+
+    @Bean
+    public UserService userService() {
+        return new UserServiceImpl();
     }
 
     @Bean

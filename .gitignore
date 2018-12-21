@@ -3,3 +3,5 @@
 **/target/**
 .DS_Store
 /vk-bot/src/main/resources/config.properties
+*.log
+*.properties

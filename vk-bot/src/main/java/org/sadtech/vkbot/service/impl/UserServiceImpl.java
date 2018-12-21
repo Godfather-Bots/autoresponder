@@ -1,0 +1,24 @@
+package org.sadtech.vkbot.service.impl;
+
+import org.sadtech.vkbot.dao.User;
+import org.sadtech.vkbot.repo.UserRepository;
+import org.sadtech.vkbot.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public User addUser(User user) {
+        User savedUser = userRepository.saveAndFlush(user);
+        return savedUser;
+    }
+
+    @Override
+    public void removeUser(long id) {
+        userRepository.deleteById(id);
+    }
+}
