@@ -9,16 +9,15 @@ import org.springframework.web.servlet.DispatcherServlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
-import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan("org.sadtech.vkbot.controller")
+@ComponentScan("org.sadtech.vkbot.listener")
 public class WebConfig implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(SpringConfig.class, WebConfig.class, DataConfig.class);
+        context.register(SpringConfigVk.class, WebConfig.class, DataConfig.class);
         context.setServletContext(servletContext);
 
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(context));

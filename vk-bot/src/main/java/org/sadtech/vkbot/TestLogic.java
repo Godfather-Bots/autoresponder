@@ -6,9 +6,9 @@ import java.util.List;
 
 public class TestLogic implements Observer{
 
-    private ResponseData responseData;
+    private ResponseDataVk responseData;
 
-    public TestLogic(ResponseData responseData) {
+    public TestLogic(ResponseDataVk responseData) {
         this.responseData = responseData;
         responseData.registerObserver(this);
     }

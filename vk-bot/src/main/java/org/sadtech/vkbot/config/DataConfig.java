@@ -17,7 +17,6 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan("org.sadtech.vkbot")
 @EnableJpaRepositories("org.sadtech.vkbot.repo")
 @PropertySource("classpath:config.properties")
 public class DataConfig {
