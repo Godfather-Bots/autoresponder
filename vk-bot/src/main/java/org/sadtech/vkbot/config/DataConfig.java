@@ -19,7 +19,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan("org.sadtech.vkbot")
 @EnableJpaRepositories("org.sadtech.vkbot.repo")
-@PropertySource("classpath:app.properties")
+@PropertySource("classpath:config.properties")
 public class DataConfig {
 
     @Value("${db.driver}")

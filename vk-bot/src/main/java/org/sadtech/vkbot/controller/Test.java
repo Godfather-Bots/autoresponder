@@ -11,17 +11,14 @@ import com.vk.api.sdk.objects.groups.responses.GetLongPollServerResponse;
 import lombok.extern.log4j.Log4j;
 import org.json.JSONObject;
 import org.sadtech.vkbot.ResponseData;
-import org.sadtech.vkbot.dao.User;
+import org.sadtech.vkbot.entity.User;
 import org.sadtech.vkbot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 @Log4j
+
 public class Test extends Thread {
 
     @Autowired
@@ -47,14 +44,13 @@ public class Test extends Thread {
         } catch (ClientException e) {
             e.printStackTrace();
         }
-        log.info("Test");
         JSONObject jObject = new JSONObject(getResponse); // json
 //        System.out.println(getResponse);
         String key = jObject.getString("key"); // get the name from data.
         String server = jObject.getString("server");
         Integer ts = jObject.getInt("ts");
         LongPoll longPoll = new LongPoll(vk);
-        GetLongPollEventsQuery getLongPollEventsQuery = longPoll.getEvents(server, key, ts).waitTime(5);
+        GetLongPollEventsQuery getLongPollEventsQuery = longPoll.getEvents(server, key, ts).waitTime(20);
 //        Gson gson = new Gson();
 
         User user = new User();
@@ -70,14 +66,14 @@ public class Test extends Thread {
             } catch (ClientException e) {
                 e.printStackTrace();
             }
-            System.out.println(getLongPollEventsResponse);
+            log.info(getLongPollEventsResponse);
             if (getLongPollEventsResponse.getUpdates().toArray().length != 0) {
                 responseData.setJsonObjects(getLongPollEventsResponse.getUpdates());
 //                JsonObject updates = getLongPollEventsResponse.getUpdates().get(0);
 //                JsonObject object = updates.getAsJsonObject("object");
 //                Message messages = gson.fromJson(object, Message.class);
             }
-            getLongPollEventsQuery = longPoll.getEvents(server, key, getLongPollEventsResponse.getTs()).waitTime(5);
+            getLongPollEventsQuery = longPoll.getEvents(server, key, getLongPollEventsResponse.getTs()).waitTime(20);
         }
     }
 

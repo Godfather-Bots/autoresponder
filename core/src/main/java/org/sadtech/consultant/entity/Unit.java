@@ -1,4 +1,4 @@
-package org.sadtech.consultant.dao;
+package org.sadtech.consultant.entity;
 
 import lombok.Data;
 
@@ -7,10 +7,10 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class Stage {
+public class Unit {
 
     @Id
-    private long id;
+    private Long id;
     private String text;
     private String wordKeys;
 

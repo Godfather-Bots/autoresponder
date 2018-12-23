@@ -14,6 +14,9 @@
     <properties>
         <persistence.ver>1.0.2</persistence.ver>
         <lombok.ver>1.18.4</lombok.ver>
+        <log4j>1.2.17</log4j>
+
+        <spring.data>2.1.3.RELEASE</spring.data>
     </properties>
 
     <dependencies>
@@ -27,6 +30,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.ver}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring.data}</version>
         </dependency>
     </dependencies>
 

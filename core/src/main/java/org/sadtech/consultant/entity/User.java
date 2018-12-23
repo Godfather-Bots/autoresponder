@@ -1,4 +1,4 @@
-package org.sadtech.consultant.dao;
+package org.sadtech.consultant.entity;
 
 import lombok.Data;
 
@@ -12,8 +12,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue
-    private long id;
+    private Long id;
     private String name;
     private String token;
     private String lastName;

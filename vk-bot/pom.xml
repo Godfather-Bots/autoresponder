@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <parent>
         <artifactId>time-table</artifactId>
         <groupId>org.sadtech</groupId>
@@ -35,10 +36,46 @@
 
     <properties>
         <vk.api.ver>0.5.12</vk.api.ver>
-        <spring.ver>5.1.3.RELEASE</spring.ver>
+
+        <spring.core>5.1.3.RELEASE</spring.core>
+        <spring.context>5.1.3.RELEASE</spring.context>
+        <spring.web>5.1.3.RELEASE</spring.web>
+        <spring.webmvc>5.1.3.RELEASE</spring.webmvc>
+        <spring.context>5.1.3.RELEASE</spring.context>
+        <spring.context>5.1.3.RELEASE</spring.context>
+        <spring.data>2.1.3.RELEASE</spring.data>
+
+        <javax.servlet>3.1.0</javax.servlet>
+        <javax.persistance>1.0.2</javax.persistance>
+
+        <hibernate.entitymanager>5.4.0.Final</hibernate.entitymanager>
+        <hibernate.core>5.2.10.Final</hibernate.core>
+
+        <mysql.connector>8.0.13</mysql.connector>
+
+        <lombok>1.18.4</lombok>
+
+        <log4j>1.2.17</log4j>
+
+        <json>20180813</json>
+
+        <jetty.util>6.1.25</jetty.util>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.vk.api</groupId>
             <artifactId>sdk</artifactId>
@@ -48,99 +85,73 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>${spring.ver}</version>
+            <version>${spring.core}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${spring.ver}</version>
+            <version>${spring.context}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>${spring.ver}</version>
+            <version>${spring.context}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>${spring.ver}</version>
+            <version>${spring.web}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>5.1.3.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>5.1.3.RELEASE</version>
+            <version>${spring.webmvc}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>2.1.3.RELEASE</version>
+            <version>${spring.data}</version>
         </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>${javax.servlet}</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.mortbay.jetty</groupId>
             <artifactId>jetty-util</artifactId>
-            <version>6.1.25</version>
+            <version>${jetty.util}</version>
         </dependency>
 
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20180813</version>
+            <version>${json}</version>
         </dependency>
 
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>persistence-api</artifactId>
-            <version>1.0.2</version>
+            <version>${javax.persistance}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.13</version>
+            <version>${mysql.connector}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.4.0.Final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <version>${hibernate.entitymanager}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.2.10.Final</version>
+            <version>${hibernate.core}</version>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.2.10.Final</version>
-        </dependency>
+
     </dependencies>
-
-
-
-
 </project>

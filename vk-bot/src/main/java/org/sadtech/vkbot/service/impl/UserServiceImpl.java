@@ -1,6 +1,6 @@
 package org.sadtech.vkbot.service.impl;
 
-import org.sadtech.vkbot.dao.User;
+import org.sadtech.vkbot.entity.User;
 import org.sadtech.vkbot.repo.UserRepository;
 import org.sadtech.vkbot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

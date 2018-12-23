@@ -1,4 +1,4 @@
-package org.sadtech.consultant.dao;
+package org.sadtech.consultant.entity;
 
 import lombok.Data;
 
@@ -10,9 +10,8 @@ import javax.persistence.Id;
 public class SocialNetworks {
 
     @Id
-    private long id;
-    private long idVk;
-    private long idFacebook;
-    private long phone;
+    private Long id;
+    private Long idVk;
+    private Long idFacebook;
 
 }
