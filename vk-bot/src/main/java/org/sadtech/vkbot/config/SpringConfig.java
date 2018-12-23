@@ -3,13 +3,15 @@ package org.sadtech.vkbot.config;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.GroupActor;
+import com.vk.api.sdk.client.actors.ServiceActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.groups.responses.GetLongPollServerResponse;
 import org.sadtech.vkbot.ResponseData;
 import org.sadtech.vkbot.TestLogic;
-import org.sadtech.vkbot.controller.Test;
+import org.sadtech.vkbot.VkOpenMethod;
+import org.sadtech.vkbot.controller.MessagesListener;
 import org.sadtech.vkbot.service.UserService;
 import org.sadtech.vkbot.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +19,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @PropertySource("classpath:config.properties")
@@ -42,6 +43,9 @@ public class SpringConfig {
     @Value("${vk.token}")
     private String token;
 
+    @Value("${vk.service.token}")
+    private String serviceToken;
+
     @Bean
     public TransportClient transportClient() {
         return HttpTransportClient.getInstance();
@@ -50,14 +54,18 @@ public class SpringConfig {
     @Bean
     public VkApiClient vkApiClient() {
         VkApiClient vk = new VkApiClient(transportClient());
-//        System.out.println("vk: " + vk);
         return vk;
     }
 
     @Bean
     public GroupActor groupActor() {
         GroupActor actor = new GroupActor(new Integer(groupId), token);
-//        System.out.println("actor: " + actor);
+        return actor;
+    }
+
+    @Bean
+    public ServiceActor serviceActor() {
+        ServiceActor actor = new ServiceActor(new Integer(appID), serviceToken);
         return actor;
     }
 
@@ -76,8 +84,8 @@ public class SpringConfig {
     }
 
     @Bean(initMethod = "start")
-    public Test test() {
-        return new Test();
+    public MessagesListener messagesListener() {
+        return new MessagesListener();
     }
 
     @Bean
@@ -93,5 +101,10 @@ public class SpringConfig {
     @Bean
     public TestLogic testLogic() {
         return new TestLogic(responseData());
+    }
+
+    @Bean
+    public VkOpenMethod vkOpenMethod() {
+        return new VkOpenMethod(vkApiClient(), groupActor());
     }
 }
