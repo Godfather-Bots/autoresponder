@@ -1,4 +1,4 @@
-package org.sadtech.vkbot;
+package org.sadtech.vkbot.listener;
 
 import com.google.gson.JsonObject;
 
