@@ -29,7 +29,7 @@ public class DispetcherHandler implements Observable {
         objects = new ArrayList<JsonObject>(date.getJsonObjects());
         date.cleanAll();
         for (JsonObject object : objects) {
-            System.out.println(object);
+            log.info(object);
         }
 
     }

@@ -17,5 +17,8 @@ public class VkOpenMethod {
         this.actor = actor;
     }
 
+    public void sendMessage(Integer id, String text) {
+        vk.messages().send(actor).userId(id).peerId(id).message(text);
+    }
 
 }
