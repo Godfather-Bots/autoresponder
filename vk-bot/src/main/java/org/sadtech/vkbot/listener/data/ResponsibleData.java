@@ -2,7 +2,7 @@ package org.sadtech.vkbot.listener.data;
 
 import com.google.gson.JsonObject;
 
-import java.util.List;
+import java.util.Queue;
 
 public interface ResponsibleData {
 
@@ -12,6 +12,6 @@ public interface ResponsibleData {
 
     void cleanAll();
 
-    List<JsonObject> getJsonObjects();
+    Queue<JsonObject> getJsonObjects();
 
 }

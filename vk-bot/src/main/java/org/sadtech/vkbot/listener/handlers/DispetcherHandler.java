@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j;
 import org.sadtech.vkbot.listener.Observable;
 import org.sadtech.vkbot.listener.Observer;
 import org.sadtech.vkbot.listener.data.ResponsibleData;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,21 +18,18 @@ public class DispetcherHandler implements Observable {
 
     private ResponsibleData date;
     private List<Observer> observers = new ArrayList<Observer>();
-    private List<JsonObject> objects;
 
     public DispetcherHandler(ResponsibleData date) {
         this.date = date;
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Async
     public void packaging() {
-
-        objects = new ArrayList<JsonObject>(date.getJsonObjects());
-        date.cleanAll();
-        for (JsonObject object : objects) {
-            log.info(object);
+        while (true) {
+            if (date.getJsonObjects().peek() != null) {
+                log.info(date.getJsonObjects().poll());
+            }
         }
-
     }
 
     @Override

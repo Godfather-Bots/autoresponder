@@ -4,17 +4,17 @@ import com.google.gson.JsonObject;
 import org.sadtech.vkbot.listener.data.ResponsibleData;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Component
 public class ResponseDataVk implements ResponsibleData {
 
-    private List<JsonObject> jsonObjects = new ArrayList<JsonObject>();
+    private Queue<JsonObject> jsonObjects = new ConcurrentLinkedQueue<JsonObject>();
 
     @Override
     public void add(JsonObject jsonObject) {
-        jsonObjects.add(jsonObject);
+        jsonObjects.offer(jsonObject);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ResponseDataVk implements ResponsibleData {
         jsonObjects.clear();
     }
 
-    public List<JsonObject> getJsonObjects() {
+    public Queue<JsonObject> getJsonObjects() {
         return jsonObjects;
     }
 }
