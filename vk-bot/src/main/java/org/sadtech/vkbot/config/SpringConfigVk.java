@@ -9,10 +9,7 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.groups.responses.GetLongPollServerResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -23,9 +20,9 @@ import java.util.concurrent.Executors;
 
 @Configuration
 @EnableAsync
+@Import({DataConfig.class})
 @PropertySource("classpath:config.properties")
 @ComponentScan("org.sadtech.vkbot.listener")
-@EnableScheduling
 public class SpringConfigVk {
 
     @Value("${vk.groupID}")

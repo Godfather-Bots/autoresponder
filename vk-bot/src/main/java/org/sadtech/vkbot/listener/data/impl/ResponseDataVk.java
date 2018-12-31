@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Component
 public class ResponseDataVk implements ResponsibleData {
 
-    private Queue<JsonObject> jsonObjects = new ConcurrentLinkedQueue<JsonObject>();
+    private Queue<JsonObject> jsonObjects = new ConcurrentLinkedQueue<>();
 
     @Override
     public void add(JsonObject jsonObject) {

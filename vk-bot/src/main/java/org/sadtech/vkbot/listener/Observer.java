@@ -5,5 +5,5 @@ import com.google.gson.JsonObject;
 import java.util.List;
 
 public interface Observer {
-    void update(List<JsonObject> jsonObjects);
+    void update(JsonObject object);
 }

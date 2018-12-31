@@ -6,5 +6,4 @@ public interface Observable {
     //    void removeObserver(Observer o);
     void notifyObservers();
 
-    void packaging() throws Exception;
 }
