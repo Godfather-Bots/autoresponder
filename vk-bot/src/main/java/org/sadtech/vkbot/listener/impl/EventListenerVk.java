@@ -1,7 +1,5 @@
 package org.sadtech.vkbot.listener.impl;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.vk.api.sdk.actions.LongPoll;
 import com.vk.api.sdk.callback.longpoll.queries.GetLongPollEventsQuery;
 import com.vk.api.sdk.callback.longpoll.responses.GetLongPollEventsResponse;
@@ -10,14 +8,14 @@ import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.groups.responses.GetLongPollServerResponse;
-import jdk.nashorn.internal.parser.JSONParser;
 import lombok.extern.log4j.Log4j;
-import org.json.JSONObject;
+import org.sadtech.vkbot.VkApi;
 import org.sadtech.vkbot.listener.EventListenable;
 import org.sadtech.vkbot.listener.data.ResponsibleData;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Log4j
 @Component
@@ -57,8 +55,6 @@ public class EventListenerVk implements EventListenable {
                 responseData.add(eventsResponse.getUpdates().get(0));
                 log.info(eventsResponse.getUpdates());
                 String test = "{\"one_time\":false,\"buttons\":[[{\"action\":{\"type\":\"text\",\"payload\":\"{\\\"button\\\": \\\"1\\\"}\",\"label\":\"Red2\"},\"color\":\"negative\"},{\"action\":{\"type\":\"text\",\"payload\":\"{\\\"button\\\": \\\"2\\\"}\",\"label\":\"Green\"},\"color\":\"positive\"}],[{\"action\":{\"type\":\"text\",\"payload\":\"{\\\"button\\\": \\\"3\\\"}\",\"label\":\"White\"},\"color\":\"default\"},{\"action\":{\"type\":\"text\",\"payload\":\"{\\\"button\\\": \\\"4\\\"}\",\"label\":\"Blue\"},\"color\":\"primary\"}]]}";
-                vk.messages().send(actor).peerId(244319573).keyboard(test).message("Сообщение получено").execute();
-
             }
             longPollEventsQuery = longPoll.getEvents(server.getServer(), server.getKey(), eventsResponse.getTs()).waitTime(20);
         } while (true);

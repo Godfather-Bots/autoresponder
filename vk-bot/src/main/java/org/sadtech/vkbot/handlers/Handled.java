@@ -1,4 +1,4 @@
-package org.sadtech.vkbot.listener.handlers;
+package org.sadtech.vkbot.handlers;
 
 public interface Handled {
 

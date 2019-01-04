@@ -2,8 +2,7 @@ package org.sadtech.consultant.database.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -16,7 +15,10 @@ public class User {
     private String token;
     private String lastName;
     private String city;
-//    private List<SocialNetworks> socialNetworks;
+
+    @ElementCollection
+    @CollectionTable(name="SocialNetworks", joinColumns=@JoinColumn(name="id"))
+    private List<String> socialNetworks;
 
 
 }

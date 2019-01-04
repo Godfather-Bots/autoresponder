@@ -1,11 +1,11 @@
-package org.sadtech.vkbot.listener.handlers.impl;
+package org.sadtech.vkbot.handlers.impl;
 
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j;
+import org.sadtech.vkbot.handlers.Handled;
 import org.sadtech.vkbot.listener.Observable;
 import org.sadtech.vkbot.listener.Observer;
 import org.sadtech.vkbot.listener.data.ResponsibleData;
-import org.sadtech.vkbot.listener.handlers.Handled;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 

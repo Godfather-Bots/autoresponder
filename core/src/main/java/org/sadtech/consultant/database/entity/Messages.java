@@ -2,20 +2,20 @@ package org.sadtech.consultant.database.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
-public class Message {
+public class Messages {
 
     @Id
     @GeneratedValue
     private Long idMess;
     private Long idUser;
     private String text;
-    private String date;
+    private Long date;
+    @Enumerated(EnumType.STRING)
+    private SourceMessage source;
 
 
 }

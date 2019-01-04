@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 
 import java.util.concurrent.Executors;
@@ -20,9 +19,10 @@ import java.util.concurrent.Executors;
 
 @Configuration
 @EnableAsync
-@Import({DataConfig.class})
 @PropertySource("classpath:config.properties")
-@ComponentScan("org.sadtech.vkbot.listener")
+@Import({DataConfig.class})
+@ComponentScan({"org.sadtech.vkbot", "org.sadtech.consultant.processing"})
+
 public class SpringConfigVk {
 
     @Value("${vk.groupID}")
@@ -74,9 +74,7 @@ public class SpringConfigVk {
         GetLongPollServerResponse getLongPollServerResponse = null;
         try {
             getLongPollServerResponse = vkApiClient().groups().getLongPollServer(groupActor()).execute();
-        } catch (ApiException e) {
-            e.printStackTrace();
-        } catch (ClientException e) {
+        } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }
         return getLongPollServerResponse;
