@@ -1,8 +1,7 @@
 package org.sadtech.consultant.processing;
 
 import lombok.extern.log4j.Log4j;
-import org.sadtech.consultant.database.entity.Messages;
-import org.sadtech.consultant.database.service.MessageService;
+import org.sadtech.consultant.database.entity.Message;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -13,26 +12,25 @@ import java.util.List;
 @Component
 public class MessageHandler {
 
-    private MessageService service;
+    private MessageLogicService messageLogicService;
+    private PersonLogicService userLogicService;
     private long data;
 
-    public MessageHandler(MessageService service) {
-        this.service = service;
+    public MessageHandler(MessageLogicService messageLogicService, PersonLogicService userLogicService) {
+        this.messageLogicService = messageLogicService;
+        this.userLogicService = userLogicService;
         data = new Date().getTime() / 1000;
     }
 
     @Async
     public void processing() {
         while (true) {
-            List<Messages> messages = service.getMessageRange(data);
-            for (Messages message : messages) {
+            List<Message> messages = messageLogicService.getMessageRange(data);
+            for (Message message : messages) {
                 System.out.println(message);
+
+
                 data = message.getDate();
-            }
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }

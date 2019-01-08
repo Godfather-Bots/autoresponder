@@ -6,16 +6,18 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class Messages {
+public class Message {
 
     @Id
     @GeneratedValue
     private Long idMess;
-    private Long idUser;
     private String text;
     private Long date;
-    @Enumerated(EnumType.STRING)
-    private SourceMessage source;
+    private String sourceMessage;
+
+    @ManyToOne
+    @JoinColumn(name = "idUser", nullable = false)
+    private Person user;
 
 
 }

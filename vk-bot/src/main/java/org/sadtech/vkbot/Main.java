@@ -23,8 +23,8 @@ public class Main {
         eventListener.listen();
         Handled dispetcherHandler = context.getBean(Handled.class);
         dispetcherHandler.sortAndSend();
-        MessageHandler messageHandler = context.getBean(MessageHandler.class);
-        messageHandler.processing();
+//        MessageHandler messageHandler = context.getBean(MessageHandler.class);
+//        messageHandler.processing();
 
         log.info("\n\n=== Конец программы ===\n\n");
     }

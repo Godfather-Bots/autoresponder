@@ -1,12 +1,12 @@
 package org.sadtech.consultant.database.service;
 
-import org.sadtech.consultant.database.entity.Messages;
+import org.sadtech.consultant.database.entity.Message;
 
 import java.util.List;
 
 public interface MessageService {
 
-    void addMessage(Messages message);
+    void addMessage(Message message);
 
-    List<Messages> getMessageRange(Long date);
+    List<Message> getMessageRange(Long date);
 }
