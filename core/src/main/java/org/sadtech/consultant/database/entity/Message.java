@@ -14,6 +14,7 @@ public class Message {
     private String text;
     private Long date;
     private String sourceMessage;
+    private String sex;
 
     @ManyToOne
     @JoinColumn(name = "idUser", nullable = false)

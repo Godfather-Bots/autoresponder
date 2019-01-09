@@ -3,8 +3,7 @@ package org.sadtech.consultant.database.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Data
@@ -29,5 +28,8 @@ public class Person {
     @CollectionTable(name="PersonSocialNetworks")
     @MapKeyColumn(name="KeysSocialNetworks", length = 20)
     private Map<String, Integer> socialNetworks = new HashMap<>();
+
+//    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="idMess")
+//    private List<Message> messages;
 
 }

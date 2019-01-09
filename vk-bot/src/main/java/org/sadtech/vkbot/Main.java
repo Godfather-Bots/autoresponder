@@ -16,8 +16,6 @@ public class Main {
     }
 
     public void run() throws Exception {
-        log.info("\n\n\n\n=== Запуск прогарммы ===\n\n");
-
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfigVk.class);
         EventListenable eventListener = context.getBean(EventListenable.class);
         eventListener.listen();
@@ -25,7 +23,5 @@ public class Main {
         dispetcherHandler.sortAndSend();
 //        MessageHandler messageHandler = context.getBean(MessageHandler.class);
 //        messageHandler.processing();
-
-        log.info("\n\n=== Конец программы ===\n\n");
     }
 }

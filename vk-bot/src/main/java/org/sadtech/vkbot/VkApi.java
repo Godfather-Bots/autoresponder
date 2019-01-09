@@ -6,12 +6,16 @@ import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.users.User;
-import com.vk.api.sdk.objects.users.UserFull;
+import com.vk.api.sdk.objects.users.UserMin;
 import com.vk.api.sdk.objects.users.UserXtrCounters;
+import com.vk.api.sdk.queries.users.UserField;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j
 @Component
@@ -33,15 +37,14 @@ public class VkApi {
         }
     }
 
-    public static String getUserName(Integer id) {
-        List<UserXtrCounters> user = null;
-        UserFull userFull = null;
+    public static UserXtrCounters getUserVk(Integer id) {
+        List<UserXtrCounters> temp = null;
         try {
-            user = vk.users().get(actor).userIds(String.valueOf(id)).execute();
+            temp = vk.users().get(actor).userIds(String.valueOf(id)).execute();
         } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }
-        return user.get(0).getLastName() + " " + user.get(0).getFirstName();
+        return temp.get(0);
     }
 
 }

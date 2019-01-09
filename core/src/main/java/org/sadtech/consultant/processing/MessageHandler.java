@@ -27,9 +27,7 @@ public class MessageHandler {
         while (true) {
             List<Message> messages = messageLogicService.getMessageRange(data);
             for (Message message : messages) {
-                System.out.println(message);
-
-
+                log.info(message);
                 data = message.getDate();
             }
         }
