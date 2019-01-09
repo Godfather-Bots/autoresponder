@@ -9,13 +9,10 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.groups.responses.GetLongPollServerResponse;
 import lombok.extern.log4j.Log4j;
-import org.sadtech.vkbot.VkApi;
 import org.sadtech.vkbot.listener.EventListenable;
 import org.sadtech.vkbot.listener.data.ResponsibleData;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 @Log4j
 @Component
@@ -59,7 +56,6 @@ public class EventListenerVk implements EventListenable {
             longPollEventsQuery = longPoll.getEvents(server.getServer(), server.getKey(), eventsResponse.getTs()).waitTime(20);
         } while (true);
     }
-
 
 
 }

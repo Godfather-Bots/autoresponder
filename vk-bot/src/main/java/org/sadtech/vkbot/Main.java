@@ -11,8 +11,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Main {
 
     public static void main(String[] args) throws Exception {
-       Main main = new Main();
-       main.run();
+        Main main = new Main();
+        main.run();
     }
 
     public void run() throws Exception {

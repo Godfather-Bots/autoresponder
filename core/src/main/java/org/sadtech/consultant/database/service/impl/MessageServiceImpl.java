@@ -5,7 +5,6 @@ import org.sadtech.consultant.database.repository.MessageRepository;
 import org.sadtech.consultant.database.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

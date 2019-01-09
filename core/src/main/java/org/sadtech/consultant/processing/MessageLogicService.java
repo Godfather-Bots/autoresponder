@@ -1,7 +1,6 @@
 package org.sadtech.consultant.processing;
 
 import org.sadtech.consultant.database.entity.Message;
-import org.sadtech.consultant.database.entity.Person;
 import org.sadtech.consultant.database.service.MessageService;
 import org.springframework.stereotype.Component;
 

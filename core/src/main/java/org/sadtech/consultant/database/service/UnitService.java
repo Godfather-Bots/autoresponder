@@ -5,6 +5,7 @@ import org.sadtech.consultant.database.entity.Unit;
 public interface UnitService {
 
     void addUnit(Unit unit);
+
     void removeUnit(Long id);
 
 }

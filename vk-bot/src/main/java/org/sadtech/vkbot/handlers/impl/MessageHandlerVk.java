@@ -3,7 +3,6 @@ package org.sadtech.vkbot.handlers.impl;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.vk.api.sdk.objects.users.UserXtrCounters;
-import com.vk.api.sdk.queries.users.UserField;
 import lombok.extern.log4j.Log4j;
 import org.sadtech.consultant.database.entity.Message;
 import org.sadtech.consultant.database.entity.Person;
@@ -14,11 +13,6 @@ import org.sadtech.vkbot.VkApi;
 import org.sadtech.vkbot.listener.Observable;
 import org.sadtech.vkbot.listener.Observer;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Log4j
 @Component
