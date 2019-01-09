@@ -1,8 +1,8 @@
-package org.sadtech.consultant.database.service.impl;
+package org.sadtech.autoresponder.database.service.impl;
 
-import org.sadtech.consultant.database.repository.UnitRepositoriy;
-import org.sadtech.consultant.database.entity.Unit;
-import org.sadtech.consultant.database.service.UnitService;
+import org.sadtech.autoresponder.database.repository.UnitRepositoriy;
+import org.sadtech.autoresponder.database.entity.Unit;
+import org.sadtech.autoresponder.database.service.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

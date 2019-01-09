@@ -1,7 +1,7 @@
-package org.sadtech.consultant.processing;
+package org.sadtech.autoresponder.processing;
 
-import org.sadtech.consultant.database.entity.Mail;
-import org.sadtech.consultant.database.service.MailService;
+import org.sadtech.autoresponder.database.entity.Mail;
+import org.sadtech.autoresponder.database.service.MailService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

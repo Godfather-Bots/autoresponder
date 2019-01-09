@@ -1,8 +1,8 @@
-package org.sadtech.consultant.database.service.impl;
+package org.sadtech.autoresponder.database.service.impl;
 
-import org.sadtech.consultant.database.entity.Mail;
-import org.sadtech.consultant.database.repository.MailRepository;
-import org.sadtech.consultant.database.service.MailService;
+import org.sadtech.autoresponder.database.entity.Mail;
+import org.sadtech.autoresponder.database.repository.MailRepository;
+import org.sadtech.autoresponder.database.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package org.sadtech.consultant.database.entity;
+package org.sadtech.autoresponder.database.entity;
 
 import lombok.Data;
 

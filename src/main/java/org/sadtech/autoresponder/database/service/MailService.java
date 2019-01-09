@@ -1,6 +1,6 @@
-package org.sadtech.consultant.database.service;
+package org.sadtech.autoresponder.database.service;
 
-import org.sadtech.consultant.database.entity.Mail;
+import org.sadtech.autoresponder.database.entity.Mail;
 
 import java.util.List;
 

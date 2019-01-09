@@ -1,4 +1,4 @@
-package org.sadtech.consultant;
+package org.sadtech.autoresponder;
 
 public interface MessageSender {
 

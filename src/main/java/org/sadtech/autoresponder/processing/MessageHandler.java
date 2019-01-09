@@ -1,9 +1,9 @@
-package org.sadtech.consultant.processing;
+package org.sadtech.autoresponder.processing;
 
 import lombok.extern.log4j.Log4j;
-import org.sadtech.consultant.database.entity.Mail;
-import org.sadtech.consultant.MessageSender;
-import org.sadtech.consultant.database.entity.Person;
+import org.sadtech.autoresponder.database.entity.Mail;
+import org.sadtech.autoresponder.MessageSender;
+import org.sadtech.autoresponder.database.entity.Person;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

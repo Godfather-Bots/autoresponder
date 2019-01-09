@@ -1,6 +1,6 @@
-package org.sadtech.consultant.database.repository;
+package org.sadtech.autoresponder.database.repository;
 
-import org.sadtech.consultant.database.entity.Person;
+import org.sadtech.autoresponder.database.entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,8 +1,8 @@
-package org.sadtech.consultant.processing;
+package org.sadtech.autoresponder.processing;
 
 import lombok.extern.log4j.Log4j;
-import org.sadtech.consultant.database.entity.Person;
-import org.sadtech.consultant.database.service.PersonService;
+import org.sadtech.autoresponder.database.entity.Person;
+import org.sadtech.autoresponder.database.service.PersonService;
 import org.springframework.stereotype.Component;
 
 @Log4j
