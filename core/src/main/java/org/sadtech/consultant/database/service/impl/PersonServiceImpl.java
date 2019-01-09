@@ -1,7 +1,7 @@
 package org.sadtech.consultant.database.service.impl;
 
-import org.sadtech.consultant.database.entity.Person;
 import org.sadtech.consultant.database.repository.PersonRepository;
+import org.sadtech.consultant.database.entity.Person;
 import org.sadtech.consultant.database.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -24,10 +24,13 @@ public class Person {
     private String city;
 
     private String token;
+    private String email;
 
     @ElementCollection
     @CollectionTable(name = "PersonSocialNetworks")
     @MapKeyColumn(name = "KeysSocialNetworks", length = 20)
     private Map<String, Integer> socialNetworks = new HashMap<>();
+
+
 
 }
