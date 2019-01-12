@@ -12,5 +12,5 @@ public interface UnitRepository {
 
     void addUnits(Collection<Unit> units);
 
-    void removeUnit(Integer idUnit);
+    void removeUnit(Unit idUnit);
 }

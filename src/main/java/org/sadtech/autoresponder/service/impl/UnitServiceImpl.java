@@ -2,14 +2,13 @@ package org.sadtech.autoresponder.service.impl;
 
 import com.sun.istack.internal.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.repository.UnitRepository;
-import org.sadtech.autoresponder.submodule.parser.Parser;
 import org.sadtech.autoresponder.service.UnitService;
+import org.sadtech.autoresponder.submodule.parser.Parser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 public class UnitServiceImpl implements UnitService {
@@ -38,5 +37,7 @@ public class UnitServiceImpl implements UnitService {
     public Unit getUnitById(@NotNull Integer idUnit) {
         return unitRepository.getUnitById(idUnit);
     }
+
+
 }
 

@@ -27,7 +27,7 @@ public class UnitRepositoryImpl implements UnitRepository {
     }
 
     @Override
-    public void removeUnit(Integer idUnit) {
-        units.remove(idUnit);
+    public void removeUnit(Unit idUnit) {
+        units.remove(idUnit.getIdUnit());
     }
 }
