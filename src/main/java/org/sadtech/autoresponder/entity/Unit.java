@@ -13,5 +13,6 @@ public class Unit {
     private String answer;
     private Integer priority;
     private Set<String> keyWords;
+    private Integer matchThreshold;
 
 }

@@ -19,7 +19,9 @@ public class Autoresponder {
     public String answer(@NotNull Integer idPerson, @NotNull String message) {
         Person person = personService.getPersonById(idPerson);
         Unit unit = person.getUnit();
-        return unitService.nextUnit(unit, message).getAnswer();
+        unit = unitService.nextUnit(unit, message);
+        person.setUnit(unit);
+        return unit.getAnswer();
     }
 
     public String answer(@NotNull Integer idPerson, @NotNull String message, @NotNull List<String> words) {
