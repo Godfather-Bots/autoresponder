@@ -17,20 +17,36 @@ public class Autoresponder {
     private PersonService personService;
 
     public String answer(@NotNull Integer idPerson, @NotNull String message) {
-        Person person = personService.getPersonById(idPerson);
-        Unit unit = person.getUnit();
-        unit = unitService.nextUnit(unit, message);
+        Person person = addPerson(idPerson);
+        Unit unit;
+        if (person.getUnit() == null) {
+            unit = unitService.nextUnit(unitService.menuUnit(), message);
+        } else {
+            unit = unitService.nextUnit(person.getUnit(), message);
+        }
         person.setUnit(unit);
         return unit.getAnswer();
     }
 
     public String answer(@NotNull Integer idPerson, @NotNull String message, @NotNull List<String> words) {
-        Person person = personService.getPersonById(idPerson);
+        Person person = addPerson(idPerson);
         Unit unit = unitService.nextUnit(person.getUnit(), message);
         InsertWords insertWords = new InsertWords();
         insertWords.setInText(unit.getAnswer());
         insertWords.insert(words);
         return insertWords.getOutText();
+    }
+
+    private Person addPerson(Integer idPerson) {
+        Person person;
+        if (personService.checkPerson(idPerson)) {
+            person = personService.getPersonById(idPerson);
+        } else {
+            person = new Person();
+            person.setId(idPerson);
+            personService.addPerson(person);
+        }
+        return person;
     }
 
 }

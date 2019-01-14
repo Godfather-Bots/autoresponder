@@ -6,5 +6,6 @@ public interface PersonService {
 
     Person getPersonById(Integer integer);
     void addPerson(Person person);
+    boolean checkPerson(Integer idPerson);
 
 }

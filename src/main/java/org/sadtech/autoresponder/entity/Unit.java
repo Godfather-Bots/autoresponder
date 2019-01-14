@@ -14,5 +14,6 @@ public class Unit {
     private Integer priority;
     private Set<String> keyWords;
     private Integer matchThreshold;
+    private Boolean level = false;
 
 }

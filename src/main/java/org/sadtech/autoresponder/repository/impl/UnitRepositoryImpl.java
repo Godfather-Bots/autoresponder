@@ -3,9 +3,7 @@ package org.sadtech.autoresponder.repository.impl;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.repository.UnitRepository;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class UnitRepositoryImpl implements UnitRepository {
 
@@ -29,5 +27,16 @@ public class UnitRepositoryImpl implements UnitRepository {
     @Override
     public void removeUnit(Unit idUnit) {
         units.remove(idUnit.getIdUnit());
+    }
+
+    @Override
+    public List<Unit> menuUnits() {
+        ArrayList<Unit> unitsMenu = new ArrayList<>();
+        for (Integer integer : units.keySet()) {
+            if (units.get(integer).getLevel()) {
+                unitsMenu.add(units.get(integer));
+            }
+        }
+        return unitsMenu;
     }
 }

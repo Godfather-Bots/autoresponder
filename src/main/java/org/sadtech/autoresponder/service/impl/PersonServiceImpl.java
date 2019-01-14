@@ -19,4 +19,9 @@ public class PersonServiceImpl implements PersonService {
     public void addPerson(Person person) {
         personRepository.addPerson(person);
     }
+
+    @Override
+    public boolean checkPerson(Integer idPerson) {
+        return personRepository.getPersonById(idPerson) != null;
+    }
 }

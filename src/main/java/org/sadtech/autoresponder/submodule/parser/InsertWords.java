@@ -19,7 +19,7 @@ public class InsertWords {
         Matcher m = pattern.matcher(inText);             // Инициализация Matcher
         StringBuffer result = new StringBuffer();   // Буфер для конечного значения
         while (m.find()) {                          // Проверка на совпадение
-            if (words.get(Integer.parseInt(m.group(1))) != null) {
+            if (Integer.parseInt(m.group(1)) < words.size()) {
                 m.appendReplacement(result, words.get(Integer.parseInt(m.group(1)))); // Подставляем значение из HashMap
             } else {
                 m.appendReplacement(result, m.group(0));

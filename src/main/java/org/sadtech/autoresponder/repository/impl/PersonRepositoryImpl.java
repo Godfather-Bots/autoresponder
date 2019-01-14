@@ -7,7 +7,7 @@ import java.util.*;
 
 public class PersonRepositoryImpl implements PersonRepository {
 
-    Map<Integer, Person> people = new HashMap<>();
+    private Map<Integer, Person> people = new HashMap<>();
 
     @Override
     public void addPerson(Person person) {
