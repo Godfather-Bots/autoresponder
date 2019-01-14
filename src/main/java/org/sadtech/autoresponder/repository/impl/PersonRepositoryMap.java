@@ -5,7 +5,7 @@ import org.sadtech.autoresponder.repository.PersonRepository;
 
 import java.util.*;
 
-public class PersonRepositoryImpl implements PersonRepository {
+public class PersonRepositoryMap implements PersonRepository {
 
     private Map<Integer, Person> people = new HashMap<>();
 

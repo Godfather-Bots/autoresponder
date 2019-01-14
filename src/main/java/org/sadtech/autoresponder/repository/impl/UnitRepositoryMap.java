@@ -5,7 +5,7 @@ import org.sadtech.autoresponder.repository.UnitRepository;
 
 import java.util.*;
 
-public class UnitRepositoryImpl implements UnitRepository {
+public class UnitRepositoryMap implements UnitRepository {
 
     private Map<Integer, Unit> units = new HashMap<>();
 
