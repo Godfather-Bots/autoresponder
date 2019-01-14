@@ -17,7 +17,7 @@ public class Autoresponder {
     private PersonService personService;
 
     public String answer(@NotNull Integer idPerson, @NotNull String message) {
-        Person person = addPerson(idPerson);
+        Person person = CheckAndAddPerson(idPerson);
         Unit unit;
         if (person.getUnit() == null) {
             unit = unitService.nextUnit(unitService.menuUnit(), message);
@@ -29,15 +29,14 @@ public class Autoresponder {
     }
 
     public String answer(@NotNull Integer idPerson, @NotNull String message, @NotNull List<String> words) {
-        Person person = addPerson(idPerson);
-        Unit unit = unitService.nextUnit(person.getUnit(), message);
+        String answer = answer(idPerson, message);
         InsertWords insertWords = new InsertWords();
-        insertWords.setInText(unit.getAnswer());
+        insertWords.setInText(answer);
         insertWords.insert(words);
         return insertWords.getOutText();
     }
 
-    private Person addPerson(Integer idPerson) {
+    private Person CheckAndAddPerson(Integer idPerson) {
         Person person;
         if (personService.checkPerson(idPerson)) {
             person = personService.getPersonById(idPerson);

@@ -85,6 +85,7 @@ public class AutoresponderTest {
 
     @Test
     public void NoAnswer() {
+        person.setUnit(null);
         String test = autoresponder.answer(person.getId(), "Привет это срабатывания");
         Assert.assertNull(test);
     }
@@ -125,6 +126,5 @@ public class AutoresponderTest {
     public void answerNoPerson() {
         Assert.assertEquals(autoresponder.answer(100, "Привет это тест срабатывания"), "Здравствуйте, вы написали в нашу компанию!");
         Assert.assertEquals(autoresponder.answer(100, "Привет это тест срабатывания"), "Ответ с {0} параметрами!");
-
     }
 }
