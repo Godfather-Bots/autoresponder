@@ -2,19 +2,16 @@ package org.sadtech.autoresponder;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sadtech.autoresponder.entity.Person;
 import org.sadtech.autoresponder.entity.Unit;
-import org.sadtech.autoresponder.repository.impl.PersonRepositoryImpl;
-import org.sadtech.autoresponder.repository.impl.UnitRepositoryImpl;
+import org.sadtech.autoresponder.repository.impl.PersonRepositoryMap;
+import org.sadtech.autoresponder.repository.impl.UnitRepositoryMap;
 import org.sadtech.autoresponder.service.impl.PersonServiceImpl;
 import org.sadtech.autoresponder.service.impl.UnitServiceImpl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-
-import static org.junit.Assert.*;
 
 public class AutoresponderTest {
 
@@ -23,8 +20,8 @@ public class AutoresponderTest {
     private Unit unit2 = new Unit();
     private Unit unit3 = new Unit();
     private ArrayList<Unit> units = new ArrayList<>();
-    private UnitRepositoryImpl unitRepository = new UnitRepositoryImpl();
-    private PersonRepositoryImpl personRepository = new PersonRepositoryImpl();
+    private UnitRepositoryMap unitRepository = new UnitRepositoryMap();
+    private PersonRepositoryMap personRepository = new PersonRepositoryMap();
 
     private UnitServiceImpl unitService = new UnitServiceImpl(unitRepository);
     private PersonServiceImpl personService = new PersonServiceImpl(personRepository);
