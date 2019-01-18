@@ -1,7 +1,7 @@
 package org.sadtech.autoresponder.service.impl;
 
-import com.sun.istack.internal.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.repository.UnitRepository;
@@ -17,7 +17,7 @@ public class UnitServiceImpl implements UnitService {
 
     private UnitRepository unitRepository;
 
-    public Unit nextUnit(Unit unit, @NotNull String message) {
+    public Unit nextUnit(Unit unit, @NonNull String message) {
         ArrayList<Unit> nextUnits = (ArrayList<Unit>) unit.getNextUnits();
         if (nextUnits.size() > 0) {
             Parser parser = new Parser();
@@ -38,7 +38,7 @@ public class UnitServiceImpl implements UnitService {
     }
 
     @Override
-    public Unit getUnitById(@NotNull Integer idUnit) {
+    public Unit getUnitById(@NonNull Integer idUnit) {
         return unitRepository.getUnitById(idUnit);
     }
 

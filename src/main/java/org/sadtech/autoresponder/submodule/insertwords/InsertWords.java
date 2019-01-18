@@ -1,4 +1,4 @@
-package org.sadtech.autoresponder.submodule.parser;
+package org.sadtech.autoresponder.submodule.insertwords;
 
 import lombok.Getter;
 import lombok.Setter;
