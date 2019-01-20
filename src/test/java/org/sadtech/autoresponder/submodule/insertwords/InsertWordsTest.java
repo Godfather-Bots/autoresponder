@@ -1,8 +1,9 @@
-package org.sadtech.autoresponder.submodule.parser;
+package org.sadtech.autoresponder.submodule.insertwords;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.sadtech.autoresponder.submodule.insertwords.InsertWords;
 
 import java.util.ArrayList;
 

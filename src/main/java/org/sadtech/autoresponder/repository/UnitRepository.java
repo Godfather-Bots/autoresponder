@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface UnitRepository {
 
-    Unit getUnitById(Integer idUnit);
-
     void addUnit(Unit unit);
 
     void addUnits(Collection<Unit> units);
@@ -16,4 +14,5 @@ public interface UnitRepository {
     void removeUnit(Unit idUnit);
 
     List<Unit> menuUnits();
+
 }

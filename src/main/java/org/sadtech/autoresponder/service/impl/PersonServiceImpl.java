@@ -1,14 +1,16 @@
 package org.sadtech.autoresponder.service.impl;
 
-import lombok.AllArgsConstructor;
 import org.sadtech.autoresponder.entity.Person;
 import org.sadtech.autoresponder.repository.PersonRepository;
 import org.sadtech.autoresponder.service.PersonService;
 
-@AllArgsConstructor
 public class PersonServiceImpl implements PersonService {
 
     private PersonRepository personRepository;
+
+    public PersonServiceImpl(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     @Override
     public Person getPersonById(Integer integer) {

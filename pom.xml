@@ -6,7 +6,7 @@
 
     <groupId>org.sadtech.autoresponder</groupId>
     <artifactId>core</artifactId>
-    <version>1.0</version>
+    <version>1.1.0-RELEASE</version>
     <build>
         <plugins>
             <plugin>
@@ -40,6 +40,7 @@
             <artifactId>log4j</artifactId>
             <version>${log4j}</version>
         </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
