@@ -2,7 +2,6 @@ package org.sadtech.autoresponder.repository;
 
 import org.sadtech.autoresponder.entity.Person;
 
-import java.util.Collection;
 import java.util.Map;
 
 public interface PersonRepository {
