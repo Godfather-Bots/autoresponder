@@ -8,8 +8,11 @@ import java.util.Map;
 public interface PersonRepository {
 
     void addPerson(Person person);
+
     void removePerson(Person person);
+
     void addPersonAll(Map<Integer, Person> personCollection);
+
     Person getPersonById(Integer idPerson);
 
 }

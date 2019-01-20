@@ -1,13 +1,14 @@
 package org.sadtech.autoresponder.service;
 
 import org.sadtech.autoresponder.entity.Unit;
+import org.sadtech.autoresponder.repository.UnitRepository;
+
+import java.util.List;
 
 public interface UnitService {
 
-    Unit nextUnit(Unit unit, String message);
+    List<Unit> menuUnit();
 
-    Unit getUnitById(Integer idUnit);
-
-    Unit menuUnit();
+    void addUnitRepository(UnitRepository unitRepository);
 
 }
