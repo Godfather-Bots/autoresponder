@@ -37,8 +37,7 @@ public class Autoresponder {
         if (personService.checkPerson(idPerson)) {
             person = personService.getPersonById(idPerson);
         } else {
-            person = new Person();
-            person.setId(idPerson);
+            person = new Person(idPerson);
             personService.addPerson(person);
         }
         return person;

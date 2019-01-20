@@ -123,4 +123,4 @@
 //        Assert.assertEquals(autoresponder.answer(100, "Привет это тест срабатывания"), "Здравствуйте, вы написали в нашу компанию!");
 //        Assert.assertEquals(autoresponder.answer(100, "Привет это тест срабатывания"), "Ответ с {0} параметрами!");
 //    }
-}
+//}
