@@ -13,7 +13,7 @@ public abstract class Unit {
     private List<Unit> nextUnits;
 
     public Unit() {
-        level=false;
+        level = false;
     }
 
     public Unit(Set<String> keyWords, Integer matchThreshold, Integer priority, Boolean level, List<Unit> nextUnits) {
