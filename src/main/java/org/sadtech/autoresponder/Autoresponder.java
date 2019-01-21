@@ -30,10 +30,10 @@ public class Autoresponder {
         if (person.getUnit() == null) {
             unit = nextUnit(unitService.menuUnit(), message);
         } else {
-            if (person.getUnit().getNextUnits() != null) {
-                unit = nextUnit(person.getUnit().getNextUnits(), message);
-            } else {
+            if (person.getUnit().getNextUnits() == null) {
                 unit = nextUnit(unitService.menuUnit(), message);
+            } else {
+                unit = nextUnit(person.getUnit().getNextUnits(), message);
             }
         }
         if (unit!=null) {

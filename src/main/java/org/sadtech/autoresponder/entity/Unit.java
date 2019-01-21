@@ -9,18 +9,17 @@ public abstract class Unit {
     private Set<String> keyWords;
     private Integer matchThreshold;
     private Integer priority;
-    private Boolean level;
     private List<Unit> nextUnits;
 
     public Unit() {
-        level = false;
+        priority = 10;
+        matchThreshold = 50;
     }
 
     public Unit(Set<String> keyWords, Integer matchThreshold, Integer priority, Boolean level, List<Unit> nextUnits) {
         this.keyWords = keyWords;
         this.matchThreshold = matchThreshold;
         this.priority = priority;
-        this.level = level;
         this.nextUnits = nextUnits;
     }
 
@@ -48,14 +47,6 @@ public abstract class Unit {
         this.priority = priority;
     }
 
-    public Boolean getLevel() {
-        return level;
-    }
-
-    public void setLevel(Boolean level) {
-        this.level = level;
-    }
-
     public List<Unit> getNextUnits() {
         return nextUnits;
     }
@@ -72,12 +63,11 @@ public abstract class Unit {
         return Objects.equals(keyWords, unit.keyWords) &&
                 Objects.equals(matchThreshold, unit.matchThreshold) &&
                 Objects.equals(priority, unit.priority) &&
-                Objects.equals(level, unit.level) &&
                 Objects.equals(nextUnits, unit.nextUnits);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(keyWords, matchThreshold, priority, level, nextUnits);
+        return Objects.hash(keyWords, matchThreshold, priority, nextUnits);
     }
 }
