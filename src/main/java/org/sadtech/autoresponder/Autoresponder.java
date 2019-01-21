@@ -1,5 +1,6 @@
 package org.sadtech.autoresponder;
 
+import lombok.extern.log4j.Log4j;
 import org.sadtech.autoresponder.entity.Person;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.compare.UnitPriorityComparator;
@@ -7,9 +8,11 @@ import org.sadtech.autoresponder.service.PersonService;
 import org.sadtech.autoresponder.service.UnitService;
 import org.sadtech.autoresponder.submodule.parser.Parser;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+@Log4j
 public class Autoresponder {
 
     private UnitService unitService;
@@ -48,10 +51,17 @@ public class Autoresponder {
             Parser parser = new Parser();
             parser.setText(message);
             parser.parse();
-            return nextUnits.stream().filter(nextUnit -> !Collections.disjoint(nextUnit.getKeyWords(), parser.getWords())).max(new UnitPriorityComparator()).get();
+            return nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold()).max(new UnitPriorityComparator()).get();
         } else {
             return null;
         }
+    }
+
+    private Double textPercentageMatch(Unit unit, Set<String> words) {
+        Set<String> temp = new HashSet<>(unit.getKeyWords());
+        temp.retainAll(words);
+        log.info((temp.size() / unit.getKeyWords().size()) * 100);
+        return (double) (temp.size() / unit.getKeyWords().size()) * 100;
     }
 
 }
