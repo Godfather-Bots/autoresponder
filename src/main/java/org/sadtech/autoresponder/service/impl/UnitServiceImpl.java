@@ -35,6 +35,16 @@ public class UnitServiceImpl implements UnitService {
         unitRepositories.add(unitRepository);
     }
 
+    @Override
+    public UnitRepository getUnitRepository(Class clazz) {
+        for (UnitRepository unitRepository : unitRepositories) {
+            if (unitRepository.getClass().equals(clazz)) {
+                return unitRepository;
+            }
+        }
+        return null;
+    }
+
 
 }
 

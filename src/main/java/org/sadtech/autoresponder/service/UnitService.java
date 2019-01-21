@@ -11,4 +11,6 @@ public interface UnitService {
 
     void addUnitRepository(UnitRepository unitRepository);
 
+    UnitRepository getUnitRepository(Class clazz);
+
 }
