@@ -5,14 +5,12 @@ import org.sadtech.autoresponder.entity.Unit;
 import java.util.Collection;
 import java.util.List;
 
-public interface UnitRepository {
+public interface UnitRepository<T extends Unit> {
 
-    void addUnit(Unit unit);
+    void addUnit(T unit);
 
-    void addUnits(Collection<Unit> units);
+    void addUnits(Collection<T> units);
 
-    void removeUnit(Unit idUnit);
-
-    List<Unit> menuUnits();
+    List<T> menuUnits();
 
 }
