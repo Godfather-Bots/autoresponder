@@ -10,6 +10,7 @@ import org.sadtech.autoresponder.submodule.parser.Parser;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Log4j
@@ -56,7 +57,8 @@ public class Autoresponder {
             Parser parser = new Parser();
             parser.setText(message);
             parser.parse();
-            return nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold()).max(new UnitPriorityComparator()).get();
+            Optional<Unit> max = nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold()).max(new UnitPriorityComparator());
+            return max.orElse(null);
         } else {
             return null;
         }
