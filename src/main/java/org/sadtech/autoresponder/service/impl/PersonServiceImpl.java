@@ -1,12 +1,14 @@
 package org.sadtech.autoresponder.service.impl;
 
-import lombok.extern.log4j.Log4j;
 import org.sadtech.autoresponder.entity.Person;
 import org.sadtech.autoresponder.repository.PersonRepository;
 import org.sadtech.autoresponder.service.PersonService;
 
-@Log4j
+import org.apache.log4j.Logger;
+
 public class PersonServiceImpl implements PersonService {
+
+    private static final Logger log = Logger.getLogger(PersonServiceImpl.class);
 
     private PersonRepository personRepository;
 

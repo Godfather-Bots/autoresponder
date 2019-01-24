@@ -38,7 +38,6 @@ public class AutoresponderTest {
         words2.add("тест");
         words2.add("привет");
 
-        unit.setLevel(true);
         unit.setPriority(50);
         unit.setKeyWords(words);
         unit.setAnswer("Здравствуйте, вы написали в нашу компанию!");
@@ -123,7 +122,7 @@ public class AutoresponderTest {
         }
 
         @Override
-        public void addUnits(Collection<TextUnit> units) {
+        public void addUnits(List<TextUnit> units) {
             textUnits.addAll(units);
         }
 
@@ -131,9 +130,7 @@ public class AutoresponderTest {
         public List<TextUnit> menuUnits() {
             List<TextUnit> units = new ArrayList<>();
             for (TextUnit textUnit : textUnits) {
-                if (textUnit.getLevel()) {
-                    units.add(textUnit);
-                }
+                units.add(textUnit);
             }
             return units;
         }

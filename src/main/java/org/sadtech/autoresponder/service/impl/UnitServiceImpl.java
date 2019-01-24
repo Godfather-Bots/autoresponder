@@ -1,6 +1,6 @@
 package org.sadtech.autoresponder.service.impl;
 
-import lombok.extern.log4j.Log4j;
+import org.apache.log4j.Logger;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.repository.UnitRepository;
 import org.sadtech.autoresponder.service.UnitService;
@@ -8,8 +8,9 @@ import org.sadtech.autoresponder.service.UnitService;
 import java.util.ArrayList;
 import java.util.List;
 
-@Log4j
 public class UnitServiceImpl implements UnitService {
+
+    private static final Logger log = Logger.getLogger(UnitServiceImpl.class);
 
     private List<UnitRepository> unitRepositories;
 

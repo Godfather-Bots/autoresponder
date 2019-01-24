@@ -1,6 +1,6 @@
 package org.sadtech.autoresponder;
 
-import lombok.extern.log4j.Log4j;
+import org.apache.log4j.Logger;
 import org.sadtech.autoresponder.entity.Person;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.compare.UnitPriorityComparator;
@@ -13,8 +13,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@Log4j
 public class Autoresponder {
+
+    public static final Logger log = Logger.getLogger(Autoresponder.class);
 
     private UnitService unitService;
     private PersonService personService;
