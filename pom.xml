@@ -21,6 +21,14 @@
         </plugins>
     </build>
 
+    <developers>
+        <developer>
+            <id>uPagge</id>
+            <name>Struchkov Mark</name>
+            <email>upagge@mail.ru</email>
+        </developer>
+    </developers>
+
     <properties>
         <log4j>1.2.17</log4j>
         <junit.ver>4.12</junit.ver>

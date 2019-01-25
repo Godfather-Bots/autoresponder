@@ -87,6 +87,7 @@ public class AutoresponderTest {
     }
 
     @Test
+    @Ignore
     public void answerNoPerson() {
         TextUnit textUnit = (TextUnit) autoresponder.answer(100, "Привет это тест срабатывания");
         Assert.assertEquals(textUnit.getAnswer(), "Здравствуйте, вы написали в нашу компанию!");
