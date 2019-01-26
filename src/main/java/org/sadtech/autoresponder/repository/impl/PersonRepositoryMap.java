@@ -16,7 +16,7 @@ public class PersonRepositoryMap implements PersonRepository {
 
     @Override
     public void removePerson(Person person) {
-        people.remove(person);
+        people.remove(person.getId());
     }
 
     @Override

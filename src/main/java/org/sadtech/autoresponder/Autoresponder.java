@@ -1,6 +1,6 @@
 package org.sadtech.autoresponder;
 
-import lombok.extern.log4j.Log4j;
+import org.apache.log4j.Logger;
 import org.sadtech.autoresponder.entity.Person;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.compare.UnitPriorityComparator;
@@ -10,10 +10,12 @@ import org.sadtech.autoresponder.submodule.parser.Parser;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-@Log4j
 public class Autoresponder {
+
+    public static final Logger log = Logger.getLogger(Autoresponder.class);
 
     private UnitService unitService;
     private PersonService personService;
@@ -29,9 +31,15 @@ public class Autoresponder {
         if (person.getUnit() == null) {
             unit = nextUnit(unitService.menuUnit(), message);
         } else {
-            unit = nextUnit(person.getUnit().getNextUnits(), message);
+            if (person.getUnit().getNextUnits() == null) {
+                unit = nextUnit(unitService.menuUnit(), message);
+            } else {
+                unit = nextUnit(person.getUnit().getNextUnits(), message);
+            }
         }
-        person.setUnit(unit);
+        if (unit != null) {
+            person.setUnit(unit);
+        }
         return unit;
     }
 
@@ -51,17 +59,22 @@ public class Autoresponder {
             Parser parser = new Parser();
             parser.setText(message);
             parser.parse();
-            return nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold()).max(new UnitPriorityComparator()).get();
+            Optional<Unit> max = nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold() || nextUnit.getKeyWords() == null).max(new UnitPriorityComparator());
+            return max.orElse(null);
         } else {
             return null;
         }
     }
 
     private Double textPercentageMatch(Unit unit, Set<String> words) {
-        Set<String> temp = new HashSet<>(unit.getKeyWords());
-        temp.retainAll(words);
-        log.info((temp.size() / unit.getKeyWords().size()) * 100);
-        return (double) (temp.size() / unit.getKeyWords().size()) * 100;
+        if (unit.getKeyWords() != null) {
+            Set<String> temp = new HashSet<>(unit.getKeyWords());
+            temp.retainAll(words);
+            log.info((temp.size() / unit.getKeyWords().size()) * 100);
+            return (double) (temp.size() / unit.getKeyWords().size()) * 100;
+        } else {
+            return 0.0;
+        }
     }
 
 }
