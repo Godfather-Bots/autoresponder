@@ -1,8 +1,6 @@
 package org.sadtech.autoresponder.entity;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Unit {
 
@@ -21,6 +19,20 @@ public abstract class Unit {
         this.matchThreshold = matchThreshold;
         this.priority = priority;
         this.nextUnits = nextUnits;
+    }
+
+    public void setKeyWord(String keyWord) {
+        if (keyWords == null) {
+            keyWords = new HashSet<>();
+        }
+        keyWords.add(keyWord);
+    }
+
+    public void setNextUnit(Unit unit) {
+        if (nextUnits == null) {
+            nextUnits = new ArrayList<>();
+        }
+        nextUnits.add(unit);
     }
 
     public Set<String> getKeyWords() {

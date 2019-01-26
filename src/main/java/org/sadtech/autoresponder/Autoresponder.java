@@ -37,7 +37,7 @@ public class Autoresponder {
                 unit = nextUnit(person.getUnit().getNextUnits(), message);
             }
         }
-        if (unit!=null) {
+        if (unit != null) {
             person.setUnit(unit);
         }
         return unit;
@@ -59,7 +59,7 @@ public class Autoresponder {
             Parser parser = new Parser();
             parser.setText(message);
             parser.parse();
-            Optional<Unit> max = nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold()).max(new UnitPriorityComparator());
+            Optional<Unit> max = nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold() || nextUnit.getKeyWords() == null).max(new UnitPriorityComparator());
             return max.orElse(null);
         } else {
             return null;
@@ -67,10 +67,14 @@ public class Autoresponder {
     }
 
     private Double textPercentageMatch(Unit unit, Set<String> words) {
-        Set<String> temp = new HashSet<>(unit.getKeyWords());
-        temp.retainAll(words);
-        log.info((temp.size() / unit.getKeyWords().size()) * 100);
-        return (double) (temp.size() / unit.getKeyWords().size()) * 100;
+        if (unit.getKeyWords() != null) {
+            Set<String> temp = new HashSet<>(unit.getKeyWords());
+            temp.retainAll(words);
+            log.info((temp.size() / unit.getKeyWords().size()) * 100);
+            return (double) (temp.size() / unit.getKeyWords().size()) * 100;
+        } else {
+            return 0.0;
+        }
     }
 
 }
