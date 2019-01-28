@@ -70,8 +70,11 @@ public class Autoresponder {
         if (unit.getKeyWords() != null) {
             Set<String> temp = new HashSet<>(unit.getKeyWords());
             temp.retainAll(words);
-            log.info((temp.size() / unit.getKeyWords().size()) * 100);
-            return (double) (temp.size() / unit.getKeyWords().size()) * 100;
+            log.info("Ключевые слова юнита: " + unit.getKeyWords() + " (" + unit.getKeyWords().size() + ")");
+            log.info("Ключевые слова от пользователя: " + words);
+            log.info("Пересечение: " + temp + " (" + temp.size() + ")");
+            log.info((double)temp.size() / (double)unit.getKeyWords().size() * 100.0);
+            return (double)temp.size() / (double)unit.getKeyWords().size() * 100.0;
         } else {
             return 0.0;
         }
