@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Autoresponder {
 
@@ -56,14 +58,33 @@ public class Autoresponder {
 
     private Unit nextUnit(List<Unit> nextUnits, String message) {
         if (nextUnits.size() > 0) {
-            Parser parser = new Parser();
-            parser.setText(message);
-            parser.parse();
-            Optional<Unit> max = nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold() || nextUnit.getKeyWords() == null).max(new UnitPriorityComparator());
-            return max.orElse(null);
+            UnitPriorityComparator unitPriorityComparator = new UnitPriorityComparator();
+            Optional<Unit> patternUnits = nextUnits.stream().filter(nextUnit -> nextUnit.getPattern() != null).filter(nextUnit -> patternReg(nextUnit, message)).max(unitPriorityComparator);
+
+            if (!patternUnits.isPresent()) {
+                Parser parser = new Parser();
+                parser.setText(message);
+                parser.parse();
+                patternUnits = nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold()).max(unitPriorityComparator);
+            }
+
+            if (!patternUnits.isPresent()) {
+                patternUnits = nextUnits.stream().filter(nextUnit -> (nextUnit.getPattern()==null && nextUnit.getKeyWords()==null)).max(unitPriorityComparator);
+            }
+
+            return patternUnits.orElse(null);
         } else {
             return null;
         }
+    }
+
+    private boolean patternReg(Unit unit, String message) {
+        Pattern pattern = unit.getPattern();
+        Matcher m = pattern.matcher(message);
+        while (m.find()) {
+            return true;
+        }
+        return false;
     }
 
     private Double textPercentageMatch(Unit unit, Set<String> words) {
@@ -73,8 +94,8 @@ public class Autoresponder {
             log.info("Ключевые слова юнита: " + unit.getKeyWords() + " (" + unit.getKeyWords().size() + ")");
             log.info("Ключевые слова от пользователя: " + words);
             log.info("Пересечение: " + temp + " (" + temp.size() + ")");
-            log.info((double)temp.size() / (double)unit.getKeyWords().size() * 100.0);
-            return (double)temp.size() / (double)unit.getKeyWords().size() * 100.0;
+            log.info("Процент: " + (double) temp.size() / (double) unit.getKeyWords().size() * 100.0 + " Необходимо: " + unit.getMatchThreshold());
+            return (double) temp.size() / (double) unit.getKeyWords().size() * 100.0;
         } else {
             return 0.0;
         }

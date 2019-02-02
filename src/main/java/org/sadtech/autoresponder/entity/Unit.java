@@ -1,17 +1,19 @@
 package org.sadtech.autoresponder.entity;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 public abstract class Unit {
 
     private Set<String> keyWords;
+    private Pattern pattern;
     private Integer matchThreshold;
     private Integer priority;
     private List<Unit> nextUnits;
 
     public Unit() {
         priority = 10;
-        matchThreshold = 50;
+        matchThreshold = 10;
     }
 
     public Unit(Set<String> keyWords, Integer matchThreshold, Integer priority, Boolean level, List<Unit> nextUnits) {
@@ -67,6 +69,14 @@ public abstract class Unit {
         this.nextUnits = nextUnits;
     }
 
+    public Pattern getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(Pattern pattern) {
+        this.pattern = pattern;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,4 +92,5 @@ public abstract class Unit {
     public int hashCode() {
         return Objects.hash(keyWords, matchThreshold, priority, nextUnits);
     }
+
 }
