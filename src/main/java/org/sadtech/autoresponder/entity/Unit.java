@@ -16,8 +16,9 @@ public abstract class Unit {
         matchThreshold = 10;
     }
 
-    public Unit(Set<String> keyWords, Integer matchThreshold, Integer priority, Boolean level, List<Unit> nextUnits) {
+    public Unit(Set<String> keyWords, Pattern pattern, Integer matchThreshold, Integer priority, List<Unit> nextUnits) {
         this.keyWords = keyWords;
+        this.pattern = pattern;
         this.matchThreshold = matchThreshold;
         this.priority = priority;
         this.nextUnits = nextUnits;
@@ -83,6 +84,7 @@ public abstract class Unit {
         if (o == null || getClass() != o.getClass()) return false;
         Unit unit = (Unit) o;
         return Objects.equals(keyWords, unit.keyWords) &&
+                Objects.equals(pattern, unit.pattern) &&
                 Objects.equals(matchThreshold, unit.matchThreshold) &&
                 Objects.equals(priority, unit.priority) &&
                 Objects.equals(nextUnits, unit.nextUnits);
@@ -90,7 +92,6 @@ public abstract class Unit {
 
     @Override
     public int hashCode() {
-        return Objects.hash(keyWords, matchThreshold, priority, nextUnits);
+        return Objects.hash(keyWords, pattern, matchThreshold, priority, nextUnits);
     }
-
 }
