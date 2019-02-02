@@ -69,7 +69,7 @@ public class Autoresponder {
             }
 
             if (!patternUnits.isPresent()) {
-                patternUnits = nextUnits.stream().filter(nextUnit -> (nextUnit.getPattern()==null && nextUnit.getKeyWords()==null)).max(unitPriorityComparator);
+                patternUnits = nextUnits.stream().filter(nextUnit -> (nextUnit.getPattern() == null && nextUnit.getKeyWords() == null)).max(unitPriorityComparator);
             }
 
             return patternUnits.orElse(null);
