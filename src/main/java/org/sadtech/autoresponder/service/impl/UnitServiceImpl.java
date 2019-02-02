@@ -12,40 +12,21 @@ public class UnitServiceImpl implements UnitService {
 
     private static final Logger log = Logger.getLogger(UnitServiceImpl.class);
 
-    private List<UnitRepository> unitRepositories;
+    private UnitRepository unitRepository;
 
-    public UnitServiceImpl() {
-        unitRepositories = new ArrayList<>();
-    }
-
-    public UnitServiceImpl(List<UnitRepository> unitRepositories) {
-        this.unitRepositories = unitRepositories;
+    public UnitServiceImpl(UnitRepository unitRepository) {
+        this.unitRepository = unitRepository;
     }
 
     @Override
     public List<Unit> menuUnit() {
-        List<Unit> units = new ArrayList<>();
-        for (UnitRepository unitRepository : unitRepositories) {
-            units.addAll(unitRepository.menuUnits());
-        }
-        return units;
+        return unitRepository.menuUnits();
     }
 
     @Override
-    public void addUnitRepository(UnitRepository unitRepository) {
-        unitRepositories.add(unitRepository);
+    public void addUnit(Unit unit) {
+        unitRepository.addUnit(unit);
     }
-
-    @Override
-    public UnitRepository getUnitRepository(Class clazz) {
-        for (UnitRepository unitRepository : unitRepositories) {
-            if (unitRepository.getClass().equals(clazz)) {
-                return unitRepository;
-            }
-        }
-        return null;
-    }
-
 
 }
 

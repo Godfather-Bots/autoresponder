@@ -1,21 +1,24 @@
 package org.sadtech.autoresponder.entity;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 public abstract class Unit {
 
     private Set<String> keyWords;
+    private Pattern pattern;
     private Integer matchThreshold;
     private Integer priority;
     private List<Unit> nextUnits;
 
     public Unit() {
         priority = 10;
-        matchThreshold = 50;
+        matchThreshold = 10;
     }
 
-    public Unit(Set<String> keyWords, Integer matchThreshold, Integer priority, Boolean level, List<Unit> nextUnits) {
+    public Unit(Set<String> keyWords, Pattern pattern, Integer matchThreshold, Integer priority, List<Unit> nextUnits) {
         this.keyWords = keyWords;
+        this.pattern = pattern;
         this.matchThreshold = matchThreshold;
         this.priority = priority;
         this.nextUnits = nextUnits;
@@ -67,12 +70,21 @@ public abstract class Unit {
         this.nextUnits = nextUnits;
     }
 
+    public Pattern getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(Pattern pattern) {
+        this.pattern = pattern;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Unit unit = (Unit) o;
         return Objects.equals(keyWords, unit.keyWords) &&
+                Objects.equals(pattern, unit.pattern) &&
                 Objects.equals(matchThreshold, unit.matchThreshold) &&
                 Objects.equals(priority, unit.priority) &&
                 Objects.equals(nextUnits, unit.nextUnits);
@@ -80,6 +92,6 @@ public abstract class Unit {
 
     @Override
     public int hashCode() {
-        return Objects.hash(keyWords, matchThreshold, priority, nextUnits);
+        return Objects.hash(keyWords, pattern, matchThreshold, priority, nextUnits);
     }
 }

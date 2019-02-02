@@ -9,8 +9,6 @@ public interface UnitService {
 
     List<Unit> menuUnit();
 
-    void addUnitRepository(UnitRepository unitRepository);
-
-    UnitRepository getUnitRepository(Class clazz);
+    void addUnit(Unit unit);
 
 }
