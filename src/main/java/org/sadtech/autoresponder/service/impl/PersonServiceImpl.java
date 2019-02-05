@@ -2,6 +2,7 @@ package org.sadtech.autoresponder.service.impl;
 
 import org.sadtech.autoresponder.entity.Person;
 import org.sadtech.autoresponder.repository.PersonRepository;
+import org.sadtech.autoresponder.repository.impl.PersonRepositoryMap;
 import org.sadtech.autoresponder.service.PersonService;
 
 import org.apache.log4j.Logger;
@@ -11,6 +12,10 @@ public class PersonServiceImpl implements PersonService {
     private static final Logger log = Logger.getLogger(PersonServiceImpl.class);
 
     private PersonRepository personRepository;
+
+    public PersonServiceImpl() {
+        this.personRepository = new PersonRepositoryMap();
+    }
 
     public PersonServiceImpl(PersonRepository personRepository) {
         this.personRepository = personRepository;

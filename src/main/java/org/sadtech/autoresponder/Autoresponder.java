@@ -8,10 +8,7 @@ import org.sadtech.autoresponder.service.PersonService;
 import org.sadtech.autoresponder.service.UnitService;
 import org.sadtech.autoresponder.submodule.parser.Parser;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +17,15 @@ public class Autoresponder {
     public static final Logger log = Logger.getLogger(Autoresponder.class);
 
     private UnitService unitService;
+
+    public PersonService getPersonService() {
+        return personService;
+    }
+
+    public void setPersonService(PersonService personService) {
+        this.personService = personService;
+    }
+
     private PersonService personService;
 
     public Autoresponder(UnitService unitService, PersonService personService) {
@@ -56,16 +62,19 @@ public class Autoresponder {
         return person;
     }
 
-    private Unit nextUnit(List<Unit> nextUnits, String message) {
+    private Unit nextUnit(Set<Unit> nextUnits, String message) {
         if (nextUnits.size() > 0) {
             UnitPriorityComparator unitPriorityComparator = new UnitPriorityComparator();
             Optional<Unit> patternUnits = nextUnits.stream().filter(nextUnit -> nextUnit.getPattern() != null).filter(nextUnit -> patternReg(nextUnit, message)).max(unitPriorityComparator);
 
             if (!patternUnits.isPresent()) {
-                Parser parser = new Parser();
-                parser.setText(message);
-                parser.parse();
-                patternUnits = nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold()).max(unitPriorityComparator);
+                patternUnits = nextUnits.stream().filter(nextUnit -> (textPercentageMatch(nextUnit, new HashSet<>(Collections.singleton(message))) == 100.0)).max(unitPriorityComparator);
+                if (!patternUnits.isPresent()) {
+                    Parser parser = new Parser();
+                    parser.setText(message);
+                    parser.parse();
+                    patternUnits = nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold()).max(unitPriorityComparator);
+                }
             }
 
             if (!patternUnits.isPresent()) {

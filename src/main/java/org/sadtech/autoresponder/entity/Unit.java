@@ -9,14 +9,14 @@ public abstract class Unit {
     private Pattern pattern;
     private Integer matchThreshold;
     private Integer priority;
-    private List<Unit> nextUnits;
+    private Set<Unit> nextUnits;
 
     public Unit() {
         priority = 10;
         matchThreshold = 10;
     }
 
-    public Unit(Set<String> keyWords, Pattern pattern, Integer matchThreshold, Integer priority, List<Unit> nextUnits) {
+    public Unit(Set<String> keyWords, Pattern pattern, Integer matchThreshold, Integer priority, Set<Unit> nextUnits) {
         this.keyWords = keyWords;
         this.pattern = pattern;
         this.matchThreshold = matchThreshold;
@@ -33,7 +33,7 @@ public abstract class Unit {
 
     public void setNextUnit(Unit unit) {
         if (nextUnits == null) {
-            nextUnits = new ArrayList<>();
+            nextUnits = new HashSet<>();
         }
         nextUnits.add(unit);
     }
@@ -62,11 +62,11 @@ public abstract class Unit {
         this.priority = priority;
     }
 
-    public List<Unit> getNextUnits() {
+    public Set<Unit> getNextUnits() {
         return nextUnits;
     }
 
-    public void setNextUnits(List<Unit> nextUnits) {
+    public void setNextUnits(Set<Unit> nextUnits) {
         this.nextUnits = nextUnits;
     }
 
