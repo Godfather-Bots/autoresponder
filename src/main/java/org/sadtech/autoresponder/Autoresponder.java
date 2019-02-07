@@ -17,6 +17,7 @@ public class Autoresponder {
     public static final Logger log = Logger.getLogger(Autoresponder.class);
 
     private UnitService unitService;
+    private PersonService personService;
 
     public PersonService getPersonService() {
         return personService;
@@ -25,8 +26,6 @@ public class Autoresponder {
     public void setPersonService(PersonService personService) {
         this.personService = personService;
     }
-
-    private PersonService personService;
 
     public Autoresponder(UnitService unitService, PersonService personService) {
         this.unitService = unitService;
@@ -68,13 +67,10 @@ public class Autoresponder {
             Optional<Unit> patternUnits = nextUnits.stream().filter(nextUnit -> nextUnit.getPattern() != null).filter(nextUnit -> patternReg(nextUnit, message)).max(unitPriorityComparator);
 
             if (!patternUnits.isPresent()) {
-                patternUnits = nextUnits.stream().filter(nextUnit -> (textPercentageMatch(nextUnit, new HashSet<>(Collections.singleton(message))) == 100.0)).max(unitPriorityComparator);
-                if (!patternUnits.isPresent()) {
-                    Parser parser = new Parser();
-                    parser.setText(message);
-                    parser.parse();
-                    patternUnits = nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold()).max(unitPriorityComparator);
-                }
+                Parser parser = new Parser();
+                parser.setText(message);
+                parser.parse();
+                patternUnits = nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold()).max(unitPriorityComparator);
             }
 
             if (!patternUnits.isPresent()) {
@@ -100,6 +96,7 @@ public class Autoresponder {
         if (unit.getKeyWords() != null) {
             Set<String> temp = new HashSet<>(unit.getKeyWords());
             temp.retainAll(words);
+            log.info("Юнит: " + unit.getClass().getSimpleName());
             log.info("Ключевые слова юнита: " + unit.getKeyWords() + " (" + unit.getKeyWords().size() + ")");
             log.info("Ключевые слова от пользователя: " + words);
             log.info("Пересечение: " + temp + " (" + temp.size() + ")");
