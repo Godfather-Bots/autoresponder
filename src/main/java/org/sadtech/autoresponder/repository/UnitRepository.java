@@ -3,6 +3,7 @@ package org.sadtech.autoresponder.repository;
 import org.sadtech.autoresponder.entity.Unit;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UnitRepository {
 
@@ -10,6 +11,6 @@ public interface UnitRepository {
 
     void addUnits(List<Unit> units);
 
-    List<Unit> menuUnits();
+    Set<Unit> menuUnits();
 
 }

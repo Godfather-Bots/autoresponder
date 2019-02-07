@@ -8,10 +8,7 @@ import org.sadtech.autoresponder.service.PersonService;
 import org.sadtech.autoresponder.service.UnitService;
 import org.sadtech.autoresponder.submodule.parser.Parser;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +18,14 @@ public class Autoresponder {
 
     private UnitService unitService;
     private PersonService personService;
+
+    public PersonService getPersonService() {
+        return personService;
+    }
+
+    public void setPersonService(PersonService personService) {
+        this.personService = personService;
+    }
 
     public Autoresponder(UnitService unitService, PersonService personService) {
         this.unitService = unitService;
@@ -56,7 +61,7 @@ public class Autoresponder {
         return person;
     }
 
-    private Unit nextUnit(List<Unit> nextUnits, String message) {
+    private Unit nextUnit(Set<Unit> nextUnits, String message) {
         if (nextUnits.size() > 0) {
             UnitPriorityComparator unitPriorityComparator = new UnitPriorityComparator();
             Optional<Unit> patternUnits = nextUnits.stream().filter(nextUnit -> nextUnit.getPattern() != null).filter(nextUnit -> patternReg(nextUnit, message)).max(unitPriorityComparator);
@@ -91,6 +96,7 @@ public class Autoresponder {
         if (unit.getKeyWords() != null) {
             Set<String> temp = new HashSet<>(unit.getKeyWords());
             temp.retainAll(words);
+            log.info("Юнит: " + unit.getClass().getSimpleName());
             log.info("Ключевые слова юнита: " + unit.getKeyWords() + " (" + unit.getKeyWords().size() + ")");
             log.info("Ключевые слова от пользователя: " + words);
             log.info("Пересечение: " + temp + " (" + temp.size() + ")");

@@ -6,10 +6,12 @@ public class Person {
 
     private Integer id;
     private Unit unit;
+    private Boolean replyStatus;
 
     public Person(Integer id, Unit unit) {
         this.id = id;
         this.unit = unit;
+        replyStatus = true;
     }
 
     public Person(Integer id) {
@@ -30,6 +32,14 @@ public class Person {
 
     public void setUnit(Unit unit) {
         this.unit = unit;
+    }
+
+    public Boolean getReplyStatus() {
+        return replyStatus;
+    }
+
+    public void setReplyStatus(Boolean replyStatus) {
+        this.replyStatus = replyStatus;
     }
 
     @Override
