@@ -5,8 +5,6 @@ import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.repository.UnitRepository;
 import org.sadtech.autoresponder.service.UnitService;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class UnitServiceImpl implements UnitService {
