@@ -1,11 +1,9 @@
-package org.sadtech.autoresponder.service.impl;
-
-import org.sadtech.autoresponder.entity.Person;
-import org.sadtech.autoresponder.repository.PersonRepository;
-import org.sadtech.autoresponder.repository.impl.PersonRepositoryMap;
-import org.sadtech.autoresponder.service.PersonService;
+package org.sadtech.autoresponder.service;
 
 import org.apache.log4j.Logger;
+import org.sadtech.autoresponder.entity.Person;
+import org.sadtech.autoresponder.repository.PersonRepository;
+import org.sadtech.autoresponder.repository.PersonRepositoryMap;
 
 public class PersonServiceImpl implements PersonService {
 

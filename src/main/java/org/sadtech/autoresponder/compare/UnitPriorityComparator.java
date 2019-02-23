@@ -1,4 +1,4 @@
-package org.sadtech.autoresponder.entity.compare;
+package org.sadtech.autoresponder.compare;
 
 import org.sadtech.autoresponder.entity.Unit;
 

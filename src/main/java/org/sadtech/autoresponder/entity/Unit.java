@@ -1,6 +1,8 @@
 package org.sadtech.autoresponder.entity;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public abstract class Unit {
