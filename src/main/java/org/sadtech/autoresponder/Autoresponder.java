@@ -1,9 +1,9 @@
 package org.sadtech.autoresponder;
 
 import org.apache.log4j.Logger;
+import org.sadtech.autoresponder.compare.UnitPriorityComparator;
 import org.sadtech.autoresponder.entity.Person;
 import org.sadtech.autoresponder.entity.Unit;
-import org.sadtech.autoresponder.entity.compare.UnitPriorityComparator;
 import org.sadtech.autoresponder.service.PersonService;
 import org.sadtech.autoresponder.submodule.parser.Parser;
 
