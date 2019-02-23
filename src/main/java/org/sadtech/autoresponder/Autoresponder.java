@@ -5,10 +5,11 @@ import org.sadtech.autoresponder.entity.Person;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.compare.UnitPriorityComparator;
 import org.sadtech.autoresponder.service.PersonService;
-import org.sadtech.autoresponder.service.UnitService;
 import org.sadtech.autoresponder.submodule.parser.Parser;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,8 +17,16 @@ public class Autoresponder {
 
     public static final Logger log = Logger.getLogger(Autoresponder.class);
 
-    private UnitService unitService;
+    private Set<Unit> menuUnits;
     private PersonService personService;
+
+    public Autoresponder(PersonService personService) {
+        this.personService = personService;
+    }
+
+    public void setMenuUnits(Set<Unit> menuUnits) {
+        this.menuUnits = menuUnits;
+    }
 
     public PersonService getPersonService() {
         return personService;
@@ -27,19 +36,14 @@ public class Autoresponder {
         this.personService = personService;
     }
 
-    public Autoresponder(UnitService unitService, PersonService personService) {
-        this.unitService = unitService;
-        this.personService = personService;
-    }
-
     public Unit answer(Integer idPerson, String message) {
         Person person = checkAndAddPerson(idPerson);
         Unit unit;
         if (person.getUnit() == null) {
-            unit = nextUnit(unitService.menuUnit(), message);
+            unit = nextUnit(menuUnits, message);
         } else {
             if (person.getUnit().getNextUnits() == null) {
-                unit = nextUnit(unitService.menuUnit(), message);
+                unit = nextUnit(menuUnits, message);
             } else {
                 unit = nextUnit(person.getUnit().getNextUnits(), message);
             }
