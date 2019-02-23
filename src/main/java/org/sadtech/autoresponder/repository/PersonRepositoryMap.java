@@ -1,9 +1,9 @@
-package org.sadtech.autoresponder.repository.impl;
+package org.sadtech.autoresponder.repository;
 
 import org.sadtech.autoresponder.entity.Person;
-import org.sadtech.autoresponder.repository.PersonRepository;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PersonRepositoryMap implements PersonRepository {
 
