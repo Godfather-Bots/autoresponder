@@ -6,7 +6,7 @@
 
     <groupId>org.sadtech.autoresponder</groupId>
     <artifactId>autoresponder</artifactId>
-    <version>1.4.0-RELEASE</version>
+    <version>1.5.0-RELEASE</version>
     <packaging>jar</packaging>
     <build>
         <plugins>
@@ -22,18 +22,8 @@
         </plugins>
     </build>
 
-    <developers>
-        <developer>
-            <id>uPagge</id>
-            <name>Struchkov Mark</name>
-            <email>upagge@mail.ru</email>
-        </developer>
-    </developers>
-
     <properties>
         <log4j>1.2.17</log4j>
-        <junit.ver>4.12</junit.ver>
-        <mocito.ver>2.23.4</mocito.ver>
     </properties>
 
     <dependencies>
@@ -42,22 +32,15 @@
             <artifactId>log4j</artifactId>
             <version>${log4j}</version>
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.ver}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mocito.ver}</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
+
+    <developers>
+        <developer>
+            <id>uPagge</id>
+            <name>Struchkov Mark</name>
+            <email>upagge@mail.ru</email>
+            <organization>SADTECH</organization>
+        </developer>
+    </developers>
 
 </project>
