@@ -2,10 +2,10 @@ package org.sadtech.autoresponder;
 
 import org.apache.log4j.Logger;
 import org.sadtech.autoresponder.compare.UnitPriorityComparator;
-import org.sadtech.autoresponder.entity.Person;
+import org.sadtech.autoresponder.entity.UnitPointer;
 import org.sadtech.autoresponder.entity.Unit;
-import org.sadtech.autoresponder.service.PersonService;
-import org.sadtech.autoresponder.submodule.parser.Parser;
+import org.sadtech.autoresponder.service.UnitPointerService;
+import org.sadtech.autoresponder.util.Parser;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -15,54 +15,54 @@ import java.util.regex.Pattern;
 
 public class Autoresponder {
 
-    public static final Logger log = Logger.getLogger(Autoresponder.class);
+    private static final Logger log = Logger.getLogger(Autoresponder.class);
 
     private Set<Unit> menuUnits;
-    private PersonService personService;
+    private UnitPointerService unitPointerService;
 
-    public Autoresponder(PersonService personService) {
-        this.personService = personService;
+    public Autoresponder(UnitPointerService unitPointerService) {
+        this.unitPointerService = unitPointerService;
     }
 
     public void setMenuUnits(Set<Unit> menuUnits) {
         this.menuUnits = menuUnits;
     }
 
-    public PersonService getPersonService() {
-        return personService;
+    public UnitPointerService getUnitPointerService() {
+        return unitPointerService;
     }
 
-    public void setPersonService(PersonService personService) {
-        this.personService = personService;
+    public void setUnitPointerService(UnitPointerService unitPointerService) {
+        this.unitPointerService = unitPointerService;
     }
 
     public Unit answer(Integer idPerson, String message) {
-        Person person = checkAndAddPerson(idPerson);
+        UnitPointer unitPointer = checkAndAddPerson(idPerson);
         Unit unit;
-        if (person.getUnit() == null) {
+        if (unitPointer.getUnit() == null) {
             unit = nextUnit(menuUnits, message);
         } else {
-            if (person.getUnit().getNextUnits() == null) {
+            if (unitPointer.getUnit().getNextUnits() == null) {
                 unit = nextUnit(menuUnits, message);
             } else {
-                unit = nextUnit(person.getUnit().getNextUnits(), message);
+                unit = nextUnit(unitPointer.getUnit().getNextUnits(), message);
             }
         }
         if (unit != null) {
-            person.setUnit(unit);
+            unitPointer.setUnit(unit);
         }
         return unit;
     }
 
-    private Person checkAndAddPerson(Integer idPerson) {
-        Person person;
-        if (personService.checkPerson(idPerson)) {
-            person = personService.getPersonById(idPerson);
+    private UnitPointer checkAndAddPerson(Integer idPerson) {
+        UnitPointer unitPointer;
+        if (unitPointerService.check(idPerson)) {
+            unitPointer = unitPointerService.getByEntityId(idPerson);
         } else {
-            person = new Person(idPerson);
-            personService.addPerson(person);
+            unitPointer = new UnitPointer(idPerson);
+            unitPointerService.add(unitPointer);
         }
-        return person;
+        return unitPointer;
     }
 
     private Unit nextUnit(Set<Unit> nextUnits, String message) {
@@ -71,14 +71,15 @@ public class Autoresponder {
             Optional<Unit> patternUnits = nextUnits.stream().filter(nextUnit -> nextUnit.getPattern() != null).filter(nextUnit -> patternReg(nextUnit, message)).max(unitPriorityComparator);
 
             if (!patternUnits.isPresent()) {
-                Parser parser = new Parser();
-                parser.setText(message);
-                parser.parse();
-                patternUnits = nextUnits.stream().filter(nextUnit -> textPercentageMatch(nextUnit, parser.getWords()) >= nextUnit.getMatchThreshold()).max(unitPriorityComparator);
+                patternUnits = nextUnits.stream()
+                        .filter(nextUnit -> textPercentageMatch(nextUnit, Parser.parse(message)) >= nextUnit.getMatchThreshold())
+                        .max(unitPriorityComparator);
             }
 
             if (!patternUnits.isPresent()) {
-                patternUnits = nextUnits.stream().filter(nextUnit -> (nextUnit.getPattern() == null && nextUnit.getKeyWords() == null)).max(unitPriorityComparator);
+                patternUnits = nextUnits.stream()
+                        .filter(nextUnit -> (nextUnit.getPattern() == null && nextUnit.getKeyWords() == null))
+                        .max(unitPriorityComparator);
             }
 
             return patternUnits.orElse(null);
@@ -90,10 +91,7 @@ public class Autoresponder {
     private boolean patternReg(Unit unit, String message) {
         Pattern pattern = unit.getPattern();
         Matcher m = pattern.matcher(message);
-        while (m.find()) {
-            return true;
-        }
-        return false;
+        return m.find();
     }
 
     private Double textPercentageMatch(Unit unit, Set<String> words) {

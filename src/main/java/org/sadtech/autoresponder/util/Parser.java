@@ -1,4 +1,4 @@
-package org.sadtech.autoresponder.submodule.parser;
+package org.sadtech.autoresponder.util;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,23 +7,18 @@ import java.util.regex.Pattern;
 
 public class Parser {
 
-    private Set<String> words = new HashSet<>();
-    private String text;
-
-    public Set<String> getWords() {
-        return words;
+    private Parser() {
+        throw new IllegalStateException("Utility Class");
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public void parse() {
+    public static Set<String> parse(String text) {
         Pattern p = Pattern.compile("[а-яА-Я0-9]+");
         Matcher m = p.matcher(text);
+        Set<String> words = new HashSet<>();
         while (m.find()) {
             words.add(m.group().toLowerCase());
         }
+        return words;
     }
 
 }
