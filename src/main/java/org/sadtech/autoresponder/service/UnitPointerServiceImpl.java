@@ -1,13 +1,14 @@
 package org.sadtech.autoresponder.service;
 
-import org.apache.log4j.Logger;
 import org.sadtech.autoresponder.entity.UnitPointer;
 import org.sadtech.autoresponder.repository.UnitPointerRepository;
 import org.sadtech.autoresponder.repository.UnitPointerRepositoryMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UnitPointerServiceImpl implements UnitPointerService {
 
-    private static final Logger log = Logger.getLogger(UnitPointerServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(UnitPointerServiceImpl.class);
 
     private UnitPointerRepository unitPointerRepository;
 

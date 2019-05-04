@@ -1,11 +1,12 @@
 package org.sadtech.autoresponder;
 
-import org.apache.log4j.Logger;
 import org.sadtech.autoresponder.compare.UnitPriorityComparator;
-import org.sadtech.autoresponder.entity.UnitPointer;
 import org.sadtech.autoresponder.entity.Unit;
+import org.sadtech.autoresponder.entity.UnitPointer;
 import org.sadtech.autoresponder.service.UnitPointerService;
 import org.sadtech.autoresponder.util.Parser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class Autoresponder {
 
-    private static final Logger log = Logger.getLogger(Autoresponder.class);
+    private static final Logger log = LoggerFactory.getLogger(Autoresponder.class);
 
     private Set<Unit> menuUnits;
     private UnitPointerService unitPointerService;

@@ -6,7 +6,7 @@
 
     <groupId>org.sadtech.autoresponder</groupId>
     <artifactId>autoresponder</artifactId>
-    <version>1.5.0-RELEASE</version>
+    <version>1.5.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <build>
         <plugins>
@@ -23,14 +23,14 @@
     </build>
 
     <properties>
-        <log4j>1.2.17</log4j>
+        <slf4j.ver>1.7.26</slf4j.ver>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${log4j}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.ver}</version>
         </dependency>
     </dependencies>
 

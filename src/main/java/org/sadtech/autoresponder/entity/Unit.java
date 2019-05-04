@@ -9,21 +9,16 @@ public abstract class Unit {
 
     private Set<String> keyWords;
     private Pattern pattern;
-    private Integer matchThreshold;
-    private Integer priority;
+    private Integer matchThreshold = 10;
+    private Integer priority = 10;
     private Set<Unit> nextUnits;
 
     public Unit() {
-        priority = 10;
-        matchThreshold = 10;
+
     }
 
-    public Unit(Set<String> keyWords, Pattern pattern, Integer matchThreshold, Integer priority, Set<Unit> nextUnits) {
-        this.keyWords = keyWords;
-        this.pattern = pattern;
-        this.matchThreshold = matchThreshold;
-        this.priority = priority;
-        this.nextUnits = nextUnits;
+    public Unit(Unit... nextUnit) {
+        nextUnits = new HashSet(nextUnits);
     }
 
     public void setKeyWord(String keyWord) {
