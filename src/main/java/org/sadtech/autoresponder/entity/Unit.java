@@ -17,11 +17,11 @@ public abstract class Unit {
     private Integer priority = 10;
     private Set<Unit> nextUnits;
 
-    public void setKeyWord(String... keyWords) {
+    public void setKeyWord(String... keyWord) {
         if (this.keyWords == null) {
             this.keyWords = new HashSet<>();
         }
-        this.keyWords.addAll(Arrays.asList(keyWords));
+        this.keyWords.addAll(Arrays.asList(keyWord));
     }
 
     public void setKeyWords(Set<String> keyWords) {
@@ -35,11 +35,11 @@ public abstract class Unit {
         return keyWords;
     }
 
-    public void setNextUnit(Unit... units) {
+    public void setNextUnit(Unit... unit) {
         if (nextUnits == null) {
             nextUnits = new HashSet<>();
         }
-        nextUnits.addAll(Arrays.asList(units));
+        nextUnits.addAll(Arrays.asList(unit));
     }
 
     public void setNextUnits(Set<Unit> nextUnits) {
@@ -80,7 +80,7 @@ public abstract class Unit {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Unit)) return false;
         Unit unit = (Unit) o;
         return Objects.equals(keyWords, unit.keyWords) &&
                 Objects.equals(pattern, unit.pattern) &&

@@ -48,4 +48,12 @@ public class UnitPointer {
     public int hashCode() {
         return Objects.hash(entityId, unit);
     }
+
+    @Override
+    public String toString() {
+        return "UnitPointer{" +
+                "entityId=" + entityId +
+                ", unit=" + unit +
+                '}';
+    }
 }

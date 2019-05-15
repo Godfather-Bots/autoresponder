@@ -40,9 +40,6 @@ public class Autoresponder {
         this.defaultUnit = defaultUnit;
     }
 
-    /*
-            Возвращает unit на основании сообщения пользователя
-         */
     public Unit answer(Integer personId, String message) {
         UnitPointer unitPointer = checkAndAddPerson(personId);
         Unit unit;
