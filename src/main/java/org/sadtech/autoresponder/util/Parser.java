@@ -5,6 +5,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+    Возвращает Set слов из текста
+ */
 public class Parser {
 
     private Parser() {

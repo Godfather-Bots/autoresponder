@@ -1,10 +1,14 @@
 package org.sadtech.autoresponder.entity;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+/*
+     Абстрактный класс, предпологающий какие-то действия
+ */
 public abstract class Unit {
 
     private Set<String> keyWords;
@@ -13,34 +17,40 @@ public abstract class Unit {
     private Integer priority = 10;
     private Set<Unit> nextUnits;
 
-    public Unit() {
-
-    }
-
-    public Unit(Unit... nextUnit) {
-        nextUnits = new HashSet(nextUnits);
-    }
-
-    public void setKeyWord(String keyWord) {
-        if (keyWords == null) {
-            keyWords = new HashSet<>();
+    public void setKeyWord(String... keyWords) {
+        if (this.keyWords == null) {
+            this.keyWords = new HashSet<>();
         }
-        keyWords.add(keyWord);
+        this.keyWords.addAll(Arrays.asList(keyWords));
     }
 
-    public void setNextUnit(Unit unit) {
-        if (nextUnits == null) {
-            nextUnits = new HashSet<>();
+    public void setKeyWords(Set<String> keyWords) {
+        if (this.keyWords == null) {
+            this.keyWords = new HashSet<>();
         }
-        nextUnits.add(unit);
+        this.keyWords.addAll(keyWords);
     }
 
     public Set<String> getKeyWords() {
         return keyWords;
     }
 
-    public void setKeyWords(Set<String> keyWords) {
-        this.keyWords = keyWords;
+    public void setNextUnit(Unit... units) {
+        if (nextUnits == null) {
+            nextUnits = new HashSet<>();
+        }
+        nextUnits.addAll(Arrays.asList(units));
+    }
+
+    public void setNextUnits(Set<Unit> nextUnits) {
+        if (nextUnits == null) {
+            nextUnits = new HashSet<>();
+        }
+        this.nextUnits.addAll(nextUnits);
+    }
+
+    public Set<Unit> getNextUnits() {
+        return nextUnits;
     }
 
     public Integer getMatchThreshold() {
@@ -57,14 +67,6 @@ public abstract class Unit {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
-    }
-
-    public Set<Unit> getNextUnits() {
-        return nextUnits;
-    }
-
-    public void setNextUnits(Set<Unit> nextUnits) {
-        this.nextUnits = nextUnits;
     }
 
     public Pattern getPattern() {

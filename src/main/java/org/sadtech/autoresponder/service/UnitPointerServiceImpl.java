@@ -1,5 +1,6 @@
 package org.sadtech.autoresponder.service;
 
+import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
 import org.sadtech.autoresponder.repository.UnitPointerRepository;
 import org.sadtech.autoresponder.repository.UnitPointerRepositoryMap;
@@ -23,6 +24,13 @@ public class UnitPointerServiceImpl implements UnitPointerService {
     @Override
     public UnitPointer getByEntityId(Integer entityId) {
         return unitPointerRepository.findByEntityId(entityId);
+    }
+
+    @Override
+    public void edit(Integer personId, Unit unit) {
+        if (check(personId)) {
+            unitPointerRepository.edit(new UnitPointer(personId, unit));
+        }
     }
 
     @Override

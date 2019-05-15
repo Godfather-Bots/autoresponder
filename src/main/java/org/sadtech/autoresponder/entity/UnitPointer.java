@@ -2,6 +2,9 @@ package org.sadtech.autoresponder.entity;
 
 import java.util.Objects;
 
+/*
+    Сохраняет юнит, на котором остановился пользователь.
+ */
 public class UnitPointer {
 
     private Integer entityId;

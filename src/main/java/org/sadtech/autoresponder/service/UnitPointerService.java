@@ -1,5 +1,6 @@
 package org.sadtech.autoresponder.service;
 
+import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
 
 public interface UnitPointerService {
@@ -9,5 +10,7 @@ public interface UnitPointerService {
     boolean check(Integer entityId);
 
     UnitPointer getByEntityId(Integer entityId);
+
+    void edit(Integer personId, Unit unit);
 
 }

@@ -14,43 +14,46 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+    Отвечает за функционирование автоответчика
+ */
 public class Autoresponder {
 
     private static final Logger log = LoggerFactory.getLogger(Autoresponder.class);
+    private static final UnitPriorityComparator UNIT_PRIORITY_COMPARATOR = new UnitPriorityComparator();
 
-    private Set<Unit> menuUnits;
-    private UnitPointerService unitPointerService;
+    /*
+        Начальные unit, по которым происходит поиск, если пользователь только обратился или закончил сценарий.
+     */
+    private final Set<Unit> menuUnits;
+    private final UnitPointerService unitPointerService;
 
-    public Autoresponder(UnitPointerService unitPointerService) {
-        this.unitPointerService = unitPointerService;
-    }
-
-    public void setMenuUnits(Set<Unit> menuUnits) {
+    public Autoresponder(UnitPointerService unitPointerService, Set<Unit> menuUnits) {
         this.menuUnits = menuUnits;
+        this.unitPointerService = unitPointerService;
     }
 
     public UnitPointerService getUnitPointerService() {
         return unitPointerService;
     }
 
-    public void setUnitPointerService(UnitPointerService unitPointerService) {
-        this.unitPointerService = unitPointerService;
-    }
-
-    public Unit answer(Integer idPerson, String message) {
-        UnitPointer unitPointer = checkAndAddPerson(idPerson);
+    /*
+        Возвращает unit на основании сообщения пользователя
+     */
+    public Unit answer(Integer personId, String message) {
+        UnitPointer unitPointer = checkAndAddPerson(personId);
         Unit unit;
         if (unitPointer.getUnit() == null) {
-            unit = nextUnit(menuUnits, message);
+            unit = nextUnit(menuUnits, message); // выбирает unit из menuUnits, если пользователь обращается впервые
         } else {
             if (unitPointer.getUnit().getNextUnits() == null) {
-                unit = nextUnit(menuUnits, message);
+                unit = nextUnit(menuUnits, message); // если пользователь закончил сценарий, то выбирает следующий юнит из menuUnits
             } else {
                 unit = nextUnit(unitPointer.getUnit().getNextUnits(), message);
             }
         }
         if (unit != null) {
-            unitPointer.setUnit(unit);
+            unitPointerService.edit(personId, unit);
         }
         return unit;
     }
@@ -68,19 +71,21 @@ public class Autoresponder {
 
     private Unit nextUnit(Set<Unit> nextUnits, String message) {
         if (nextUnits.size() > 0) {
-            UnitPriorityComparator unitPriorityComparator = new UnitPriorityComparator();
-            Optional<Unit> patternUnits = nextUnits.stream().filter(nextUnit -> nextUnit.getPattern() != null).filter(nextUnit -> patternReg(nextUnit, message)).max(unitPriorityComparator);
+            Optional<Unit> patternUnits = nextUnits.stream()
+                    .filter(nextUnit -> nextUnit.getPattern() != null)
+                    .filter(nextUnit -> patternReg(nextUnit, message))
+                    .max(UNIT_PRIORITY_COMPARATOR);
 
             if (!patternUnits.isPresent()) {
                 patternUnits = nextUnits.stream()
                         .filter(nextUnit -> textPercentageMatch(nextUnit, Parser.parse(message)) >= nextUnit.getMatchThreshold())
-                        .max(unitPriorityComparator);
+                        .max(UNIT_PRIORITY_COMPARATOR);
             }
 
             if (!patternUnits.isPresent()) {
                 patternUnits = nextUnits.stream()
                         .filter(nextUnit -> (nextUnit.getPattern() == null && nextUnit.getKeyWords() == null))
-                        .max(unitPriorityComparator);
+                        .max(UNIT_PRIORITY_COMPARATOR);
             }
 
             return patternUnits.orElse(null);
@@ -99,7 +104,6 @@ public class Autoresponder {
         if (unit.getKeyWords() != null) {
             Set<String> temp = new HashSet<>(unit.getKeyWords());
             temp.retainAll(words);
-            log.info("Юнит: " + unit.getClass().getSimpleName());
             log.info("Ключевые слова юнита: " + unit.getKeyWords() + " (" + unit.getKeyWords().size() + ")");
             log.info("Ключевые слова от пользователя: " + words);
             log.info("Пересечение: " + temp + " (" + temp.size() + ")");
