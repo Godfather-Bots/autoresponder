@@ -3,6 +3,7 @@ package org.sadtech.autoresponder;
 import org.sadtech.autoresponder.compare.UnitPriorityComparator;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
+import org.sadtech.autoresponder.exception.NotFoundUnitException;
 import org.sadtech.autoresponder.service.UnitPointerService;
 import org.sadtech.autoresponder.util.Parser;
 import org.slf4j.Logger;
@@ -22,14 +23,11 @@ public class Autoresponder {
     private static final Logger log = LoggerFactory.getLogger(Autoresponder.class);
     private static final UnitPriorityComparator UNIT_PRIORITY_COMPARATOR = new UnitPriorityComparator();
 
-    /*
-        Начальные unit, по которым происходит поиск, если пользователь только обратился или закончил сценарий.
-     */
-    private final Set<Unit> menuUnits;
+    private final Set<Unit> startUnits;
     private final UnitPointerService unitPointerService;
 
-    public Autoresponder(UnitPointerService unitPointerService, Set<Unit> menuUnits) {
-        this.menuUnits = menuUnits;
+    public Autoresponder(UnitPointerService unitPointerService, Set<Unit> startUnits) {
+        this.startUnits = startUnits;
         this.unitPointerService = unitPointerService;
     }
 
@@ -43,55 +41,44 @@ public class Autoresponder {
     public Unit answer(Integer personId, String message) {
         UnitPointer unitPointer = checkAndAddPerson(personId);
         Unit unit;
-        if (unitPointer.getUnit() == null) {
-            unit = nextUnit(menuUnits, message); // выбирает unit из menuUnits, если пользователь обращается впервые
+        if (unitPointer.getUnit() == null || unitPointer.getUnit().getNextUnits() == null) {
+            unit = nextUnit(startUnits, message); // выбирает unit из startUnits, если пользователь обращается впервые
         } else {
-            if (unitPointer.getUnit().getNextUnits() == null) {
-                unit = nextUnit(menuUnits, message); // если пользователь закончил сценарий, то выбирает следующий юнит из menuUnits
-            } else {
-                unit = nextUnit(unitPointer.getUnit().getNextUnits(), message);
-            }
+            unit = nextUnit(unitPointer.getUnit().getNextUnits(), message);
         }
-        if (unit != null) {
-            unitPointerService.edit(personId, unit);
-        }
+        unitPointerService.edit(personId, unit);
         return unit;
     }
 
-    private UnitPointer checkAndAddPerson(Integer idPerson) {
+    private Unit nextUnit(Set<Unit> nextUnits, String message) {
+        Optional<Unit> unit = nextUnits.stream()
+                .filter(nextUnit -> nextUnit.getPattern() != null)
+                .filter(nextUnit -> patternReg(nextUnit, message))
+                .max(UNIT_PRIORITY_COMPARATOR);
+
+        if (!unit.isPresent()) {
+            unit = nextUnits.stream()
+                    .filter(nextUnit -> textPercentageMatch(nextUnit, Parser.parse(message)) >= nextUnit.getMatchThreshold())
+                    .max(UNIT_PRIORITY_COMPARATOR);
+        }
+
+        if (!unit.isPresent()) {
+            unit = nextUnits.stream()
+                    .filter(nextUnit -> (nextUnit.getPattern() == null && nextUnit.getKeyWords() == null))
+                    .max(UNIT_PRIORITY_COMPARATOR);
+        }
+        return unit.orElseThrow(NotFoundUnitException::new);
+    }
+
+    private UnitPointer checkAndAddPerson(Integer personId) {
         UnitPointer unitPointer;
-        if (unitPointerService.check(idPerson)) {
-            unitPointer = unitPointerService.getByEntityId(idPerson);
+        if (unitPointerService.check(personId)) {
+            unitPointer = unitPointerService.getByEntityId(personId);
         } else {
-            unitPointer = new UnitPointer(idPerson);
+            unitPointer = new UnitPointer(personId);
             unitPointerService.add(unitPointer);
         }
         return unitPointer;
-    }
-
-    private Unit nextUnit(Set<Unit> nextUnits, String message) {
-        if (nextUnits.size() > 0) {
-            Optional<Unit> patternUnits = nextUnits.stream()
-                    .filter(nextUnit -> nextUnit.getPattern() != null)
-                    .filter(nextUnit -> patternReg(nextUnit, message))
-                    .max(UNIT_PRIORITY_COMPARATOR);
-
-            if (!patternUnits.isPresent()) {
-                patternUnits = nextUnits.stream()
-                        .filter(nextUnit -> textPercentageMatch(nextUnit, Parser.parse(message)) >= nextUnit.getMatchThreshold())
-                        .max(UNIT_PRIORITY_COMPARATOR);
-            }
-
-            if (!patternUnits.isPresent()) {
-                patternUnits = nextUnits.stream()
-                        .filter(nextUnit -> (nextUnit.getPattern() == null && nextUnit.getKeyWords() == null))
-                        .max(UNIT_PRIORITY_COMPARATOR);
-            }
-
-            return patternUnits.orElse(null);
-        } else {
-            return null;
-        }
     }
 
     private boolean patternReg(Unit unit, String message) {
