@@ -24,6 +24,7 @@ public class Autoresponder {
     private static final UnitPriorityComparator UNIT_PRIORITY_COMPARATOR = new UnitPriorityComparator();
 
     private final Set<Unit> startUnits;
+    private Unit defaultUnit;
     private final UnitPointerService unitPointerService;
 
     public Autoresponder(UnitPointerService unitPointerService, Set<Unit> startUnits) {
@@ -35,18 +36,26 @@ public class Autoresponder {
         return unitPointerService;
     }
 
+    public void setDefaultUnit(Unit defaultUnit) {
+        this.defaultUnit = defaultUnit;
+    }
+
     /*
-        Возвращает unit на основании сообщения пользователя
-     */
+            Возвращает unit на основании сообщения пользователя
+         */
     public Unit answer(Integer personId, String message) {
         UnitPointer unitPointer = checkAndAddPerson(personId);
         Unit unit;
-        if (unitPointer.getUnit() == null || unitPointer.getUnit().getNextUnits() == null) {
-            unit = nextUnit(startUnits, message); // выбирает unit из startUnits, если пользователь обращается впервые
-        } else {
-            unit = nextUnit(unitPointer.getUnit().getNextUnits(), message);
+        try {
+            if (unitPointer.getUnit() == null || unitPointer.getUnit().getNextUnits() == null) {
+                unit = nextUnit(startUnits, message); // выбирает unit из startUnits, если пользователь обращается впервые
+            } else {
+                unit = nextUnit(unitPointer.getUnit().getNextUnits(), message);
+            }
+            unitPointerService.edit(personId, unit);
+        } catch (NotFoundUnitException e) {
+            unit = defaultUnit;
         }
-        unitPointerService.edit(personId, unit);
         return unit;
     }
 
