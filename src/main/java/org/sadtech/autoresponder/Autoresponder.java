@@ -53,7 +53,7 @@ public class Autoresponder {
         } catch (NotFoundUnitException e) {
             unit = defaultUnit;
         }
-        return unit;
+        return Optional.ofNullable(unit).orElseThrow(NotFoundUnitException::new);
     }
 
     private Unit nextUnit(Set<Unit> nextUnits, String message) {
