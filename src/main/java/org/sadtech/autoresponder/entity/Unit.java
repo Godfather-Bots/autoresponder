@@ -1,51 +1,56 @@
 package org.sadtech.autoresponder.entity;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+/*
+     Абстрактный класс, предпологающий какие-то действия
+ */
 public abstract class Unit {
 
     private Set<String> keyWords;
     private Pattern pattern;
-    private Integer matchThreshold;
-    private Integer priority;
+    private Integer matchThreshold = 10;
+    private Integer priority = 10;
     private Set<Unit> nextUnits;
 
-    public Unit() {
-        priority = 10;
-        matchThreshold = 10;
-    }
-
-    public Unit(Set<String> keyWords, Pattern pattern, Integer matchThreshold, Integer priority, Set<Unit> nextUnits) {
-        this.keyWords = keyWords;
-        this.pattern = pattern;
-        this.matchThreshold = matchThreshold;
-        this.priority = priority;
-        this.nextUnits = nextUnits;
-    }
-
-    public void setKeyWord(String keyWord) {
-        if (keyWords == null) {
-            keyWords = new HashSet<>();
+    public void setKeyWord(String... keyWord) {
+        if (this.keyWords == null) {
+            this.keyWords = new HashSet<>();
         }
-        keyWords.add(keyWord);
+        this.keyWords.addAll(Arrays.asList(keyWord));
     }
 
-    public void setNextUnit(Unit unit) {
-        if (nextUnits == null) {
-            nextUnits = new HashSet<>();
+    public void setKeyWords(Set<String> keyWords) {
+        if (this.keyWords == null) {
+            this.keyWords = new HashSet<>();
         }
-        nextUnits.add(unit);
+        this.keyWords.addAll(keyWords);
     }
 
     public Set<String> getKeyWords() {
         return keyWords;
     }
 
-    public void setKeyWords(Set<String> keyWords) {
-        this.keyWords = keyWords;
+    public void setNextUnit(Unit... unit) {
+        if (nextUnits == null) {
+            nextUnits = new HashSet<>();
+        }
+        nextUnits.addAll(Arrays.asList(unit));
+    }
+
+    public void setNextUnits(Set<Unit> nextUnits) {
+        if (nextUnits == null) {
+            nextUnits = new HashSet<>();
+        }
+        this.nextUnits.addAll(nextUnits);
+    }
+
+    public Set<Unit> getNextUnits() {
+        return nextUnits;
     }
 
     public Integer getMatchThreshold() {
@@ -64,14 +69,6 @@ public abstract class Unit {
         this.priority = priority;
     }
 
-    public Set<Unit> getNextUnits() {
-        return nextUnits;
-    }
-
-    public void setNextUnits(Set<Unit> nextUnits) {
-        this.nextUnits = nextUnits;
-    }
-
     public Pattern getPattern() {
         return pattern;
     }
@@ -83,7 +80,7 @@ public abstract class Unit {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Unit)) return false;
         Unit unit = (Unit) o;
         return Objects.equals(keyWords, unit.keyWords) &&
                 Objects.equals(pattern, unit.pattern) &&

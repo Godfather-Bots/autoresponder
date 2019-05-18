@@ -16,6 +16,11 @@ public class UnitPointerRepositoryMap implements UnitPointerRepository {
     }
 
     @Override
+    public void edit(UnitPointer unitPointer) {
+        unitPointerMap.get(unitPointer.getEntityId()).setUnit(unitPointer.getUnit());
+    }
+
+    @Override
     public void remove(Integer entityId) {
         unitPointerMap.remove(entityId);
     }

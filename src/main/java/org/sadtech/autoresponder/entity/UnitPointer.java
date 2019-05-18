@@ -2,6 +2,9 @@ package org.sadtech.autoresponder.entity;
 
 import java.util.Objects;
 
+/*
+    Сохраняет юнит, на котором остановился пользователь.
+ */
 public class UnitPointer {
 
     private Integer entityId;
@@ -44,5 +47,13 @@ public class UnitPointer {
     @Override
     public int hashCode() {
         return Objects.hash(entityId, unit);
+    }
+
+    @Override
+    public String toString() {
+        return "UnitPointer{" +
+                "entityId=" + entityId +
+                ", unit=" + unit +
+                '}';
     }
 }

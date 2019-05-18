@@ -8,6 +8,8 @@ public interface UnitPointerRepository {
 
     Integer add(UnitPointer unitPointer);
 
+    void edit(UnitPointer unitPointer);
+
     void remove(Integer entityId);
 
     void addAll(Map<Integer, UnitPointer> unitPointerMap);
