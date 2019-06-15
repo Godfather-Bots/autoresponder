@@ -2,6 +2,7 @@ package org.sadtech.autoresponder.repository;
 
 import org.sadtech.autoresponder.entity.UnitPointer;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,9 +11,8 @@ public class UnitPointerRepositoryMap implements UnitPointerRepository {
     private Map<Integer, UnitPointer> unitPointerMap = new HashMap<>();
 
     @Override
-    public Integer add(UnitPointer unitPointer) {
+    public void add(UnitPointer unitPointer) {
         unitPointerMap.put(unitPointer.getEntityId(), unitPointer);
-        return unitPointer.getEntityId();
     }
 
     @Override
@@ -26,8 +26,8 @@ public class UnitPointerRepositoryMap implements UnitPointerRepository {
     }
 
     @Override
-    public void addAll(Map<Integer, UnitPointer> unitPointerMap) {
-        this.unitPointerMap.putAll(unitPointerMap);
+    public void addAll(Collection<UnitPointer> unitPointers) {
+        unitPointers.parallelStream().forEach(unitPointer -> unitPointerMap.put(unitPointer.getEntityId(), unitPointer));
     }
 
     @Override
