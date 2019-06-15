@@ -40,12 +40,16 @@ public class Autoresponder {
         this.defaultUnit = defaultUnit;
     }
 
+    public Unit getDefaultUnit() {
+        return defaultUnit;
+    }
+
     public Unit answer(Integer personId, String message) {
         UnitPointer unitPointer = checkAndAddPerson(personId);
         Unit unit;
         try {
             if (unitPointer.getUnit() == null || unitPointer.getUnit().getNextUnits() == null) {
-                unit = nextUnit(startUnits, message); // выбирает unit из startUnits, если пользователь обращается впервые
+                unit = nextUnit(startUnits, message);
             } else {
                 unit = nextUnit(unitPointer.getUnit().getNextUnits(), message);
             }
@@ -58,13 +62,12 @@ public class Autoresponder {
 
     private Unit nextUnit(Set<Unit> nextUnits, String message) {
         Optional<Unit> unit = nextUnits.stream()
-                .filter(nextUnit -> nextUnit.getPattern() != null)
-                .filter(nextUnit -> patternReg(nextUnit, message))
+                .filter(nextUnit -> nextUnit.getPattern() != null && patternReg(nextUnit, message))
                 .max(UNIT_PRIORITY_COMPARATOR);
 
         if (!unit.isPresent()) {
             unit = nextUnits.stream()
-                    .filter(nextUnit -> textPercentageMatch(nextUnit, Parser.parse(message)) >= nextUnit.getMatchThreshold())
+                    .filter(nextUnit -> percentageMatch(nextUnit, Parser.parse(message)) >= nextUnit.getMatchThreshold())
                     .max(UNIT_PRIORITY_COMPARATOR);
         }
 
@@ -93,7 +96,7 @@ public class Autoresponder {
         return m.find();
     }
 
-    private Double textPercentageMatch(Unit unit, Set<String> words) {
+    private Double percentageMatch(Unit unit, Set<String> words) {
         if (unit.getKeyWords() != null) {
             Set<String> temp = new HashSet<>(unit.getKeyWords());
             temp.retainAll(words);
