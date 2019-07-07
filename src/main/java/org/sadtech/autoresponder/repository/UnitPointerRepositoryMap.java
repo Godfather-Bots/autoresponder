@@ -6,6 +6,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Реализация хранилища для {@link UnitPointer} на основе Map.
+ *
+ * @author upagge [07/07/2019]
+ */
 public class UnitPointerRepositoryMap implements UnitPointerRepository {
 
     private Map<Integer, UnitPointer> unitPointerMap = new HashMap<>();

@@ -1,20 +1,40 @@
 package org.sadtech.autoresponder.entity;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import org.sadtech.autoresponder.util.Description;
+
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-/*
-     Абстрактный класс, предпологающий какие-то действия
+/**
+ * Абстрактная сущность, отвечающая за хранение данных, необходимая для обработки запроса.
+ *
+ * @author upagge [07/07/2019]
  */
+@Getter
+@EqualsAndHashCode
 public abstract class Unit {
 
+    @Description("Ключевые слова")
     private Set<String> keyWords;
+
+    @Setter
+    @Description("Регулярное выражение")
     private Pattern pattern;
+
+    @Setter
+    // todo [upagge] [07/07/2019]: Придумать нормальное описание
     private Integer matchThreshold = 10;
+
+    @Setter
+    @Description("Значение приоритета")
     private Integer priority = 10;
+
+    @Description("Множество следующих Unit в сценарии")
     private Set<Unit> nextUnits;
 
     public void setKeyWord(String... keyWord) {
@@ -31,10 +51,6 @@ public abstract class Unit {
         this.keyWords.addAll(keyWords);
     }
 
-    public Set<String> getKeyWords() {
-        return keyWords;
-    }
-
     public void setNextUnit(Unit... unit) {
         if (nextUnits == null) {
             nextUnits = new HashSet<>();
@@ -49,48 +65,4 @@ public abstract class Unit {
         this.nextUnits.addAll(nextUnits);
     }
 
-    public Set<Unit> getNextUnits() {
-        return nextUnits;
-    }
-
-    public Integer getMatchThreshold() {
-        return matchThreshold;
-    }
-
-    public void setMatchThreshold(Integer matchThreshold) {
-        this.matchThreshold = matchThreshold;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
-
-    public Pattern getPattern() {
-        return pattern;
-    }
-
-    public void setPattern(Pattern pattern) {
-        this.pattern = pattern;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Unit)) return false;
-        Unit unit = (Unit) o;
-        return Objects.equals(keyWords, unit.keyWords) &&
-                Objects.equals(pattern, unit.pattern) &&
-                Objects.equals(matchThreshold, unit.matchThreshold) &&
-                Objects.equals(priority, unit.priority) &&
-                Objects.equals(nextUnits, unit.nextUnits);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(keyWords, pattern, matchThreshold, priority, nextUnits);
-    }
 }

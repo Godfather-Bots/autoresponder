@@ -4,6 +4,11 @@ import org.sadtech.autoresponder.entity.Unit;
 
 import java.util.Comparator;
 
+/**
+ * Компоратор для сортировки {@link Unit} по приоритету.
+ *
+ * @author upagge [07/07/2019]
+ */
 public class UnitPriorityComparator implements Comparator<Unit> {
 
     @Override
