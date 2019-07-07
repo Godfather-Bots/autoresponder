@@ -1,59 +1,26 @@
 package org.sadtech.autoresponder.entity;
 
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.sadtech.autoresponder.util.Description;
 
-/*
-    Сохраняет юнит, на котором остановился пользователь.
+/**
+ * Сущность для сохранения позиции пользователя в сценарии, состоящем из связного списка элементов {@link Unit}.
+ *
+ * @author upagge [07/07/2019]
  */
+@Data
+@AllArgsConstructor
 public class UnitPointer {
 
+    @Description("Идентификатор пользователя")
     private Integer entityId;
-    private Unit unit;
 
-    public UnitPointer(Integer entityId, Unit unit) {
-        this.entityId = entityId;
-        this.unit = unit;
-    }
+    @Description("Юнит, который был обработан")
+    private Unit unit;
 
     public UnitPointer(Integer entityId) {
         this.entityId = entityId;
     }
 
-    public Integer getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(Integer entityId) {
-        this.entityId = entityId;
-    }
-
-    public Unit getUnit() {
-        return unit;
-    }
-
-    public void setUnit(Unit unit) {
-        this.unit = unit;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UnitPointer unitPointer = (UnitPointer) o;
-        return Objects.equals(entityId, unitPointer.entityId) &&
-                Objects.equals(unit, unitPointer.unit);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(entityId, unit);
-    }
-
-    @Override
-    public String toString() {
-        return "UnitPointer{" +
-                "entityId=" + entityId +
-                ", unit=" + unit +
-                '}';
-    }
 }

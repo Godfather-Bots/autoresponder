@@ -1,13 +1,16 @@
 package org.sadtech.autoresponder;
 
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.sadtech.autoresponder.compare.UnitPriorityComparator;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
 import org.sadtech.autoresponder.exception.NotFoundUnitException;
 import org.sadtech.autoresponder.service.UnitPointerService;
+import org.sadtech.autoresponder.util.Description;
 import org.sadtech.autoresponder.util.Parser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -15,16 +18,26 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/*
-    Отвечает за функционирование автоответчика
+/**
+ * Реализуют основную логику автоответчика.
+ *
+ * @author upagge [07/07/2019]
  */
+@Slf4j
 public class Autoresponder {
 
-    private static final Logger log = LoggerFactory.getLogger(Autoresponder.class);
+    @Description("Компоратор для сортировки Unit-ов")
     private static final UnitPriorityComparator UNIT_PRIORITY_COMPARATOR = new UnitPriorityComparator();
 
+    @Description("Начальные юниты, первый запрос приходит на них")
     private final Set<Unit> startUnits;
+
+    @Getter
+    @Setter
+    @Description("Дефолтный юнит, отправляется если ни один Unit не подошел")
     private Unit defaultUnit;
+
+    @Getter
     private final UnitPointerService unitPointerService;
 
     public Autoresponder(UnitPointerService unitPointerService, Set<Unit> startUnits) {
@@ -32,19 +45,14 @@ public class Autoresponder {
         this.unitPointerService = unitPointerService;
     }
 
-    public UnitPointerService getUnitPointerService() {
-        return unitPointerService;
-    }
-
-    public void setDefaultUnit(Unit defaultUnit) {
-        this.defaultUnit = defaultUnit;
-    }
-
-    public Unit getDefaultUnit() {
-        return defaultUnit;
-    }
-
-    public Unit answer(Integer personId, String message) {
+    /**
+     * Принимает текстовый запрос пользователя и отдает юнит, который соответствует запросу
+     *
+     * @param personId Идентификатор пользователя
+     * @param message  Запрос пользователя - текстовое сообщение
+     * @return {@link Unit}, который отвечает за данные для обработки данного запроса
+     */
+    public Unit answer(@NonNull Integer personId, String message) {
         UnitPointer unitPointer = checkAndAddPerson(personId);
         Unit unit;
         try {
@@ -60,6 +68,13 @@ public class Autoresponder {
         return Optional.ofNullable(unit).orElseThrow(NotFoundUnitException::new);
     }
 
+    /**
+     * Выбирает, какой {@link Unit} будет отдан для обработки
+     *
+     * @param nextUnits Множество следующих Unit-ов
+     * @param message   Запрос пользователя - текстовое сообщение
+     * @return Юнит, который нуждается в обработке в соответствии с запросом пользователя
+     */
     private Unit nextUnit(Set<Unit> nextUnits, String message) {
         Optional<Unit> unit = nextUnits.stream()
                 .filter(nextUnit -> nextUnit.getPattern() != null && patternReg(nextUnit, message))
@@ -79,6 +94,12 @@ public class Autoresponder {
         return unit.orElseThrow(NotFoundUnitException::new);
     }
 
+    /**
+     * Проверяет наличие {@link UnitPointer} у пользовтеля и создает его, если не находит
+     *
+     * @param personId Идентификатор пользователя
+     * @return {@link UnitPointer}, который сохраняет {@link Unit}, который был обработан последним
+     */
     private UnitPointer checkAndAddPerson(Integer personId) {
         UnitPointer unitPointer;
         if (unitPointerService.check(personId)) {
@@ -89,6 +110,7 @@ public class Autoresponder {
         }
         return unitPointer;
     }
+
 
     private boolean patternReg(Unit unit, String message) {
         Pattern pattern = unit.getPattern();
