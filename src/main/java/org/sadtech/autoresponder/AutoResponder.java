@@ -15,8 +15,6 @@ import org.sadtech.autoresponder.util.Parser;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Реализуют основную логику автоответчика.
@@ -24,7 +22,7 @@ import java.util.regex.Pattern;
  * @author upagge [07/07/2019]
  */
 @Slf4j
-public class Autoresponder {
+public class AutoResponder {
 
     @Description("Компоратор для сортировки Unit-ов")
     private static final UnitPriorityComparator UNIT_PRIORITY_COMPARATOR = new UnitPriorityComparator();
@@ -40,7 +38,7 @@ public class Autoresponder {
     @Getter
     private final UnitPointerService unitPointerService;
 
-    public Autoresponder(UnitPointerService unitPointerService, Set<Unit> startUnits) {
+    public AutoResponder(UnitPointerService unitPointerService, Set<Unit> startUnits) {
         this.startUnits = startUnits;
         this.unitPointerService = unitPointerService;
     }
@@ -56,7 +54,7 @@ public class Autoresponder {
         UnitPointer unitPointer = checkAndAddPerson(personId);
         Unit unit;
         try {
-            if (unitPointer.getUnit() == null || unitPointer.getUnit().getNextUnits() == null) {
+            if (unitPointer.getUnit() == null || unitPointer.getUnit().getNextUnits() == null || unitPointer.getUnit().getNextUnits().isEmpty()) {
                 unit = nextUnit(startUnits, message);
             } else {
                 unit = nextUnit(unitPointer.getUnit().getNextUnits(), message);
@@ -75,23 +73,22 @@ public class Autoresponder {
      * @param message   Запрос пользователя - текстовое сообщение
      * @return Юнит, который нуждается в обработке в соответствии с запросом пользователя
      */
-    private Unit nextUnit(Set<Unit> nextUnits, String message) {
-        Optional<Unit> unit = nextUnits.stream()
+    private Unit nextUnit(@NonNull Set<Unit> nextUnits, String message) {
+        Set<Unit> searchUnit = new HashSet<>();
+
+        nextUnits.stream()
                 .filter(nextUnit -> nextUnit.getPattern() != null && patternReg(nextUnit, message))
-                .max(UNIT_PRIORITY_COMPARATOR);
+                .forEach(searchUnit::add);
 
-        if (!unit.isPresent()) {
-            unit = nextUnits.stream()
-                    .filter(nextUnit -> percentageMatch(nextUnit, Parser.parse(message)) >= nextUnit.getMatchThreshold())
-                    .max(UNIT_PRIORITY_COMPARATOR);
-        }
+        nextUnits.stream()
+                .filter(nextUnit -> percentageMatch(nextUnit, Parser.parse(message)) >= nextUnit.getMatchThreshold())
+                .forEach(searchUnit::add);
 
-        if (!unit.isPresent()) {
-            unit = nextUnits.stream()
-                    .filter(nextUnit -> (nextUnit.getPattern() == null && nextUnit.getKeyWords() == null))
-                    .max(UNIT_PRIORITY_COMPARATOR);
-        }
-        return unit.orElseThrow(NotFoundUnitException::new);
+        nextUnits.stream()
+                .filter(nextUnit -> (nextUnit.getPattern() == null && (nextUnit.getKeyWords() == null || nextUnit.getKeyWords().isEmpty())))
+                .forEach(searchUnit::add);
+
+        return searchUnit.stream().max(UNIT_PRIORITY_COMPARATOR).orElseThrow(NotFoundUnitException::new);
     }
 
     /**
@@ -100,7 +97,7 @@ public class Autoresponder {
      * @param personId Идентификатор пользователя
      * @return {@link UnitPointer}, который сохраняет {@link Unit}, который был обработан последним
      */
-    private UnitPointer checkAndAddPerson(Integer personId) {
+    private UnitPointer checkAndAddPerson(@NonNull Integer personId) {
         UnitPointer unitPointer;
         if (unitPointerService.check(personId)) {
             unitPointer = unitPointerService.getByEntityId(personId);
@@ -112,14 +109,12 @@ public class Autoresponder {
     }
 
 
-    private boolean patternReg(Unit unit, String message) {
-        Pattern pattern = unit.getPattern();
-        Matcher m = pattern.matcher(message);
-        return m.find();
+    private boolean patternReg(@NonNull Unit unit, String message) {
+        return message.matches(unit.getPattern().pattern());
     }
 
     private Double percentageMatch(Unit unit, Set<String> words) {
-        if (unit.getKeyWords() != null) {
+        if (unit.getKeyWords() != null && !unit.getKeyWords().isEmpty()) {
             Set<String> temp = new HashSet<>(unit.getKeyWords());
             temp.retainAll(words);
             log.info("Ключевые слова юнита: {} ({})", unit.getKeyWords(), unit.getKeyWords().size());

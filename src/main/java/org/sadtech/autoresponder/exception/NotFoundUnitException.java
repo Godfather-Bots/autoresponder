@@ -6,4 +6,5 @@ package org.sadtech.autoresponder.exception;
  * @author upagge [07/07/2019]
  */
 public class NotFoundUnitException extends RuntimeException {
+
 }

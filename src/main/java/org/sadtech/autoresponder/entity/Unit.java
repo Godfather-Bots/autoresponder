@@ -3,10 +3,10 @@ package org.sadtech.autoresponder.entity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.sadtech.autoresponder.util.Description;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -17,52 +17,30 @@ import java.util.regex.Pattern;
  */
 @Getter
 @EqualsAndHashCode
+@ToString
+@Setter
 public abstract class Unit {
 
     @Description("Ключевые слова")
-    private Set<String> keyWords;
+    protected Set<String> keyWords;
 
-    @Setter
     @Description("Регулярное выражение")
-    private Pattern pattern;
+    protected Pattern pattern;
 
-    @Setter
-    // todo [upagge] [07/07/2019]: Придумать нормальное описание
-    private Integer matchThreshold = 10;
+    @Description("Значение минимального отношения количества найденых ключевых слов, к количеству ключевых слов Unit-а")
+    protected Integer matchThreshold;
 
-    @Setter
     @Description("Значение приоритета")
-    private Integer priority = 10;
+    protected Integer priority;
 
     @Description("Множество следующих Unit в сценарии")
-    private Set<Unit> nextUnits;
+    protected Set<Unit> nextUnits;
 
-    public void setKeyWord(String... keyWord) {
-        if (this.keyWords == null) {
-            this.keyWords = new HashSet<>();
-        }
-        this.keyWords.addAll(Arrays.asList(keyWord));
+    protected Unit(Set<String> keyWords, Pattern pattern, Integer matchThreshold, Integer priority, Set<Unit> nextUnits) {
+        this.keyWords = keyWords;
+        this.pattern = pattern;
+        this.matchThreshold = Optional.ofNullable(matchThreshold).orElse(10);
+        this.priority = Optional.ofNullable(priority).orElse(10);
+        this.nextUnits = nextUnits;
     }
-
-    public void setKeyWords(Set<String> keyWords) {
-        if (this.keyWords == null) {
-            this.keyWords = new HashSet<>();
-        }
-        this.keyWords.addAll(keyWords);
-    }
-
-    public void setNextUnit(Unit... unit) {
-        if (nextUnits == null) {
-            nextUnits = new HashSet<>();
-        }
-        nextUnits.addAll(Arrays.asList(unit));
-    }
-
-    public void setNextUnits(Set<Unit> nextUnits) {
-        if (nextUnits == null) {
-            nextUnits = new HashSet<>();
-        }
-        this.nextUnits.addAll(nextUnits);
-    }
-
 }

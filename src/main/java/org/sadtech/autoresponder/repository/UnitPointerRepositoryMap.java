@@ -1,5 +1,6 @@
 package org.sadtech.autoresponder.repository;
 
+import lombok.NonNull;
 import org.sadtech.autoresponder.entity.UnitPointer;
 
 import java.util.Collection;
@@ -16,27 +17,27 @@ public class UnitPointerRepositoryMap implements UnitPointerRepository {
     private Map<Integer, UnitPointer> unitPointerMap = new HashMap<>();
 
     @Override
-    public void add(UnitPointer unitPointer) {
+    public void add(@NonNull UnitPointer unitPointer) {
         unitPointerMap.put(unitPointer.getEntityId(), unitPointer);
     }
 
     @Override
-    public void edit(UnitPointer unitPointer) {
+    public void edit(@NonNull UnitPointer unitPointer) {
         unitPointerMap.get(unitPointer.getEntityId()).setUnit(unitPointer.getUnit());
     }
 
     @Override
-    public void remove(Integer entityId) {
+    public void remove(@NonNull Integer entityId) {
         unitPointerMap.remove(entityId);
     }
 
     @Override
-    public void addAll(Collection<UnitPointer> unitPointers) {
+    public void addAll(@NonNull Collection<UnitPointer> unitPointers) {
         unitPointers.parallelStream().forEach(unitPointer -> unitPointerMap.put(unitPointer.getEntityId(), unitPointer));
     }
 
     @Override
-    public UnitPointer findByEntityId(Integer entityId) {
+    public UnitPointer findByEntityId(@NonNull Integer entityId) {
         return unitPointerMap.get(entityId);
     }
 }

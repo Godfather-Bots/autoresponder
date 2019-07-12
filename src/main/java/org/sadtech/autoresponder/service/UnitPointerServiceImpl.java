@@ -1,44 +1,40 @@
 package org.sadtech.autoresponder.service;
 
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
 import org.sadtech.autoresponder.repository.UnitPointerRepository;
-import org.sadtech.autoresponder.repository.UnitPointerRepositoryMap;
 
 @Slf4j
 public class UnitPointerServiceImpl implements UnitPointerService {
 
-    private UnitPointerRepository unitPointerRepository;
-
-    public UnitPointerServiceImpl() {
-        this.unitPointerRepository = new UnitPointerRepositoryMap();
-    }
+    private final UnitPointerRepository unitPointerRepository;
 
     public UnitPointerServiceImpl(UnitPointerRepository unitPointerRepository) {
         this.unitPointerRepository = unitPointerRepository;
     }
 
     @Override
-    public UnitPointer getByEntityId(Integer entityId) {
+    public UnitPointer getByEntityId(@NonNull Integer entityId) {
         return unitPointerRepository.findByEntityId(entityId);
     }
 
     @Override
-    public void edit(Integer personId, Unit unit) {
+    public void edit(@NonNull Integer personId, Unit unit) {
         if (check(personId)) {
             unitPointerRepository.edit(new UnitPointer(personId, unit));
         }
     }
 
     @Override
-    public void add(UnitPointer unitPointer) {
+    public void add(@NonNull UnitPointer unitPointer) {
         unitPointerRepository.add(unitPointer);
         log.info("Пользователь отправлен в репозиторий");
     }
 
     @Override
-    public boolean check(Integer entityId) {
+    public boolean check(@NonNull Integer entityId) {
         return unitPointerRepository.findByEntityId(entityId) != null;
     }
 }

@@ -12,42 +12,53 @@ import org.sadtech.autoresponder.test.TestUnit;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class AutoresponderTest {
+public class AutoResponderTest {
 
-    private Autoresponder autoresponder;
+    private AutoResponder autoresponder;
 
     @Before
     public void setUp() {
-        TestUnit dela = new TestUnit();
-        dela.setKeyWord("дела", "делишки");
-        dela.setMessage("хорошо");
+        TestUnit dela = TestUnit.builder()
+                .keyWord("дела")
+                .keyWord("делишки")
+                .message("хорошо")
+                .build();
 
-        TestUnit delaTop = new TestUnit();
-        delaTop.setPriority(100);
-        delaTop.setKeyWord("делишки");
-        delaTop.setMessage("отлично");
+        TestUnit delaTop = TestUnit.builder()
+                .priority(100)
+                .keyWord("делишки")
+                .message("отлично")
+                .build();
 
-        TestUnit hello = new TestUnit();
-        hello.setMessage("тест");
-        hello.setKeyWord("привет");
-        hello.setNextUnit(dela);
-        hello.setNextUnit(delaTop);
+        TestUnit hello = TestUnit.builder()
+                .keyWord("привет")
+                .message("тест")
+                .nextUnit(dela)
+                .nextUnit(delaTop)
+                .build();
 
-        TestUnit number = new TestUnit();
-        number.setKeyWord("89101234567");
-        number.setMessage("ответ");
 
-        TestUnit regExp = new TestUnit();
-        regExp.setPattern(Pattern.compile("^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$"));
-        regExp.setMessage("регулярка");
-        dela.setNextUnit(regExp);
-        dela.setNextUnit(number);
+        TestUnit number = TestUnit.builder()
+                .keyWord("89101234567")
+                .message("ответ")
+                .build();
 
-        TestUnit unreal = new TestUnit();
-        unreal.setKeyWord("витамин", "мультифрукт", "арбуз", "параметр");
-        unreal.setMessage("победа");
-        unreal.setMatchThreshold(100);
+        TestUnit regExp = TestUnit.builder()
+                .pattern(Pattern.compile("^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$"))
+                .message("регулярка")
+                .build();
+        dela.setNextUnits(Stream.of(regExp, number).collect(Collectors.toSet()));
+
+        Set<String> strings = Stream.of("витамин", "мультифрукт", "арбуз", "параметр").collect(Collectors.toSet());
+
+        TestUnit unreal = TestUnit.builder()
+                .keyWords(strings)
+                .message("победа")
+                .matchThreshold(100)
+                .build();
 
         Set<Unit> testUnits = new HashSet<>();
         testUnits.add(hello);
@@ -55,7 +66,7 @@ public class AutoresponderTest {
         testUnits.add(unreal);
 
         UnitPointerServiceImpl unitPointerService = new UnitPointerServiceImpl(new UnitPointerRepositoryMap());
-        autoresponder = new Autoresponder(unitPointerService, testUnits);
+        autoresponder = new AutoResponder(unitPointerService, testUnits);
     }
 
     @Test
@@ -68,8 +79,7 @@ public class AutoresponderTest {
 
     @Test
     public void defaultAnswer() {
-        TestUnit defaultUnit = new TestUnit();
-        defaultUnit.setMessage("не знаю");
+        TestUnit defaultUnit = TestUnit.builder().message("не знаю").build();
         autoresponder.setDefaultUnit(defaultUnit);
 
         Assert.assertEquals(((TestUnit) autoresponder.answer(2, "пока")).getMessage(), "не знаю");
@@ -113,8 +123,7 @@ public class AutoresponderTest {
 
     @Test
     public void generalAnswer() {
-        TestUnit defaultUnit = new TestUnit();
-        defaultUnit.setMessage("не знаю");
+        TestUnit defaultUnit = TestUnit.builder().message("не знаю").build();
         autoresponder.setDefaultUnit(defaultUnit);
         String answer = ((TestUnit) autoresponder.answer(1, "привет это тестирование функциональности")).getMessage();
         Assert.assertEquals("тест", answer);
