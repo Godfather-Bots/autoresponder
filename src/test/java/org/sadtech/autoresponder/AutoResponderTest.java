@@ -82,7 +82,7 @@ public class AutoResponderTest {
         TestUnit defaultUnit = TestUnit.builder().message("не знаю").build();
         autoresponder.setDefaultUnit(defaultUnit);
 
-        Assert.assertEquals(((TestUnit) autoresponder.answer(2, "пока")).getMessage(), "не знаю");
+        Assert.assertEquals("не знаю", ((TestUnit) autoresponder.answer(2, "пока")).getMessage());
     }
 
     @Test(expected = NotFoundUnitException.class)
@@ -93,7 +93,7 @@ public class AutoResponderTest {
     @Test
     public void regExpAnswer() {
         String message = ((TestUnit) autoresponder.answer(1, "79101234567")).getMessage();
-        Assert.assertEquals(message, "регулярка");
+        Assert.assertEquals("регулярка", message);
     }
 
     @Test
