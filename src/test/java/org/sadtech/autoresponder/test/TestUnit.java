@@ -18,13 +18,15 @@ public class TestUnit extends Unit {
     private String message;
 
     @Builder
-    public TestUnit(@Singular(value = "keyWord") Set<String> keyWords,
+    public TestUnit(@Singular Set<String> keyWords,
+                    String phrase,
                     Pattern pattern,
                     Integer matchThreshold,
                     Integer priority,
-                    @Singular(value = "nextUnit") Set<Unit> nextUnits,
+                    @Singular Set<Unit> nextUnits,
                     String message) {
-        super(keyWords, pattern, matchThreshold, priority, nextUnits);
+        super(keyWords, phrase, pattern, matchThreshold, priority, nextUnits);
         this.message = message;
     }
+
 }

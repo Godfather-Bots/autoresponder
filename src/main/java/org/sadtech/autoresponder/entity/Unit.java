@@ -24,6 +24,9 @@ public abstract class Unit {
     @Description("Ключевые слова")
     protected Set<String> keyWords;
 
+    @Description("Точная фраза")
+    protected String phrase;
+
     @Description("Регулярное выражение")
     protected Pattern pattern;
 
@@ -36,8 +39,9 @@ public abstract class Unit {
     @Description("Множество следующих Unit в сценарии")
     protected Set<Unit> nextUnits;
 
-    protected Unit(Set<String> keyWords, Pattern pattern, Integer matchThreshold, Integer priority, Set<Unit> nextUnits) {
+    protected Unit(Set<String> keyWords, String phrase, Pattern pattern, Integer matchThreshold, Integer priority, Set<Unit> nextUnits) {
         this.keyWords = keyWords;
+        this.phrase = phrase;
         this.pattern = pattern;
         this.matchThreshold = Optional.ofNullable(matchThreshold).orElse(10);
         this.priority = Optional.ofNullable(priority).orElse(10);

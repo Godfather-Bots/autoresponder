@@ -77,6 +77,13 @@ public class AutoResponder {
         Set<Unit> searchUnit = new HashSet<>();
 
         nextUnits.stream()
+                .filter(nextUnit -> nextUnit.getPhrase() != null
+                        && !nextUnit.getPhrase().isEmpty()
+                        && nextUnit.getPhrase().equalsIgnoreCase(message)
+                )
+                .forEach(searchUnit::add);
+
+        nextUnits.stream()
                 .filter(nextUnit -> nextUnit.getPattern() != null && patternReg(nextUnit, message))
                 .forEach(searchUnit::add);
 
@@ -84,9 +91,11 @@ public class AutoResponder {
                 .filter(nextUnit -> percentageMatch(nextUnit, Parser.parse(message)) >= nextUnit.getMatchThreshold())
                 .forEach(searchUnit::add);
 
-        nextUnits.stream()
-                .filter(nextUnit -> (nextUnit.getPattern() == null && (nextUnit.getKeyWords() == null || nextUnit.getKeyWords().isEmpty())))
-                .forEach(searchUnit::add);
+        if (searchUnit.isEmpty()) {
+            nextUnits.stream()
+                    .filter(nextUnit -> (nextUnit.getPattern() == null && (nextUnit.getKeyWords() == null || nextUnit.getKeyWords().isEmpty())))
+                    .forEach(searchUnit::add);
+        }
 
         return searchUnit.stream().max(UNIT_PRIORITY_COMPARATOR).orElseThrow(NotFoundUnitException::new);
     }
