@@ -7,28 +7,28 @@ import org.sadtech.autoresponder.entity.UnitPointer;
 import org.sadtech.autoresponder.repository.UnitPointerRepository;
 
 @Slf4j
-public class UnitPointerServiceImpl implements UnitPointerService {
+public class UnitPointerServiceImpl<U extends Unit> implements UnitPointerService<U> {
 
-    private final UnitPointerRepository unitPointerRepository;
+    private final UnitPointerRepository<U> unitPointerRepository;
 
-    public UnitPointerServiceImpl(UnitPointerRepository unitPointerRepository) {
+    public UnitPointerServiceImpl(UnitPointerRepository<U> unitPointerRepository) {
         this.unitPointerRepository = unitPointerRepository;
     }
 
     @Override
-    public UnitPointer getByEntityId(@NonNull Integer entityId) {
+    public UnitPointer<U> getByEntityId(@NonNull Integer entityId) {
         return unitPointerRepository.findByEntityId(entityId);
     }
 
     @Override
-    public void edit(@NonNull Integer personId, Unit unit) {
+    public void edit(@NonNull Integer personId, U unit) {
         if (check(personId)) {
-            unitPointerRepository.edit(new UnitPointer(personId, unit));
+            unitPointerRepository.edit(new UnitPointer<>(personId, unit));
         }
     }
 
     @Override
-    public void add(@NonNull UnitPointer unitPointer) {
+    public void add(@NonNull UnitPointer<U> unitPointer) {
         unitPointerRepository.add(unitPointer);
         log.info("Пользователь отправлен в репозиторий");
     }

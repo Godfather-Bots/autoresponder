@@ -9,7 +9,7 @@ import java.util.Comparator;
  *
  * @author upagge [07/07/2019]
  */
-public class UnitPriorityComparator implements Comparator<Unit> {
+public class UnitPriorityComparator<U extends Unit> implements Comparator<U> {
 
     @Override
     public int compare(Unit o1, Unit o2) {

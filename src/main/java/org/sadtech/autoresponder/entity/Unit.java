@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode
 @ToString
 @Setter
-public abstract class Unit {
+public abstract class Unit<U extends Unit> {
 
     @Description("Ключевые слова")
     protected Set<String> keyWords;
@@ -37,9 +37,9 @@ public abstract class Unit {
     protected Integer priority;
 
     @Description("Множество следующих Unit в сценарии")
-    protected Set<Unit> nextUnits;
+    protected Set<U> nextUnits;
 
-    protected Unit(Set<String> keyWords, String phrase, Pattern pattern, Integer matchThreshold, Integer priority, Set<Unit> nextUnits) {
+    protected Unit(Set<String> keyWords, String phrase, Pattern pattern, Integer matchThreshold, Integer priority, Set<U> nextUnits) {
         this.keyWords = keyWords;
         this.phrase = phrase;
         this.pattern = pattern;

@@ -11,13 +11,13 @@ import org.sadtech.autoresponder.util.Description;
  */
 @Data
 @AllArgsConstructor
-public class UnitPointer {
+public class UnitPointer<U extends Unit> {
 
     @Description("Идентификатор пользователя")
     private Integer entityId;
 
     @Description("Юнит, который был обработан")
-    private Unit unit;
+    private U unit;
 
     public UnitPointer(Integer entityId) {
         this.entityId = entityId;
