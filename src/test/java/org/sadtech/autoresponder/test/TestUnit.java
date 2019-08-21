@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class TestUnit extends Unit {
+public class TestUnit extends Unit<TestUnit> {
 
     private String message;
 
@@ -23,7 +23,7 @@ public class TestUnit extends Unit {
                     Pattern pattern,
                     Integer matchThreshold,
                     Integer priority,
-                    @Singular Set<Unit> nextUnits,
+                    @Singular Set<TestUnit> nextUnits,
                     String message) {
         super(keyWords, phrase, pattern, matchThreshold, priority, nextUnits);
         this.message = message;

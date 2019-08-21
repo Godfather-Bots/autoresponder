@@ -39,7 +39,12 @@ public abstract class Unit<U extends Unit> {
     @Description("Множество следующих Unit в сценарии")
     protected Set<U> nextUnits;
 
-    protected Unit(Set<String> keyWords, String phrase, Pattern pattern, Integer matchThreshold, Integer priority, Set<U> nextUnits) {
+    protected Unit(Set<String> keyWords,
+                   String phrase,
+                   Pattern pattern,
+                   Integer matchThreshold,
+                   Integer priority,
+                   Set<U> nextUnits) {
         this.keyWords = keyWords;
         this.phrase = phrase;
         this.pattern = pattern;

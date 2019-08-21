@@ -1,29 +1,30 @@
 package org.sadtech.autoresponder.repository;
 
-import org.sadtech.autoresponder.entity.Unit;
+import lombok.NonNull;
 import org.sadtech.autoresponder.entity.UnitPointer;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Интегрфейс для работы с хранилищем сущности {@link UnitPointer}.
  *
  * @author upagge [07/07/2019]
  */
-public interface UnitPointerRepository<U extends Unit> {
+public interface UnitPointerRepository {
 
-    void add(UnitPointer<U> unitPointer);
+    UnitPointer add(@NonNull UnitPointer unitPointer);
 
-    void edit(UnitPointer<U> unitPointer);
+    void edit(@NonNull UnitPointer unitPointer);
 
-    void remove(Integer entityId);
+    void remove(@NonNull Integer entityId);
 
-    void addAll(Collection<UnitPointer<U>> unitPointers);
+    void addAll(@NonNull Collection<UnitPointer> unitPointers);
 
     /**
      * @param entityId Идентификатор пользователя
      * @return Объект с последним обработанным {@link org.sadtech.autoresponder.entity.Unit} для пользователя
      */
-    UnitPointer<U> findByEntityId(Integer entityId);
+    Optional<UnitPointer> findByEntityId(@NonNull Integer entityId);
 
 }

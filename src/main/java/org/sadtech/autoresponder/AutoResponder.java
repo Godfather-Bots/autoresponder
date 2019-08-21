@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.sadtech.autoresponder.compare.UnitPriorityComparator;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
-import org.sadtech.autoresponder.exception.NotFoundUnitException;
 import org.sadtech.autoresponder.service.UnitPointerService;
 import org.sadtech.autoresponder.util.Description;
 import org.sadtech.autoresponder.util.Parser;
@@ -25,7 +24,7 @@ import java.util.Set;
 public class AutoResponder<U extends Unit> {
 
     @Description("Компоратор для сортировки Unit-ов")
-    private final UnitPriorityComparator<U> unitPriorityComparator = new UnitPriorityComparator<>();
+    private static final UnitPriorityComparator UNIT_PRIORITY_COMPARATOR = new UnitPriorityComparator();
 
     @Description("Начальные юниты, первый запрос приходит на них")
     private final Set<U> startUnits;
@@ -36,9 +35,9 @@ public class AutoResponder<U extends Unit> {
     private U defaultUnit;
 
     @Getter
-    private final UnitPointerService<U> unitPointerService;
+    private final UnitPointerService unitPointerService;
 
-    public AutoResponder(UnitPointerService<U> unitPointerService, Set<U> startUnits) {
+    public AutoResponder(UnitPointerService unitPointerService, Set<U> startUnits) {
         this.startUnits = startUnits;
         this.unitPointerService = unitPointerService;
     }
@@ -50,20 +49,21 @@ public class AutoResponder<U extends Unit> {
      * @param message  Запрос пользователя - текстовое сообщение
      * @return {@link Unit}, который отвечает за данные для обработки данного запроса
      */
-    public U answer(@NonNull Integer personId, String message) {
-        UnitPointer<U> unitPointer = checkAndAddPerson(personId);
-        U unit;
-        try {
-            if (unitPointer.getUnit() == null || unitPointer.getUnit().getNextUnits() == null || unitPointer.getUnit().getNextUnits().isEmpty()) {
-                unit = nextUnit(startUnits, message);
-            } else {
-                unit = (U) nextUnit(unitPointer.getUnit().getNextUnits(), message);
-            }
+    public Optional<U> answer(@NonNull Integer personId, String message) {
+        Optional<UnitPointer> unitPointer = unitPointerService.getByEntityId(personId);
+        Optional<U> unitOpt = nextUnit(
+                !unitPointer.isPresent() || newScenario(unitPointer.get()) ? startUnits : unitPointer.get().getUnit().getNextUnits(),
+                message
+        );
+        unitOpt.ifPresent(unit -> {
+            unitPointer.orElseGet(() -> unitPointerService.create(personId));
             unitPointerService.edit(personId, unit);
-        } catch (NotFoundUnitException e) {
-            unit = defaultUnit;
-        }
-        return Optional.ofNullable(unit).orElseThrow(NotFoundUnitException::new);
+        });
+        return unitOpt.isPresent() ? unitOpt : Optional.ofNullable(defaultUnit);
+    }
+
+    private boolean newScenario(UnitPointer unitPointer) {
+        return unitPointer.getUnit() == null || unitPointer.getUnit().getNextUnits() == null || unitPointer.getUnit().getNextUnits().isEmpty();
     }
 
     /**
@@ -73,7 +73,7 @@ public class AutoResponder<U extends Unit> {
      * @param message   Запрос пользователя - текстовое сообщение
      * @return Юнит, который нуждается в обработке в соответствии с запросом пользователя
      */
-    private U nextUnit(@NonNull Set<U> nextUnits, String message) {
+    private Optional<U> nextUnit(@NonNull Set<U> nextUnits, String message) {
         Set<U> searchUnit = new HashSet<>();
 
         nextUnits.stream()
@@ -97,32 +97,15 @@ public class AutoResponder<U extends Unit> {
                     .forEach(searchUnit::add);
         }
 
-        return searchUnit.stream().max(unitPriorityComparator).orElseThrow(NotFoundUnitException::new);
-    }
-
-    /**
-     * Проверяет наличие {@link UnitPointer} у пользовтеля и создает его, если не находит
-     *
-     * @param personId Идентификатор пользователя
-     * @return {@link UnitPointer}, который сохраняет {@link Unit}, который был обработан последним
-     */
-    private UnitPointer<U> checkAndAddPerson(@NonNull Integer personId) {
-        UnitPointer<U> unitPointer;
-        if (unitPointerService.check(personId)) {
-            unitPointer = unitPointerService.getByEntityId(personId);
-        } else {
-            unitPointer = new UnitPointer<>(personId);
-            unitPointerService.add(unitPointer);
-        }
-        return unitPointer;
+        return searchUnit.stream().max(UNIT_PRIORITY_COMPARATOR);
     }
 
 
-    private boolean patternReg(@NonNull Unit unit, String message) {
+    private boolean patternReg(@NonNull U unit, String message) {
         return message.matches(unit.getPattern().pattern());
     }
 
-    private Double percentageMatch(Unit unit, Set<String> words) {
+    private Double percentageMatch(U unit, Set<String> words) {
         if (unit.getKeyWords() != null && !unit.getKeyWords().isEmpty()) {
             Set<String> temp = new HashSet<>(unit.getKeyWords());
             temp.retainAll(words);

@@ -3,13 +3,12 @@ package org.sadtech.autoresponder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.sadtech.autoresponder.entity.Unit;
-import org.sadtech.autoresponder.exception.NotFoundUnitException;
 import org.sadtech.autoresponder.repository.UnitPointerRepositoryMap;
 import org.sadtech.autoresponder.service.UnitPointerServiceImpl;
 import org.sadtech.autoresponder.test.TestUnit;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -17,7 +16,7 @@ import java.util.stream.Stream;
 
 public class AutoResponderTest {
 
-    private AutoResponder autoresponder;
+    private AutoResponder<TestUnit> autoresponder;
 
     @Before
     public void setUp() {
@@ -60,20 +59,20 @@ public class AutoResponderTest {
                 .matchThreshold(100)
                 .build();
 
-        Set<Unit> testUnits = new HashSet<>();
+        Set<TestUnit> testUnits = new HashSet<>();
         testUnits.add(hello);
         testUnits.add(regExp);
         testUnits.add(unreal);
 
         UnitPointerServiceImpl unitPointerService = new UnitPointerServiceImpl(new UnitPointerRepositoryMap());
-        autoresponder = new AutoResponder(unitPointerService, testUnits);
+        autoresponder = new AutoResponder<>(unitPointerService, testUnits);
     }
 
     @Test
     public void simpleAnswer() {
-        String message = ((TestUnit) autoresponder.answer(1, "привет это тестирвоание функциональности")).getMessage();
+        String message = autoresponder.answer(1, "привет это тестирвоание функциональности").get().getMessage();
         Assert.assertEquals("тест", message);
-        String message1 = ((TestUnit) autoresponder.answer(2, "привет, еще одно тестирование")).getMessage();
+        String message1 = autoresponder.answer(2, "привет, еще одно тестирование").get().getMessage();
         Assert.assertEquals("тест", message1);
     }
 
@@ -82,17 +81,17 @@ public class AutoResponderTest {
         TestUnit defaultUnit = TestUnit.builder().message("не знаю").build();
         autoresponder.setDefaultUnit(defaultUnit);
 
-        Assert.assertEquals("не знаю", ((TestUnit) autoresponder.answer(2, "пока")).getMessage());
+        Assert.assertEquals("не знаю", autoresponder.answer(2, "пока").get().getMessage());
     }
 
-    @Test(expected = NotFoundUnitException.class)
+    @Test
     public void notDefaultAnswer() {
-        autoresponder.answer(2, "пока");
+        Assert.assertEquals(Optional.empty(), autoresponder.answer(2, "пока"));
     }
 
     @Test
     public void regExpAnswer() {
-        String message = ((TestUnit) autoresponder.answer(1, "79101234567")).getMessage();
+        String message = autoresponder.answer(1, "79101234567").get().getMessage();
         Assert.assertEquals("регулярка", message);
     }
 
@@ -100,9 +99,9 @@ public class AutoResponderTest {
     public void priorityAnswer() {
         autoresponder.answer(1, "привет");
         autoresponder.answer(2, "привет");
-        String message = ((TestUnit) autoresponder.answer(1, "как твои делишки")).getMessage();
+        String message = autoresponder.answer(1, "как твои делишки").get().getMessage();
         Assert.assertEquals("отлично", message);
-        String message1 = ((TestUnit) autoresponder.answer(2, "твои дела все еще хорошо?")).getMessage();
+        String message1 = autoresponder.answer(2, "твои дела все еще хорошо?").get().getMessage();
         Assert.assertEquals("хорошо", message1);
     }
 
@@ -110,14 +109,14 @@ public class AutoResponderTest {
     public void showRegExpVsKeyWords() {
         autoresponder.answer(1, "привет");
         autoresponder.answer(1, "дела");
-        Assert.assertEquals("регулярка", ((TestUnit) autoresponder.answer(1, "89101234567")).getMessage());
+        Assert.assertEquals("регулярка", autoresponder.answer(1, "89101234567").get().getMessage());
     }
 
-    @Test(expected = NotFoundUnitException.class)
+    @Test
     public void matchThreshold() {
         autoresponder.answer(1, "витамин я сьем, и арбуз получу");
         String message = "параметр себе задам: покушать витамин и арбуз, а вместе все это мультифрукт";
-        String answer = ((TestUnit) autoresponder.answer(1, message)).getMessage();
+        String answer = autoresponder.answer(1, message).get().getMessage();
         Assert.assertEquals("победа", answer);
     }
 
@@ -125,16 +124,16 @@ public class AutoResponderTest {
     public void generalAnswer() {
         TestUnit defaultUnit = TestUnit.builder().message("не знаю").build();
         autoresponder.setDefaultUnit(defaultUnit);
-        String answer = ((TestUnit) autoresponder.answer(1, "привет это тестирование функциональности")).getMessage();
+        String answer = autoresponder.answer(1, "привет это тестирование функциональности").get().getMessage();
         Assert.assertEquals("тест", answer);
-        Assert.assertEquals("хорошо", ((TestUnit) autoresponder.answer(1, "как твои дела")).getMessage());
-        String answer2 = ((TestUnit) autoresponder.answer(2, "привет это тестирование функциональности")).getMessage();
+        Assert.assertEquals("хорошо", autoresponder.answer(1, "как твои дела").get().getMessage());
+        String answer2 = autoresponder.answer(2, "привет это тестирование функциональности").get().getMessage();
         Assert.assertEquals("тест", answer2);
-        Assert.assertEquals("не знаю", ((TestUnit) autoresponder.answer(1, "нет")).getMessage());
+        Assert.assertEquals("не знаю", autoresponder.answer(1, "нет").get().getMessage());
         String message = "параметр себе задам: покушать витамин и арбуз, а вместе все это мультифрукт";
-        Assert.assertEquals("победа", ((TestUnit) autoresponder.answer(3, message)).getMessage());
-        Assert.assertEquals("регулярка", ((TestUnit) autoresponder.answer(1, "8912345678")).getMessage());
-        String answer3 = ((TestUnit) autoresponder.answer(1, "привет это тестирование функциональности")).getMessage();
+        Assert.assertEquals("победа", autoresponder.answer(3, message).get().getMessage());
+        Assert.assertEquals("регулярка", autoresponder.answer(1, "8912345678").get().getMessage());
+        String answer3 = autoresponder.answer(1, "привет это тестирование функциональности").get().getMessage();
         Assert.assertEquals("тест", answer3);
     }
 

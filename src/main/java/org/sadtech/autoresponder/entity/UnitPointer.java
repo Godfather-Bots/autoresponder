@@ -2,6 +2,7 @@ package org.sadtech.autoresponder.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.sadtech.autoresponder.util.Description;
 
 /**
@@ -10,17 +11,14 @@ import org.sadtech.autoresponder.util.Description;
  * @author upagge [07/07/2019]
  */
 @Data
+@RequiredArgsConstructor
 @AllArgsConstructor
-public class UnitPointer<U extends Unit> {
+public class UnitPointer {
 
     @Description("Идентификатор пользователя")
-    private Integer entityId;
+    private final Integer entityId;
 
     @Description("Юнит, который был обработан")
-    private U unit;
-
-    public UnitPointer(Integer entityId) {
-        this.entityId = entityId;
-    }
+    private Unit unit;
 
 }

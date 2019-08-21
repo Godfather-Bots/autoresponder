@@ -1,29 +1,30 @@
 package org.sadtech.autoresponder.repository;
 
 import lombok.NonNull;
-import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Реализация хранилища для {@link UnitPointer} на основе Map.
  *
  * @author upagge [07/07/2019]
  */
-public class UnitPointerRepositoryMap<U extends Unit> implements UnitPointerRepository<U> {
+public class UnitPointerRepositoryMap implements UnitPointerRepository {
 
-    private Map<Integer, UnitPointer<U>> unitPointerMap = new HashMap<>();
+    private Map<Integer, UnitPointer> unitPointerMap = new HashMap<>();
 
     @Override
-    public void add(@NonNull UnitPointer<U> unitPointer) {
+    public UnitPointer add(@NonNull UnitPointer unitPointer) {
         unitPointerMap.put(unitPointer.getEntityId(), unitPointer);
+        return unitPointer;
     }
 
     @Override
-    public void edit(@NonNull UnitPointer<U> unitPointer) {
+    public void edit(@NonNull UnitPointer unitPointer) {
         unitPointerMap.get(unitPointer.getEntityId()).setUnit(unitPointer.getUnit());
     }
 
@@ -33,12 +34,12 @@ public class UnitPointerRepositoryMap<U extends Unit> implements UnitPointerRepo
     }
 
     @Override
-    public void addAll(@NonNull Collection<UnitPointer<U>> unitPointers) {
+    public void addAll(@NonNull Collection<UnitPointer> unitPointers) {
         unitPointers.parallelStream().forEach(unitPointer -> unitPointerMap.put(unitPointer.getEntityId(), unitPointer));
     }
 
     @Override
-    public UnitPointer<U> findByEntityId(@NonNull Integer entityId) {
-        return unitPointerMap.get(entityId);
+    public Optional<UnitPointer> findByEntityId(@NonNull Integer entityId) {
+        return Optional.ofNullable(unitPointerMap.get(entityId));
     }
 }

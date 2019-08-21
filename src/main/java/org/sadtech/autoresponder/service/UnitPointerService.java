@@ -1,16 +1,19 @@
 package org.sadtech.autoresponder.service;
 
+import lombok.NonNull;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
+
+import java.util.Optional;
 
 /**
  * Сервис для взаимодействия с сущностью {@link UnitPointer}.
  *
  * @author upagge [07/07/2019]
  */
-public interface UnitPointerService<U extends Unit> {
+public interface UnitPointerService {
 
-    void add(UnitPointer<U> unitPointer);
+    void add(@NonNull UnitPointer unitPointer);
 
     /**
      * Проверка наличия {@link UnitPointer} для пользователя
@@ -18,10 +21,13 @@ public interface UnitPointerService<U extends Unit> {
      * @param entityId Идентификатор пользователя
      * @return true - если найдено
      */
-    boolean check(Integer entityId);
+    boolean check(@NonNull Integer entityId);
 
-    UnitPointer<U> getByEntityId(Integer entityId);
+    Optional<UnitPointer> getByEntityId(@NonNull Integer entityId);
 
-    void edit(Integer personId, U unit);
+    UnitPointer create(@NonNull Integer entryId);
+
+    void edit(@NonNull Integer personId, Unit unit);
+
 
 }
