@@ -80,27 +80,33 @@ public class AutoResponder<U extends Unit> {
     private Optional<U> nextUnit(@NonNull Set<U> nextUnits, String message) {
         Set<U> searchUnit = new HashSet<>();
 
-        nextUnits.stream()
-                .filter(nextUnit -> nextUnit.getPhrase() != null
-                        && !nextUnit.getPhrase().isEmpty()
-                        && nextUnit.getPhrase().equalsIgnoreCase(message)
-                )
-                .forEach(searchUnit::add);
-
-        nextUnits.stream()
-                .filter(nextUnit -> nextUnit.getPattern() != null && patternReg(nextUnit, message))
-                .forEach(searchUnit::add);
-
-        nextUnits.stream()
-                .filter(nextUnit -> percentageMatch(nextUnit, Parser.parse(message)) >= nextUnit.getMatchThreshold())
-                .forEach(searchUnit::add);
-
-        if (searchUnit.isEmpty()) {
-            nextUnits.stream()
-                    .filter(nextUnit -> (nextUnit.getPattern() == null && (nextUnit.getKeyWords() == null || nextUnit.getKeyWords().isEmpty())))
-                    .forEach(searchUnit::add);
+        for (U unit : nextUnits) {
+            if (unit.getPhrase() != null
+                    && !unit.getPhrase().isEmpty()
+                    && unit.getPhrase().equalsIgnoreCase(message)) {
+                searchUnit.add(unit);
+            }
         }
 
+        for (U unit : nextUnits) {
+            if (unit.getPattern() != null && patternReg(unit, message)) {
+                searchUnit.add(unit);
+            }
+        }
+
+        for (U unit : nextUnits) {
+            if (percentageMatch(unit, Parser.parse(message)) >= unit.getMatchThreshold()) {
+                searchUnit.add(unit);
+            }
+        }
+
+        if (searchUnit.isEmpty()) {
+            for (U nextUnit : nextUnits) {
+                if ((nextUnit.getPattern() == null && (nextUnit.getKeyWords() == null || nextUnit.getKeyWords().isEmpty()))) {
+                    searchUnit.add(nextUnit);
+                }
+            }
+        }
         return searchUnit.stream().max(UNIT_PRIORITY_COMPARATOR);
     }
 
@@ -110,14 +116,15 @@ public class AutoResponder<U extends Unit> {
     }
 
     private Double percentageMatch(U unit, Set<String> words) {
-        if (unit.getKeyWords() != null && !unit.getKeyWords().isEmpty()) {
-            Set<String> temp = new HashSet<>(unit.getKeyWords());
+        Set<String> keyWords = unit.getKeyWords();
+        if (keyWords != null && !keyWords.isEmpty()) {
+            Set<String> temp = new HashSet<>(keyWords);
             temp.retainAll(words);
-            log.info("Ключевые слова юнита: {} ({})", unit.getKeyWords(), unit.getKeyWords().size());
+            log.info("Ключевые слова юнита: {} ({})", keyWords, keyWords.size());
             log.info("Ключевые слова от пользователя: {}", words);
             log.info("Пересечение: {} ({})", temp, temp.size());
-            log.info("Процент: {} Необходимо: {}", (double) temp.size() / (double) unit.getKeyWords().size() * 100.0, unit.getMatchThreshold());
-            return (double) temp.size() / (double) unit.getKeyWords().size() * 100.0;
+            log.info("Процент: {} Необходимо: {}", (double) temp.size() / (double) keyWords.size() * 100.0, unit.getMatchThreshold());
+            return (double) temp.size() / (double) keyWords.size() * 100.0;
         } else {
             return 0.0;
         }
