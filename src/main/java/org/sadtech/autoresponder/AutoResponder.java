@@ -55,10 +55,14 @@ public class AutoResponder<U extends Unit> {
                 !unitPointer.isPresent() || newScenario(unitPointer.get()) ? startUnits : unitPointer.get().getUnit().getNextUnits(),
                 message
         );
-        unitOpt.ifPresent(unit -> {
-            unitPointer.orElseGet(() -> unitPointerService.create(personId));
-            unitPointerService.edit(personId, unit);
-        });
+        if (unitOpt.isPresent()) {
+            U unit = unitOpt.get();
+            if (unitPointer.isPresent()) {
+                unitPointerService.edit(personId, unit);
+            } else {
+                unitPointerService.add(new UnitPointer(personId, unit));
+            }
+        }
         return unitOpt.isPresent() ? unitOpt : Optional.ofNullable(defaultUnit);
     }
 

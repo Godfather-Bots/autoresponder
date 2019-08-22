@@ -21,11 +21,6 @@ public class UnitPointerServiceImpl implements UnitPointerService {
     }
 
     @Override
-    public UnitPointer create(@NonNull Integer entryId) {
-        return unitPointerRepository.add(new UnitPointer(entryId));
-    }
-
-    @Override
     public void edit(@NonNull Integer personId, Unit unit) {
         if (check(personId)) {
             unitPointerRepository.edit(new UnitPointer(personId, unit));

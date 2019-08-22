@@ -25,8 +25,6 @@ public interface UnitPointerService {
 
     Optional<UnitPointer> getByEntityId(@NonNull Integer entityId);
 
-    UnitPointer create(@NonNull Integer entryId);
-
     void edit(@NonNull Integer personId, Unit unit);
 
 

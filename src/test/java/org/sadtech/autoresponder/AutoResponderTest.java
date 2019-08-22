@@ -70,9 +70,9 @@ public class AutoResponderTest {
 
     @Test
     public void simpleAnswer() {
-        String message = autoresponder.answer(1, "привет это тестирвоание функциональности").get().getMessage();
+        String message = autoresponder.answer(1, "привет это тестирвоание функциональности").orElseThrow(NullPointerException::new).getMessage();
         Assert.assertEquals("тест", message);
-        String message1 = autoresponder.answer(2, "привет, еще одно тестирование").get().getMessage();
+        String message1 = autoresponder.answer(2, "привет, еще одно тестирование").orElseThrow(NullPointerException::new).getMessage();
         Assert.assertEquals("тест", message1);
     }
 
@@ -81,7 +81,7 @@ public class AutoResponderTest {
         TestUnit defaultUnit = TestUnit.builder().message("не знаю").build();
         autoresponder.setDefaultUnit(defaultUnit);
 
-        Assert.assertEquals("не знаю", autoresponder.answer(2, "пока").get().getMessage());
+        Assert.assertEquals("не знаю", autoresponder.answer(2, "пока").orElseThrow(NullPointerException::new).getMessage());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class AutoResponderTest {
 
     @Test
     public void regExpAnswer() {
-        String message = autoresponder.answer(1, "79101234567").get().getMessage();
+        String message = autoresponder.answer(1, "79101234567").orElseThrow(NullPointerException::new).getMessage();
         Assert.assertEquals("регулярка", message);
     }
 
@@ -99,9 +99,9 @@ public class AutoResponderTest {
     public void priorityAnswer() {
         autoresponder.answer(1, "привет");
         autoresponder.answer(2, "привет");
-        String message = autoresponder.answer(1, "как твои делишки").get().getMessage();
+        String message = autoresponder.answer(1, "как твои делишки").orElseThrow(NullPointerException::new).getMessage();
         Assert.assertEquals("отлично", message);
-        String message1 = autoresponder.answer(2, "твои дела все еще хорошо?").get().getMessage();
+        String message1 = autoresponder.answer(2, "твои дела все еще хорошо?").orElseThrow(NullPointerException::new).getMessage();
         Assert.assertEquals("хорошо", message1);
     }
 
@@ -109,14 +109,14 @@ public class AutoResponderTest {
     public void showRegExpVsKeyWords() {
         autoresponder.answer(1, "привет");
         autoresponder.answer(1, "дела");
-        Assert.assertEquals("регулярка", autoresponder.answer(1, "89101234567").get().getMessage());
+        Assert.assertEquals("регулярка", autoresponder.answer(1, "89101234567").orElseThrow(NullPointerException::new).getMessage());
     }
 
     @Test
     public void matchThreshold() {
         autoresponder.answer(1, "витамин я сьем, и арбуз получу");
         String message = "параметр себе задам: покушать витамин и арбуз, а вместе все это мультифрукт";
-        String answer = autoresponder.answer(1, message).get().getMessage();
+        String answer = autoresponder.answer(1, message).orElseThrow(NullPointerException::new).getMessage();
         Assert.assertEquals("победа", answer);
     }
 
@@ -124,16 +124,16 @@ public class AutoResponderTest {
     public void generalAnswer() {
         TestUnit defaultUnit = TestUnit.builder().message("не знаю").build();
         autoresponder.setDefaultUnit(defaultUnit);
-        String answer = autoresponder.answer(1, "привет это тестирование функциональности").get().getMessage();
+        String answer = autoresponder.answer(1, "привет это тестирование функциональности").orElseThrow(NullPointerException::new).getMessage();
         Assert.assertEquals("тест", answer);
-        Assert.assertEquals("хорошо", autoresponder.answer(1, "как твои дела").get().getMessage());
-        String answer2 = autoresponder.answer(2, "привет это тестирование функциональности").get().getMessage();
+        Assert.assertEquals("хорошо", autoresponder.answer(1, "как твои дела").orElseThrow(NullPointerException::new).getMessage());
+        String answer2 = autoresponder.answer(2, "привет это тестирование функциональности").orElseThrow(NullPointerException::new).getMessage();
         Assert.assertEquals("тест", answer2);
-        Assert.assertEquals("не знаю", autoresponder.answer(1, "нет").get().getMessage());
+        Assert.assertEquals("не знаю", autoresponder.answer(1, "нет").orElseThrow(NullPointerException::new).getMessage());
         String message = "параметр себе задам: покушать витамин и арбуз, а вместе все это мультифрукт";
-        Assert.assertEquals("победа", autoresponder.answer(3, message).get().getMessage());
-        Assert.assertEquals("регулярка", autoresponder.answer(1, "8912345678").get().getMessage());
-        String answer3 = autoresponder.answer(1, "привет это тестирование функциональности").get().getMessage();
+        Assert.assertEquals("победа", autoresponder.answer(3, message).orElseThrow(NullPointerException::new).getMessage());
+        Assert.assertEquals("регулярка", autoresponder.answer(1, "8912345678").orElseThrow(NullPointerException::new).getMessage());
+        String answer3 = autoresponder.answer(1, "привет это тестирование функциональности").orElseThrow(NullPointerException::new).getMessage();
         Assert.assertEquals("тест", answer3);
     }
 
