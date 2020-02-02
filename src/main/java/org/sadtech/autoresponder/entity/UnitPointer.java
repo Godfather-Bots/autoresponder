@@ -16,7 +16,7 @@ import org.sadtech.autoresponder.util.Description;
 public class UnitPointer {
 
     @Description("Идентификатор пользователя")
-    private final Integer entityId;
+    private final Long entityId;
 
     @Description("Юнит, который был обработан")
     private Unit unit;

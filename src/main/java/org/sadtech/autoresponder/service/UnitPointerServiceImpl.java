@@ -16,14 +16,14 @@ public class UnitPointerServiceImpl implements UnitPointerService {
     private final UnitPointerRepository unitPointerRepository;
 
     @Override
-    public Optional<UnitPointer> getByEntityId(@NonNull Integer entityId) {
+    public Optional<UnitPointer> getByEntityId(@NonNull Long entityId) {
         return unitPointerRepository.findByEntityId(entityId);
     }
 
     @Override
-    public void edit(@NonNull Integer personId, Unit unit) {
-        if (check(personId)) {
-            unitPointerRepository.edit(new UnitPointer(personId, unit));
+    public void edit(@NonNull Long entityId, Unit unit) {
+        if (check(entityId)) {
+            unitPointerRepository.edit(new UnitPointer(entityId, unit));
         }
     }
 
@@ -34,7 +34,7 @@ public class UnitPointerServiceImpl implements UnitPointerService {
     }
 
     @Override
-    public boolean check(@NonNull Integer entityId) {
+    public boolean check(@NonNull Long entityId) {
         return unitPointerRepository.findByEntityId(entityId).isPresent();
     }
 }

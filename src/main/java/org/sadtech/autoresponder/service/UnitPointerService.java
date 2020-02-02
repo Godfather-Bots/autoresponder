@@ -21,11 +21,11 @@ public interface UnitPointerService {
      * @param entityId Идентификатор пользователя
      * @return true - если найдено
      */
-    boolean check(@NonNull Integer entityId);
+    boolean check(@NonNull Long entityId);
 
-    Optional<UnitPointer> getByEntityId(@NonNull Integer entityId);
+    Optional<UnitPointer> getByEntityId(@NonNull Long entityId);
 
-    void edit(@NonNull Integer personId, Unit unit);
+    void edit(@NonNull Long entityId, Unit unit);
 
 
 }

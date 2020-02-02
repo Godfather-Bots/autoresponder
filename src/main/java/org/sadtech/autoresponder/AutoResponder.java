@@ -45,12 +45,12 @@ public class AutoResponder<U extends Unit> {
     /**
      * Принимает текстовый запрос пользователя и отдает юнит, который соответствует запросу
      *
-     * @param personId Идентификатор пользователя
+     * @param entityId Идентификатор клиента
      * @param message  Запрос пользователя - текстовое сообщение
      * @return {@link Unit}, который отвечает за данные для обработки данного запроса
      */
-    public Optional<U> answer(@NonNull Integer personId, String message) {
-        Optional<UnitPointer> unitPointer = unitPointerService.getByEntityId(personId);
+    public Optional<U> answer(@NonNull Long entityId, String message) {
+        Optional<UnitPointer> unitPointer = unitPointerService.getByEntityId(entityId);
         Optional<U> unitOpt = nextUnit(
                 !unitPointer.isPresent() || newScenario(unitPointer.get()) ? startUnits : unitPointer.get().getUnit().getNextUnits(),
                 message
@@ -58,9 +58,9 @@ public class AutoResponder<U extends Unit> {
         if (unitOpt.isPresent()) {
             U unit = unitOpt.get();
             if (unitPointer.isPresent()) {
-                unitPointerService.edit(personId, unit);
+                unitPointerService.edit(entityId, unit);
             } else {
-                unitPointerService.add(new UnitPointer(personId, unit));
+                unitPointerService.add(new UnitPointer(entityId, unit));
             }
         }
         return unitOpt.isPresent() ? unitOpt : Optional.ofNullable(defaultUnit);

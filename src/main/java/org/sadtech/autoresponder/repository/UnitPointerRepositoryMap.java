@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public class UnitPointerRepositoryMap implements UnitPointerRepository {
 
-    private Map<Integer, UnitPointer> unitPointerMap = new HashMap<>();
+    private Map<Long, UnitPointer> unitPointerMap = new HashMap<>();
 
     @Override
     public UnitPointer add(@NonNull UnitPointer unitPointer) {
@@ -39,7 +39,7 @@ public class UnitPointerRepositoryMap implements UnitPointerRepository {
     }
 
     @Override
-    public Optional<UnitPointer> findByEntityId(@NonNull Integer entityId) {
+    public Optional<UnitPointer> findByEntityId(@NonNull Long entityId) {
         return Optional.ofNullable(unitPointerMap.get(entityId));
     }
 }

@@ -25,6 +25,6 @@ public interface UnitPointerRepository {
      * @param entityId Идентификатор пользователя
      * @return Объект с последним обработанным {@link org.sadtech.autoresponder.entity.Unit} для пользователя
      */
-    Optional<UnitPointer> findByEntityId(@NonNull Integer entityId);
+    Optional<UnitPointer> findByEntityId(@NonNull Long entityId);
 
 }
