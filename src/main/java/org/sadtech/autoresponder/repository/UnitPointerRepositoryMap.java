@@ -42,4 +42,5 @@ public class UnitPointerRepositoryMap implements UnitPointerRepository {
     public Optional<UnitPointer> findByEntityId(@NonNull Long entityId) {
         return Optional.ofNullable(unitPointerMap.get(entityId));
     }
+
 }

@@ -37,4 +37,5 @@ public class UnitPointerServiceImpl implements UnitPointerService {
     public boolean check(@NonNull Long entityId) {
         return unitPointerRepository.findByEntityId(entityId).isPresent();
     }
+
 }

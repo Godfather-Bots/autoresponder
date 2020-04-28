@@ -27,5 +27,4 @@ public interface UnitPointerService {
 
     void edit(@NonNull Long entityId, Unit unit);
 
-
 }

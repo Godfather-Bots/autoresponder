@@ -12,4 +12,5 @@ final class Message {
     private Message() {
         throw new IllegalStateException(UTILITY_CLASS);
     }
+
 }

@@ -1,6 +1,7 @@
 package org.sadtech.autoresponder.repository;
 
 import lombok.NonNull;
+import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
 
 import java.util.Collection;
@@ -23,7 +24,7 @@ public interface UnitPointerRepository {
 
     /**
      * @param entityId Идентификатор пользователя
-     * @return Объект с последним обработанным {@link org.sadtech.autoresponder.entity.Unit} для пользователя
+     * @return Объект с последним обработанным {@link Unit} для пользователя
      */
     Optional<UnitPointer> findByEntityId(@NonNull Long entityId);
 

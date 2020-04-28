@@ -52,4 +52,5 @@ public abstract class Unit<U extends Unit> {
         this.priority = Optional.ofNullable(priority).orElse(10);
         this.nextUnits = nextUnits;
     }
+
 }
