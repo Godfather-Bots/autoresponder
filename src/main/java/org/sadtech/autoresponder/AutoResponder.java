@@ -35,9 +35,9 @@ public class AutoResponder<U extends Unit> {
     private U defaultUnit;
 
     @Getter
-    private final UnitPointerService unitPointerService;
+    private final UnitPointerService<U> unitPointerService;
 
-    public AutoResponder(UnitPointerService unitPointerService, Set<U> startUnits) {
+    public AutoResponder(UnitPointerService<U> unitPointerService, Set<U> startUnits) {
         this.startUnits = startUnits;
         this.unitPointerService = unitPointerService;
     }
@@ -49,25 +49,20 @@ public class AutoResponder<U extends Unit> {
      * @param message  Запрос пользователя - текстовое сообщение
      * @return {@link Unit}, который отвечает за данные для обработки данного запроса
      */
-    public Optional<U> answer(@NonNull Long entityId, String message) {
-        Optional<UnitPointer> unitPointer = unitPointerService.getByEntityId(entityId);
-        Optional<U> unitOpt = nextUnit(
-                !unitPointer.isPresent() || newScenario(unitPointer.get()) ? startUnits : unitPointer.get().getUnit().getNextUnits(),
-                message
+    public Optional<U> answer(@NonNull Long entityId, @NonNull String message) {
+        Optional<UnitPointer<U>> unitPointer = unitPointerService.getByEntityId(entityId);
+        final Optional<U> answer = nextUnit(
+                unitPointer.isPresent() ? unitPointer.get().getUnit().getNextUnits() : startUnits, message
         );
-        if (unitOpt.isPresent()) {
-            U unit = unitOpt.get();
-            if (unitPointer.isPresent()) {
-                unitPointerService.edit(entityId, unit);
+        if (answer.isPresent()) {
+            final U unitAnswer = answer.get();
+            if (unitAnswer.getNextUnits().isEmpty()) {
+                unitPointerService.removeByEntityId(entityId);
             } else {
-                unitPointerService.add(new UnitPointer(entityId, unit));
+                unitPointerService.save(new UnitPointer<>(entityId, unitAnswer));
             }
         }
-        return unitOpt.isPresent() ? unitOpt : Optional.ofNullable(defaultUnit);
-    }
-
-    private boolean newScenario(UnitPointer unitPointer) {
-        return unitPointer.getUnit() == null || unitPointer.getUnit().getNextUnits() == null || unitPointer.getUnit().getNextUnits().isEmpty();
+        return answer;
     }
 
     /**
@@ -77,7 +72,7 @@ public class AutoResponder<U extends Unit> {
      * @param message   Запрос пользователя - текстовое сообщение
      * @return Юнит, который нуждается в обработке в соответствии с запросом пользователя
      */
-    private Optional<U> nextUnit(@NonNull Set<U> nextUnits, String message) {
+    private Optional<U> nextUnit(@NonNull Set<U> nextUnits, @NonNull String message) {
         Set<U> searchUnit = new HashSet<>();
 
         for (U unit : nextUnits) {
@@ -107,9 +102,9 @@ public class AutoResponder<U extends Unit> {
                 }
             }
         }
-        return searchUnit.stream().max(UNIT_PRIORITY_COMPARATOR);
+        final Optional<U> max = searchUnit.stream().max(UNIT_PRIORITY_COMPARATOR);
+        return max.isPresent() ? max : Optional.ofNullable(defaultUnit);
     }
-
 
     private boolean patternReg(@NonNull U unit, String message) {
         return message.matches(unit.getPattern().pattern());

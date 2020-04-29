@@ -11,9 +11,9 @@ import java.util.Optional;
  *
  * @author upagge [07/07/2019]
  */
-public interface UnitPointerService {
+public interface UnitPointerService<U extends Unit> {
 
-    void add(@NonNull UnitPointer unitPointer);
+    void save(@NonNull UnitPointer<U> unitPointer);
 
     /**
      * Проверка наличия {@link UnitPointer} для пользователя
@@ -21,10 +21,10 @@ public interface UnitPointerService {
      * @param entityId Идентификатор пользователя
      * @return true - если найдено
      */
-    boolean check(@NonNull Long entityId);
+    boolean existsByEntityId(@NonNull Long entityId);
 
-    Optional<UnitPointer> getByEntityId(@NonNull Long entityId);
+    Optional<UnitPointer<U>> getByEntityId(@NonNull Long entityId);
 
-    void edit(@NonNull Long entityId, Unit unit);
+    void removeByEntityId(@NonNull Long entityId);
 
 }

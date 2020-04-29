@@ -64,7 +64,7 @@ public class AutoResponderTest {
         testUnits.add(regExp);
         testUnits.add(unreal);
 
-        UnitPointerServiceImpl unitPointerService = new UnitPointerServiceImpl(new UnitPointerRepositoryMap());
+        UnitPointerServiceImpl<TestUnit> unitPointerService = new UnitPointerServiceImpl<>(new UnitPointerRepositoryMap<>());
         autoresponder = new AutoResponder<>(unitPointerService, testUnits);
     }
 

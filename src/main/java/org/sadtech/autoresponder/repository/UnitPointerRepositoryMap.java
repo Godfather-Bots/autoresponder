@@ -1,9 +1,9 @@
 package org.sadtech.autoresponder.repository;
 
 import lombok.NonNull;
+import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -13,34 +13,24 @@ import java.util.Optional;
  *
  * @author upagge [07/07/2019]
  */
-public class UnitPointerRepositoryMap implements UnitPointerRepository {
+public class UnitPointerRepositoryMap<U extends Unit> implements UnitPointerRepository<U> {
 
-    private Map<Long, UnitPointer> unitPointerMap = new HashMap<>();
+    private Map<Long, UnitPointer<U>> unitPointerMap = new HashMap<>();
 
     @Override
-    public UnitPointer add(@NonNull UnitPointer unitPointer) {
+    public UnitPointer<U> save(@NonNull UnitPointer<U> unitPointer) {
         unitPointerMap.put(unitPointer.getEntityId(), unitPointer);
         return unitPointer;
     }
 
     @Override
-    public void edit(@NonNull UnitPointer unitPointer) {
-        unitPointerMap.get(unitPointer.getEntityId()).setUnit(unitPointer.getUnit());
-    }
-
-    @Override
-    public void remove(@NonNull Integer entityId) {
-        unitPointerMap.remove(entityId);
-    }
-
-    @Override
-    public void addAll(@NonNull Collection<UnitPointer> unitPointers) {
-        unitPointers.parallelStream().forEach(unitPointer -> unitPointerMap.put(unitPointer.getEntityId(), unitPointer));
-    }
-
-    @Override
-    public Optional<UnitPointer> findByEntityId(@NonNull Long entityId) {
+    public Optional<UnitPointer<U>> findByEntityId(@NonNull Long entityId) {
         return Optional.ofNullable(unitPointerMap.get(entityId));
+    }
+
+    @Override
+    public void removeByEntityId(@NonNull Long entityId) {
+        unitPointerMap.remove(entityId);
     }
 
 }

@@ -13,12 +13,12 @@ import org.sadtech.autoresponder.util.Description;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class UnitPointer {
+public class UnitPointer<U extends Unit> {
 
     @Description("Идентификатор пользователя")
     private final Long entityId;
 
     @Description("Юнит, который был обработан")
-    private Unit unit;
+    private U unit;
 
 }

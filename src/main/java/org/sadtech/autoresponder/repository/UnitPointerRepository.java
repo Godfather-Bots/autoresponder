@@ -4,7 +4,6 @@ import lombok.NonNull;
 import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
 
-import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -12,20 +11,16 @@ import java.util.Optional;
  *
  * @author upagge [07/07/2019]
  */
-public interface UnitPointerRepository {
+public interface UnitPointerRepository<U extends Unit> {
 
-    UnitPointer add(@NonNull UnitPointer unitPointer);
-
-    void edit(@NonNull UnitPointer unitPointer);
-
-    void remove(@NonNull Integer entityId);
-
-    void addAll(@NonNull Collection<UnitPointer> unitPointers);
+    UnitPointer<U> save(@NonNull UnitPointer<U> unitPointer);
 
     /**
      * @param entityId Идентификатор пользователя
      * @return Объект с последним обработанным {@link Unit} для пользователя
      */
-    Optional<UnitPointer> findByEntityId(@NonNull Long entityId);
+    Optional<UnitPointer<U>> findByEntityId(@NonNull Long entityId);
+
+    void removeByEntityId(@NonNull Long entityId);
 
 }

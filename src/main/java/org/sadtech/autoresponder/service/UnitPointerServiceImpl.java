@@ -11,30 +11,28 @@ import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
-public class UnitPointerServiceImpl implements UnitPointerService {
+public class UnitPointerServiceImpl<U extends Unit> implements UnitPointerService<U> {
 
-    private final UnitPointerRepository unitPointerRepository;
+    private final UnitPointerRepository<U> unitPointerRepository;
 
     @Override
-    public Optional<UnitPointer> getByEntityId(@NonNull Long entityId) {
+    public Optional<UnitPointer<U>> getByEntityId(@NonNull Long entityId) {
         return unitPointerRepository.findByEntityId(entityId);
     }
 
     @Override
-    public void edit(@NonNull Long entityId, Unit unit) {
-        if (check(entityId)) {
-            unitPointerRepository.edit(new UnitPointer(entityId, unit));
-        }
+    public void removeByEntityId(@NonNull Long entityId) {
+        unitPointerRepository.removeByEntityId(entityId);
     }
 
     @Override
-    public void add(@NonNull UnitPointer unitPointer) {
-        unitPointerRepository.add(unitPointer);
-        log.info("Пользователь отправлен в репозиторий");
+    public void save(@NonNull UnitPointer<U> unitPointer) {
+        unitPointerRepository.save(unitPointer);
+        log.trace("Пользователь отправлен в репозиторий");
     }
 
     @Override
-    public boolean check(@NonNull Long entityId) {
+    public boolean existsByEntityId(@NonNull Long entityId) {
         return unitPointerRepository.findByEntityId(entityId).isPresent();
     }
 
