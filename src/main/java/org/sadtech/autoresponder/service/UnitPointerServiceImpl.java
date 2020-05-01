@@ -31,9 +31,4 @@ public class UnitPointerServiceImpl<U extends Unit> implements UnitPointerServic
         log.trace("Пользователь отправлен в репозиторий");
     }
 
-    @Override
-    public boolean existsByEntityId(@NonNull Long entityId) {
-        return unitPointerRepository.findByEntityId(entityId).isPresent();
-    }
-
 }

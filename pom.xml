@@ -42,18 +42,12 @@
     </distributionManagement>
 
     <properties>
-        <slf4j.ver>1.7.26</slf4j.ver>
         <junit.ver>4.12</junit.ver>
-        <lombok.ver>1.18.6</lombok.ver>
+        <lombok.ver>1.18.12</lombok.ver>
+        <slf4j.ver>1.7.30</slf4j.ver>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.ver}</version>
-        </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -64,6 +58,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.ver}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.ver}</version>
         </dependency>
     </dependencies>
 

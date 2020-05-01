@@ -16,15 +16,18 @@ import static org.sadtech.autoresponder.util.Message.UTILITY_CLASS;
 public class Parser {
 
     @Description("Множество предлогов")
-    private static final Set<String> pretexts = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("в", "без", "до", "из", "к", "на", "по", "о", "от", "перед", "при", "с", "у", "за", "над", "об",
-            "под", "про", "для")));
+    private static final Set<String> pretexts = Collections.unmodifiableSet(
+            new HashSet<>(Arrays.asList(
+                    "в", "без", "до", "из", "к", "на", "по", "о", "от", "перед", "при", "с", "у", "за", "над", "об",
+                    "под", "про", "для"
+            )));
 
     private Parser() {
         throw new IllegalStateException(UTILITY_CLASS);
     }
 
     /**
-     * Метод по разбиению строки на множество слов
+     * Метод по разбиению строки на множество слов.
      *
      * @param text Строка
      * @return Множество слов

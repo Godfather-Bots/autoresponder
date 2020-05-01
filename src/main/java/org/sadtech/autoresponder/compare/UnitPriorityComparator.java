@@ -12,13 +12,8 @@ import java.util.Comparator;
 public class UnitPriorityComparator implements Comparator<Unit> {
 
     @Override
-    public int compare(Unit o1, Unit o2) {
-        if (o1.getPriority() < o2.getPriority()) {
-            return -1;
-        } else if (o1.getPriority().equals(o2.getPriority())) {
-            return 0;
-        }
-        return 1;
+    public int compare(Unit unit1, Unit unit2) {
+        return Integer.compare(unit1.getPriority(), unit2.getPriority());
     }
 
 }

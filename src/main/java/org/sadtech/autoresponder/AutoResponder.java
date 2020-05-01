@@ -9,6 +9,7 @@ import org.sadtech.autoresponder.entity.Unit;
 import org.sadtech.autoresponder.entity.UnitPointer;
 import org.sadtech.autoresponder.service.UnitPointerService;
 import org.sadtech.autoresponder.util.Description;
+import org.sadtech.autoresponder.util.Message;
 import org.sadtech.autoresponder.util.Parser;
 
 import java.util.HashSet;
@@ -115,10 +116,10 @@ public class AutoResponder<U extends Unit> {
         if (keyWords != null && !keyWords.isEmpty()) {
             Set<String> temp = new HashSet<>(keyWords);
             temp.retainAll(words);
-            log.info("Ключевые слова юнита: {} ({})", keyWords, keyWords.size());
-            log.info("Ключевые слова от пользователя: {}", words);
-            log.info("Пересечение: {} ({})", temp, temp.size());
-            log.info("Процент: {} Необходимо: {}", (double) temp.size() / (double) keyWords.size() * 100.0, unit.getMatchThreshold());
+            log.trace(Message.UNIT_KEYWORDS, keyWords, keyWords.size());
+            log.trace(Message.USER_MESSAGE_KEYWORDS, words);
+            log.trace(Message.INTERSECTION, temp, temp.size());
+            log.trace(Message.CROSSING_PERCENTAGE, (double) temp.size() / (double) keyWords.size() * 100.0, unit.getMatchThreshold());
             return (double) temp.size() / (double) keyWords.size() * 100.0;
         } else {
             return 0.0;

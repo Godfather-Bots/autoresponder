@@ -15,14 +15,6 @@ public interface UnitPointerService<U extends Unit> {
 
     void save(@NonNull UnitPointer<U> unitPointer);
 
-    /**
-     * Проверка наличия {@link UnitPointer} для пользователя
-     *
-     * @param entityId Идентификатор пользователя
-     * @return true - если найдено
-     */
-    boolean existsByEntityId(@NonNull Long entityId);
-
     Optional<UnitPointer<U>> getByEntityId(@NonNull Long entityId);
 
     void removeByEntityId(@NonNull Long entityId);

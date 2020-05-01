@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.sadtech.autoresponder.util.Description;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -48,8 +47,8 @@ public abstract class Unit<U extends Unit> {
         this.keyWords = keyWords;
         this.phrase = phrase;
         this.pattern = pattern;
-        this.matchThreshold = Optional.ofNullable(matchThreshold).orElse(10);
-        this.priority = Optional.ofNullable(priority).orElse(10);
+        this.matchThreshold = matchThreshold == null ? 10 : matchThreshold;
+        this.priority = priority == null ? 10 : matchThreshold;
         this.nextUnits = nextUnits;
     }
 
