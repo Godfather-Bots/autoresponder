@@ -48,7 +48,7 @@ public abstract class Unit<U extends Unit> {
         this.phrase = phrase;
         this.pattern = pattern;
         this.matchThreshold = matchThreshold == null ? 10 : matchThreshold;
-        this.priority = priority == null ? 10 : matchThreshold;
+        this.priority = priority == null ? 10 : priority;
         this.nextUnits = nextUnits;
     }
 
