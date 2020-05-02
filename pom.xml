@@ -6,7 +6,7 @@
 
     <groupId>org.sadtech.autoresponder</groupId>
     <artifactId>autoresponder</artifactId>
-    <version>1.10-SNAPSHOT</version>
+    <version>1.9.2-RELEASE</version>
     <packaging>jar</packaging>
 
     <name>Abstract Autoresponder</name>
