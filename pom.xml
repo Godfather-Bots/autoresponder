@@ -20,19 +20,11 @@
         </license>
     </licenses>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <scm>
+        <connection>scm:git:https://github.com/uPagge/autoresponder.git</connection>
+        <url>https://github.com/uPagge/autoresponder</url>
+        <developerConnection>scm:git:https://github.com/uPagge/autoresponder.git</developerConnection>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>
@@ -66,12 +58,6 @@
             <version>${slf4j.ver}</version>
         </dependency>
     </dependencies>
-
-    <scm>
-        <connection>scm:git:https://github.com/uPagge/autoresponder.git</connection>
-        <url>https://github.com/uPagge/autoresponder</url>
-        <developerConnection>scm:git:https://github.com/uPagge/autoresponder.git</developerConnection>
-    </scm>
 
     <profiles>
         <profile>
@@ -144,6 +130,20 @@
             </build>
         </profile>
     </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <developers>
         <developer>
