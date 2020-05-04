@@ -62,8 +62,10 @@ public class AutoResponder<U extends Unit> {
             } else {
                 unitPointerService.save(new UnitPointer<>(entityId, unitAnswer));
             }
+            return answer;
+        } else {
+            return Optional.ofNullable(defaultUnit);
         }
-        return answer;
     }
 
     /**
@@ -103,8 +105,7 @@ public class AutoResponder<U extends Unit> {
                 }
             }
         }
-        final Optional<U> max = searchUnit.stream().max(UNIT_PRIORITY_COMPARATOR);
-        return max.isPresent() ? max : Optional.ofNullable(defaultUnit);
+        return searchUnit.stream().max(UNIT_PRIORITY_COMPARATOR);
     }
 
     private boolean patternReg(@NonNull U unit, String message) {
