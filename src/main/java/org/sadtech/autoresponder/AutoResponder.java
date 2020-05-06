@@ -53,7 +53,12 @@ public class AutoResponder<U extends Unit> {
     public Optional<U> answer(@NonNull Long entityId, @NonNull String message) {
         Optional<UnitPointer<U>> unitPointer = unitPointerService.getByEntityId(entityId);
         final Optional<U> answer = nextUnit(
-                unitPointer.isPresent() ? unitPointer.get().getUnit().getNextUnits() : startUnits, message
+                unitPointer.isPresent()
+                        && unitPointer.get().getUnit().getNextUnits() != null
+                        && !unitPointer.get().getUnit().getNextUnits().isEmpty()
+                        ? unitPointer.get().getUnit().getNextUnits()
+                        : startUnits,
+                message
         );
         if (answer.isPresent()) {
             final U unitAnswer = answer.get();
