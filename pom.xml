@@ -34,7 +34,7 @@
     </distributionManagement>
 
     <properties>
-        <junit.ver>4.12</junit.ver>
+        <junit.ver>4.13.1</junit.ver>
         <lombok.ver>1.18.12</lombok.ver>
         <slf4j.ver>1.7.30</slf4j.ver>
     </properties>
