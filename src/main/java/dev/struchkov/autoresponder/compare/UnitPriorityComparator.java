@@ -1,6 +1,6 @@
-package org.sadtech.autoresponder.compare;
+package dev.struchkov.autoresponder.compare;
 
-import org.sadtech.autoresponder.entity.Unit;
+import dev.struchkov.autoresponder.entity.Unit;
 
 import java.util.Comparator;
 

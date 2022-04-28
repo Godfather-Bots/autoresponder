@@ -1,4 +1,4 @@
-package org.sadtech.autoresponder.util;
+package dev.struchkov.autoresponder.util;
 
 /**
  * Класс содержащий сообщения для ошибок и логера.
