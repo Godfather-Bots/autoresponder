@@ -26,7 +26,7 @@ public class Units {
     public static void link(Unit first, Unit second) {
         isNotNull(first, second);
         final Set<Unit> nextUnits = first.getNextUnits();
-        if (isNotEmpty(nextUnits)) {
+        if (nextUnits != null) {
             nextUnits.add(second);
         }
     }
