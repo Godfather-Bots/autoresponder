@@ -30,7 +30,7 @@ public class Parser {
      * @param text Строка
      * @return Множество слов
      */
-    public static Set<String> parse(String text) {
+    public static Set<String> splitWords(String text) {
         final String[] split = text.split("\\P{L}+");
         final Set<String> words = Arrays.stream(split).map(String::toLowerCase).collect(Collectors.toSet());
         words.removeAll(pretexts);
