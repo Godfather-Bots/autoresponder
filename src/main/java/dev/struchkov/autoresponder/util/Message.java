@@ -9,7 +9,7 @@ public final class Message {
 
     static final String UTILITY_CLASS = "Клас утилита";
     public static final String UNIT_KEYWORDS = "Ключевые слова юнита: {} ({})";
-    public static final String USER_MESSAGE_KEYWORDS = "Ключевые слова от пользователя: {}";
+    public static final String USER_MESSAGE_KEYWORDS = "Слова, которые прислал пользователь: {}";
     public static final String INTERSECTION = "Пересечение: {} ({})";
     public static final String CROSSING_PERCENTAGE = "Процент: {} Необходимо: {}";
 

@@ -15,7 +15,7 @@ public abstract class Unit<U extends Unit<U>> {
     /**
      * Ключевые слова.
      */
-    protected Set<String> keyWords = new HashSet<>();
+    protected Set<KeyWord> keyWords = new HashSet<>();
 
     /**
      * Точная фраза.
@@ -42,12 +42,14 @@ public abstract class Unit<U extends Unit<U>> {
      */
     protected Set<U> nextUnits = new HashSet<>();
 
-    protected Unit(Set<String> keyWords,
-                   String phrase,
-                   Pattern pattern,
-                   Integer matchThreshold,
-                   Integer priority,
-                   Set<U> nextUnits) {
+    protected Unit(
+            Set<KeyWord> keyWords,
+            String phrase,
+            Pattern pattern,
+            Integer matchThreshold,
+            Integer priority,
+            Set<U> nextUnits
+    ) {
         this.keyWords = keyWords;
         this.phrase = phrase;
         this.pattern = pattern;
@@ -56,11 +58,11 @@ public abstract class Unit<U extends Unit<U>> {
         this.nextUnits = nextUnits;
     }
 
-    public Set<String> getKeyWords() {
+    public Set<KeyWord> getKeyWords() {
         return keyWords;
     }
 
-    public void setKeyWords(Set<String> keyWords) {
+    public void setKeyWords(Set<KeyWord> keyWords) {
         this.keyWords = keyWords;
     }
 

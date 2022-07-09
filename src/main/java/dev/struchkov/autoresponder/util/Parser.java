@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static dev.struchkov.autoresponder.util.Message.UTILITY_CLASS;
+import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
 
 /**
  * Разбивает строку на множество слов, удаляя предлоги.
@@ -18,10 +18,11 @@ public class Parser {
      */
     private static final Set<String> pretexts = Set.of(
             "в", "без", "до", "из", "к", "на", "по", "о", "от", "перед", "при", "с", "у", "за", "над", "об",
-            "под", "про", "для");
+            "под", "про", "для"
+    );
 
     private Parser() {
-        throw new IllegalStateException(UTILITY_CLASS);
+        utilityClass();
     }
 
     /**
