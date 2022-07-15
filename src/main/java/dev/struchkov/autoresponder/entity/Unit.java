@@ -1,5 +1,6 @@
 package dev.struchkov.autoresponder.entity;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -15,12 +16,12 @@ public abstract class Unit<U extends Unit<U>> {
     /**
      * Ключевые слова.
      */
-    protected Set<KeyWord> keyWords = new HashSet<>();
+    protected Set<KeyWord> keyWords;
 
     /**
      * Точная фраза.
      */
-    protected String phrase;
+    protected Set<String> phrases;
 
     /**
      * Регулярное выражение.
@@ -40,18 +41,18 @@ public abstract class Unit<U extends Unit<U>> {
     /**
      * Множество следующих Unit в сценарии.
      */
-    protected Set<U> nextUnits = new HashSet<>();
+    protected Set<U> nextUnits;
 
     protected Unit(
             Set<KeyWord> keyWords,
-            String phrase,
+            Set<String> phrases,
             Pattern pattern,
             Integer matchThreshold,
             Integer priority,
             Set<U> nextUnits
     ) {
         this.keyWords = keyWords;
-        this.phrase = phrase;
+        this.phrases = phrases;
         this.pattern = pattern;
         this.matchThreshold = matchThreshold == null ? 10 : matchThreshold;
         this.priority = priority == null ? 10 : priority;
@@ -66,12 +67,16 @@ public abstract class Unit<U extends Unit<U>> {
         this.keyWords = keyWords;
     }
 
-    public String getPhrase() {
-        return phrase;
+    public Set<String> getPhrases() {
+        return phrases;
     }
 
-    public void setPhrase(String phrase) {
-        this.phrase = phrase;
+    public void addPhrase(String phrase) {
+        phrases.add(phrase);
+    }
+
+    public void addPhrases(Collection<String> phrases) {
+        phrases.addAll(phrases);
     }
 
     public Pattern getPattern() {
@@ -111,19 +116,19 @@ public abstract class Unit<U extends Unit<U>> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Unit<?> unit = (Unit<?>) o;
-        return Objects.equals(keyWords, unit.keyWords) && Objects.equals(phrase, unit.phrase) && Objects.equals(pattern, unit.pattern) && Objects.equals(matchThreshold, unit.matchThreshold) && Objects.equals(priority, unit.priority);
+        return Objects.equals(keyWords, unit.keyWords) && Objects.equals(phrases, unit.phrases) && Objects.equals(pattern, unit.pattern) && Objects.equals(matchThreshold, unit.matchThreshold) && Objects.equals(priority, unit.priority);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(keyWords, phrase, pattern, matchThreshold, priority);
+        return Objects.hash(keyWords, phrases, pattern, matchThreshold, priority);
     }
 
     @Override
     public String toString() {
         return "Unit{" +
                 "keyWords=" + keyWords +
-                ", phrase='" + phrase + '\'' +
+                ", phrases='" + phrases + '\'' +
                 ", pattern=" + pattern +
                 ", matchThreshold=" + matchThreshold +
                 ", priority=" + priority +

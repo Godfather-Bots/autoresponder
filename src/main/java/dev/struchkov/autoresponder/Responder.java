@@ -48,11 +48,11 @@ public final class Responder {
 
         if (message != null && nextUnits != null) {
             for (U unit : nextUnits) {
-                final String unitPhrase = unit.getPhrase();
+                final Set<String> unitPhrases = unit.getPhrases();
                 if (
-                        unitPhrase != null
-                                && !unitPhrase.isEmpty()
-                                && unitPhrase.equalsIgnoreCase(message)
+                        unitPhrases != null
+                                && !unitPhrases.isEmpty()
+                                && unitPhrases.contains(message)
                 ) {
                     searchUnit.add(unit);
                 }
@@ -79,7 +79,8 @@ public final class Responder {
     }
 
     private static <U extends Unit<U>> boolean isNotPhrase(U nextUnit) {
-        return nextUnit.getPhrase() == null;
+        final Set<String> phrases = nextUnit.getPhrases();
+        return phrases == null || phrases.isEmpty();
     }
 
     private static <U extends Unit<U>> boolean isNotPattern(U nextUnit) {
@@ -87,7 +88,8 @@ public final class Responder {
     }
 
     private static <U extends Unit<U>> boolean isNotKeyWords(U nextUnit) {
-        return nextUnit.getKeyWords() == null || nextUnit.getKeyWords().isEmpty();
+        final Set<KeyWord> keyWords = nextUnit.getKeyWords();
+        return keyWords == null || keyWords.isEmpty();
     }
 
     private static boolean patternReg(Pattern pattern, String message) {
