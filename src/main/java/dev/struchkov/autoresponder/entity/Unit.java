@@ -1,9 +1,9 @@
 package dev.struchkov.autoresponder.entity;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 /**
@@ -28,8 +28,10 @@ public abstract class Unit<U extends Unit<U>> {
      */
     protected Pattern pattern;
 
+    protected Predicate<String> triggerCheck;
+
     /**
-     * Значение минимального отношения количества найденых ключевых слов, к количеству ключевых слов Unit-а.
+     * Значение минимального отношения количества найденных ключевых слов, к количеству ключевых слов Unit-а.
      */
     protected Integer matchThreshold;
 
@@ -46,6 +48,7 @@ public abstract class Unit<U extends Unit<U>> {
     protected Unit(
             Set<KeyWord> keyWords,
             Set<String> phrases,
+            Predicate<String> triggerCheck,
             Pattern pattern,
             Integer matchThreshold,
             Integer priority,
@@ -53,6 +56,7 @@ public abstract class Unit<U extends Unit<U>> {
     ) {
         this.keyWords = keyWords;
         this.phrases = phrases;
+        this.triggerCheck = triggerCheck;
         this.pattern = pattern;
         this.matchThreshold = matchThreshold == null ? 10 : matchThreshold;
         this.priority = priority == null ? 10 : priority;
@@ -76,7 +80,7 @@ public abstract class Unit<U extends Unit<U>> {
     }
 
     public void addPhrases(Collection<String> phrases) {
-        phrases.addAll(phrases);
+        this.phrases.addAll(phrases);
     }
 
     public Pattern getPattern() {
@@ -109,6 +113,14 @@ public abstract class Unit<U extends Unit<U>> {
 
     public void setNextUnits(Set<U> nextUnits) {
         this.nextUnits = nextUnits;
+    }
+
+    public Predicate<String> getTriggerCheck() {
+        return triggerCheck;
+    }
+
+    public void setTriggerCheck(Predicate<String> triggerCheck) {
+        this.triggerCheck = triggerCheck;
     }
 
     @Override

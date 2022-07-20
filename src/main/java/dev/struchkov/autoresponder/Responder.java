@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import static dev.struchkov.autoresponder.util.Parser.splitWords;
@@ -64,12 +65,17 @@ public final class Responder {
                 if (percentageMatch(unit, message) >= unit.getMatchThreshold()) {
                     searchUnit.add(unit);
                 }
+
+                final Predicate<String> triggerCheck = unit.getTriggerCheck();
+                if (triggerCheck != null && triggerCheck.test(message)) {
+                    searchUnit.add(unit);
+                }
             }
         }
 
         if (searchUnit.isEmpty()) {
             for (U nextUnit : nextUnits) {
-                if (isNotPattern(nextUnit) && isNotKeyWords(nextUnit) && isNotPhrase(nextUnit)) {
+                if (isNotTrigger(nextUnit)) {
                     searchUnit.add(nextUnit);
                 }
             }
@@ -78,17 +84,25 @@ public final class Responder {
         return searchUnit.stream().max(UNIT_PRIORITY_COMPARATOR);
     }
 
-    private static <U extends Unit<U>> boolean isNotPhrase(U nextUnit) {
-        final Set<String> phrases = nextUnit.getPhrases();
+    private static <U extends Unit<U>> boolean isNotTrigger(U nextUnit) {
+        return isNotPattern(nextUnit) && isNotKeyWords(nextUnit) && isNotPhrase(nextUnit) && isNotCheck(nextUnit);
+    }
+
+    private static <U extends Unit<U>> boolean isNotCheck(U unit) {
+        return unit.getTriggerCheck() == null;
+    }
+
+    private static <U extends Unit<U>> boolean isNotPhrase(U unit) {
+        final Set<String> phrases = unit.getPhrases();
         return phrases == null || phrases.isEmpty();
     }
 
-    private static <U extends Unit<U>> boolean isNotPattern(U nextUnit) {
-        return nextUnit.getPattern() == null;
+    private static <U extends Unit<U>> boolean isNotPattern(U unit) {
+        return unit.getPattern() == null;
     }
 
-    private static <U extends Unit<U>> boolean isNotKeyWords(U nextUnit) {
-        final Set<KeyWord> keyWords = nextUnit.getKeyWords();
+    private static <U extends Unit<U>> boolean isNotKeyWords(U unit) {
+        final Set<KeyWord> keyWords = unit.getKeyWords();
         return keyWords == null || keyWords.isEmpty();
     }
 
@@ -106,7 +120,7 @@ public final class Responder {
             log.debug(Message.UNIT_KEYWORDS, unitKeyWords, unitKeyWords.size());
             log.debug(Message.USER_MESSAGE_KEYWORDS, messageWords);
             log.debug(Message.INTERSECTION, intersection, intersectionWeight);
-            log.debug(Message.CROSSING_PERCENTAGE, intersectionWeight / (double) unitKeyWords.size() * 100.0, unit.getMatchThreshold());
+            log.debug(Message.CROSSING_PERCENTAGE, intersectionWeight / unitKeyWords.size() * 100.0, unit.getMatchThreshold());
             return (double) intersection.size() / (double) unitKeyWords.size() * 100.0;
         } else {
             return 0.0;
