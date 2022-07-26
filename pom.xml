@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov</groupId>
     <artifactId>autoresponder</artifactId>
-    <version>3.3.0</version>
+    <version>3.4.0</version>
     <packaging>jar</packaging>
 
     <name>Abstract Autoresponder</name>
@@ -27,7 +27,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <haiti.utils.ver>1.0.3</haiti.utils.ver>
+        <haiti.utils.ver>1.2.0</haiti.utils.ver>
 
         <junit.ver>5.8.2</junit.ver>
         <slf4j.ver>1.7.36</slf4j.ver>

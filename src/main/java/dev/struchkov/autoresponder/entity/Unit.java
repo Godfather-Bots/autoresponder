@@ -11,12 +11,12 @@ import java.util.regex.Pattern;
  *
  * @author upagge [07/07/2019]
  */
-public abstract class Unit<U extends Unit<U>> {
+public abstract class Unit<U extends Unit<U, M>, M extends DeliverableText> {
 
     /**
      * Ключевые слова.
      */
-    protected Set<KeyWord> keyWords;
+    protected Set<KeyWord> triggerWords;
 
     /**
      * Точная фраза.
@@ -24,11 +24,14 @@ public abstract class Unit<U extends Unit<U>> {
     protected Set<String> phrases;
 
     /**
-     * Регулярное выражение.
+     * Триггеры на срабатывание юнита по регулярному выражению.
      */
-    protected Pattern pattern;
+    protected Set<Pattern> triggerPatterns;
 
-    protected Predicate<String> triggerCheck;
+    /**
+     * Пользовательский триггер
+     */
+    protected Predicate<M> triggerCheck;
 
     /**
      * Значение минимального отношения количества найденных ключевых слов, к количеству ключевых слов Unit-а.
@@ -46,29 +49,29 @@ public abstract class Unit<U extends Unit<U>> {
     protected Set<U> nextUnits;
 
     protected Unit(
-            Set<KeyWord> keyWords,
+            Set<KeyWord> triggerWords,
             Set<String> phrases,
-            Predicate<String> triggerCheck,
-            Pattern pattern,
+            Predicate<M> triggerCheck,
+            Set<Pattern> triggerPatterns,
             Integer matchThreshold,
             Integer priority,
             Set<U> nextUnits
     ) {
-        this.keyWords = keyWords;
+        this.triggerWords = triggerWords;
         this.phrases = phrases;
         this.triggerCheck = triggerCheck;
-        this.pattern = pattern;
+        this.triggerPatterns = triggerPatterns;
         this.matchThreshold = matchThreshold == null ? 10 : matchThreshold;
         this.priority = priority == null ? 10 : priority;
         this.nextUnits = nextUnits;
     }
 
-    public Set<KeyWord> getKeyWords() {
-        return keyWords;
+    public Set<KeyWord> getTriggerWords() {
+        return triggerWords;
     }
 
-    public void setKeyWords(Set<KeyWord> keyWords) {
-        this.keyWords = keyWords;
+    public void setTriggerWords(Set<KeyWord> triggerWords) {
+        this.triggerWords = triggerWords;
     }
 
     public Set<String> getPhrases() {
@@ -83,12 +86,16 @@ public abstract class Unit<U extends Unit<U>> {
         this.phrases.addAll(phrases);
     }
 
-    public Pattern getPattern() {
-        return pattern;
+    public void setPhrases(Set<String> phrases) {
+        this.phrases = phrases;
     }
 
-    public void setPattern(Pattern pattern) {
-        this.pattern = pattern;
+    public Set<Pattern> getTriggerPatterns() {
+        return triggerPatterns;
+    }
+
+    public void setTriggerPatterns(Set<Pattern> triggerPatterns) {
+        this.triggerPatterns = triggerPatterns;
     }
 
     public Integer getMatchThreshold() {
@@ -115,11 +122,11 @@ public abstract class Unit<U extends Unit<U>> {
         this.nextUnits = nextUnits;
     }
 
-    public Predicate<String> getTriggerCheck() {
+    public Predicate<M> getTriggerCheck() {
         return triggerCheck;
     }
 
-    public void setTriggerCheck(Predicate<String> triggerCheck) {
+    public void setTriggerCheck(Predicate<M> triggerCheck) {
         this.triggerCheck = triggerCheck;
     }
 
@@ -127,21 +134,20 @@ public abstract class Unit<U extends Unit<U>> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Unit<?> unit = (Unit<?>) o;
-        return Objects.equals(keyWords, unit.keyWords) && Objects.equals(phrases, unit.phrases) && Objects.equals(pattern, unit.pattern) && Objects.equals(matchThreshold, unit.matchThreshold) && Objects.equals(priority, unit.priority);
+        Unit<?, ?> unit = (Unit<?, ?>) o;
+        return Objects.equals(triggerWords, unit.triggerWords) && Objects.equals(phrases, unit.phrases) && Objects.equals(matchThreshold, unit.matchThreshold) && Objects.equals(priority, unit.priority);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(keyWords, phrases, pattern, matchThreshold, priority);
+        return Objects.hash(triggerWords, phrases, matchThreshold, priority);
     }
 
     @Override
     public String toString() {
         return "Unit{" +
-                "keyWords=" + keyWords +
+                "keyWords=" + triggerWords +
                 ", phrases='" + phrases + '\'' +
-                ", pattern=" + pattern +
                 ", matchThreshold=" + matchThreshold +
                 ", priority=" + priority +
                 '}';

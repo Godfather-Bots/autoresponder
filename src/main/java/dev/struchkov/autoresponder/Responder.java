@@ -1,6 +1,7 @@
 package dev.struchkov.autoresponder;
 
 import dev.struchkov.autoresponder.compare.UnitPriorityComparator;
+import dev.struchkov.autoresponder.entity.DeliverableText;
 import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.autoresponder.entity.Unit;
 import dev.struchkov.autoresponder.util.Message;
@@ -15,6 +16,8 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import static dev.struchkov.autoresponder.util.Parser.splitWords;
+import static dev.struchkov.haiti.utils.Checker.checkNotEmpty;
+import static dev.struchkov.haiti.utils.Checker.checkNotNull;
 import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
 import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
@@ -28,12 +31,16 @@ public final class Responder {
     private static final Logger log = LoggerFactory.getLogger(Responder.class);
 
     /**
-     * Компоратор для сортировки Unit-ов
+     * Компаратор для сортировки Unit-ов
      */
     private static final UnitPriorityComparator UNIT_PRIORITY_COMPARATOR = new UnitPriorityComparator();
 
     private Responder() {
         utilityClass();
+    }
+
+    public static <U extends Unit<U, DeliverableText>> Optional<U> nextUnit(String message, Collection<U> nextUnits) {
+        return nextUnit(() -> message, nextUnits);
     }
 
     /**
@@ -43,31 +50,36 @@ public final class Responder {
      * @param message   Запрос пользователя - текстовое сообщение
      * @return Юнит, который нуждается в обработке в соответствии с запросом пользователя
      */
-    public static <U extends Unit<U>> Optional<U> nextUnit(String message, Collection<U> nextUnits) {
+    public static <M extends DeliverableText, U extends Unit<U, M>> Optional<U> nextUnit(M message, Collection<U> nextUnits) {
         isNotNull(nextUnits);
         final Set<U> searchUnit = new HashSet<>();
 
-        if (message != null && nextUnits != null) {
+        if (checkNotEmpty(nextUnits)) {
             for (U unit : nextUnits) {
-                final Set<String> unitPhrases = unit.getPhrases();
-                if (
-                        unitPhrases != null
-                                && !unitPhrases.isEmpty()
-                                && unitPhrases.contains(message)
-                ) {
-                    searchUnit.add(unit);
+                final String text = message.getText();
+                if (checkNotNull(text)) {
+                    final Set<String> unitPhrases = unit.getPhrases();
+                    if (checkNotEmpty(unitPhrases) && unitPhrases.contains(text)) {
+                        searchUnit.add(unit);
+                    }
+
+                    final Set<Pattern> patterns = unit.getTriggerPatterns();
+                    if (checkNotEmpty(patterns)) {
+                        for (Pattern pattern : patterns) {
+                            if (patternReg(pattern, text)) {
+                                searchUnit.add(unit);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (percentageMatch(unit, text) >= unit.getMatchThreshold()) {
+                        searchUnit.add(unit);
+                    }
                 }
 
-                if (unit.getPattern() != null && patternReg(unit.getPattern(), message)) {
-                    searchUnit.add(unit);
-                }
-
-                if (percentageMatch(unit, message) >= unit.getMatchThreshold()) {
-                    searchUnit.add(unit);
-                }
-
-                final Predicate<String> triggerCheck = unit.getTriggerCheck();
-                if (triggerCheck != null && triggerCheck.test(message)) {
+                final Predicate<M> triggerCheck = unit.getTriggerCheck();
+                if (checkNotNull(triggerCheck) && triggerCheck.test(message)) {
                     searchUnit.add(unit);
                 }
             }
@@ -84,25 +96,25 @@ public final class Responder {
         return searchUnit.stream().max(UNIT_PRIORITY_COMPARATOR);
     }
 
-    private static <U extends Unit<U>> boolean isNotTrigger(U nextUnit) {
+    private static <U extends Unit<U, ?>> boolean isNotTrigger(U nextUnit) {
         return isNotPattern(nextUnit) && isNotKeyWords(nextUnit) && isNotPhrase(nextUnit) && isNotCheck(nextUnit);
     }
 
-    private static <U extends Unit<U>> boolean isNotCheck(U unit) {
+    private static <U extends Unit<U, ?>> boolean isNotCheck(U unit) {
         return unit.getTriggerCheck() == null;
     }
 
-    private static <U extends Unit<U>> boolean isNotPhrase(U unit) {
+    private static <U extends Unit<U, ?>> boolean isNotPhrase(U unit) {
         final Set<String> phrases = unit.getPhrases();
         return phrases == null || phrases.isEmpty();
     }
 
-    private static <U extends Unit<U>> boolean isNotPattern(U unit) {
-        return unit.getPattern() == null;
+    private static <U extends Unit<U, ?>> boolean isNotPattern(U unit) {
+        return unit.getTriggerPatterns() == null || unit.getTriggerPatterns().isEmpty();
     }
 
-    private static <U extends Unit<U>> boolean isNotKeyWords(U unit) {
-        final Set<KeyWord> keyWords = unit.getKeyWords();
+    private static <U extends Unit<U, ?>> boolean isNotKeyWords(U unit) {
+        final Set<KeyWord> keyWords = unit.getTriggerWords();
         return keyWords == null || keyWords.isEmpty();
     }
 
@@ -111,9 +123,9 @@ public final class Responder {
         return message.matches(pattern.pattern());
     }
 
-    private static <U extends Unit<U>> double percentageMatch(U unit, String message) {
-        final Set<KeyWord> unitKeyWords = unit.getKeyWords();
-        if (unitKeyWords != null && !unitKeyWords.isEmpty()) {
+    private static <U extends Unit<U, ?>> double percentageMatch(U unit, String message) {
+        final Set<KeyWord> unitKeyWords = unit.getTriggerWords();
+        if (checkNotEmpty(unitKeyWords)) {
             final Set<String> messageWords = splitWords(message);
             final Set<KeyWord> intersection = getIntersection(unitKeyWords, messageWords);
             final double intersectionWeight = getIntersectionWeight(intersection);
