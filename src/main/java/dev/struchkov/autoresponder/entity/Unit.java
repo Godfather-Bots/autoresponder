@@ -1,7 +1,6 @@
 package dev.struchkov.autoresponder.entity;
 
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -128,29 +127,6 @@ public abstract class Unit<U extends Unit<U, M>, M extends DeliverableText> {
 
     public void setTriggerCheck(Predicate<M> triggerCheck) {
         this.triggerCheck = triggerCheck;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Unit<?, ?> unit = (Unit<?, ?>) o;
-        return Objects.equals(triggerWords, unit.triggerWords) && Objects.equals(phrases, unit.phrases) && Objects.equals(matchThreshold, unit.matchThreshold) && Objects.equals(priority, unit.priority);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(triggerWords, phrases, matchThreshold, priority);
-    }
-
-    @Override
-    public String toString() {
-        return "Unit{" +
-                "keyWords=" + triggerWords +
-                ", phrases='" + phrases + '\'' +
-                ", matchThreshold=" + matchThreshold +
-                ", priority=" + priority +
-                '}';
     }
 
 }
