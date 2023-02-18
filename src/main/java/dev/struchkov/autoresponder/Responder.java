@@ -16,8 +16,10 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import static dev.struchkov.autoresponder.util.Parser.splitWords;
+import static dev.struchkov.haiti.utils.Checker.checkEmpty;
 import static dev.struchkov.haiti.utils.Checker.checkNotEmpty;
 import static dev.struchkov.haiti.utils.Checker.checkNotNull;
+import static dev.struchkov.haiti.utils.Checker.checkNull;
 import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
 import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
@@ -101,21 +103,19 @@ public final class Responder {
     }
 
     private static <U extends Unit<U, ?>> boolean isNotCheck(U unit) {
-        return unit.getTriggerCheck() == null;
+        return checkNull(unit.getTriggerCheck());
     }
 
     private static <U extends Unit<U, ?>> boolean isNotPhrase(U unit) {
-        final Set<String> phrases = unit.getPhrases();
-        return phrases == null || phrases.isEmpty();
+        return checkEmpty(unit.getPhrases());
     }
 
     private static <U extends Unit<U, ?>> boolean isNotPattern(U unit) {
-        return unit.getTriggerPatterns() == null || unit.getTriggerPatterns().isEmpty();
+        return checkEmpty(unit.getTriggerPatterns());
     }
 
     private static <U extends Unit<U, ?>> boolean isNotKeyWords(U unit) {
-        final Set<KeyWord> keyWords = unit.getTriggerWords();
-        return keyWords == null || keyWords.isEmpty();
+        return checkEmpty(unit.getTriggerWords());
     }
 
     private static boolean patternReg(Pattern pattern, String message) {

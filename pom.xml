@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov</groupId>
     <artifactId>autoresponder</artifactId>
-    <version>3.5.0</version>
+    <version>3.6.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Abstract Autoresponder</name>
@@ -27,18 +27,27 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <haiti.utils.ver>1.4.0</haiti.utils.ver>
+        <haiti.utils.ver>2.6.0</haiti.utils.ver>
 
-        <junit.ver>5.8.2</junit.ver>
-        <slf4j.ver>1.7.36</slf4j.ver>
-        <jetbrains.annotation.ver>23.0.0</jetbrains.annotation.ver>
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
+        <junit.ver>5.9.2</junit.ver>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <slf4j.ver>2.0.6</slf4j.ver>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
         <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
+        <!-- https://mvnrepository.com/artifact/org.sonatype.plugins/nexus-staging-maven-plugin -->
         <plugin.nexus.staging.ver>1.6.13</plugin.nexus.staging.ver>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
-        <plugin.maven.javadoc.ver>3.4.0</plugin.maven.javadoc.ver>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+        <plugin.maven.javadoc.ver>3.5.0</plugin.maven.javadoc.ver>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
         <plugin.maven.gpg.ver>3.0.1</plugin.maven.gpg.ver>
-        <plugin.maven.surefire.ver>3.0.0-M6</plugin.maven.surefire.ver>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+        <plugin.maven.surefire.ver>3.0.0-M9</plugin.maven.surefire.ver>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-release-plugin -->
+        <plugin.maven.release.ver>3.0.0-M7</plugin.maven.release.ver>
     </properties>
 
     <dependencies>
@@ -52,12 +61,6 @@
             <groupId>dev.struchkov.haiti</groupId>
             <artifactId>haiti-utils</artifactId>
             <version>${haiti.utils.ver}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>${jetbrains.annotation.ver}</version>
         </dependency>
 
         <dependency>
@@ -143,10 +146,27 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${plugin.maven.release.ver}</version>
+                    <configuration>
+                        <preparationGoals>clean install</preparationGoals>
+                        <tagNameFormat>v.@{project.version}</tagNameFormat>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <pushChanges>false</pushChanges>
+                        <localCheckout>true</localCheckout>
+                        <signTag>true</signTag>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
